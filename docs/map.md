@@ -1,21 +1,23 @@
 ﻿# Ark System — Project Map
 
-> Current status snapshot for the repo as of 2026-10-03.
+> Current status snapshot for the repo as of 2026-10-04.
 > This document reflects the actual implementation in the codebase today, not the original aspirational roadmap.
 
 ## 1. Executive Summary
 
-Ark System is a static marketing / conversion-site template for an edge-native web infrastructure brand. The project is built with Astro, Tailwind CSS, TypeScript, and Cloudflare Pages. The repo currently contains a functioning site scaffold, a content-driven configuration layer, and CI/lighthouse checks, but it is not fully production-ready because the build is currently failing due to a Tailwind/CSS utility issue.
+Ark System is a static marketing / conversion-site template for an edge-native web infrastructure brand. The project is built with Astro, Tailwind CSS, TypeScript, and Cloudflare Pages. The repo contains a functioning site scaffold, a content-driven configuration layer, and CI/Lighthouse checks. The production build currently passes locally, but the template is not client-ready until placeholder content and external service destinations are configured.
 
 Status at a glance:
 
-- Build status: red (current CSS utility error blocks `astro build`)
+- Build status: green locally (`npm run build` completed successfully on 2026-10-04)
 - Core platform: Astro 5 + Tailwind 3 + Cloudflare Pages
 - Content model: implemented and centralized in `src/data/config.ts`
-- Route architecture: implemented for 5 pages
+- Route architecture: implemented for 5 content pages (including `/brand`) and 404
 - Deployment config: present, but adapter/output strategy is not fully intentional
-- Placeholder content: still present in multiple places (contact and pricing CTA links)
-- CI: present in `.github/workflows/ci.yml` and Lighthouse budget exists
+- Placeholder content: still present, including contact/booking destinations, form endpoint, and sample pricing/portfolio content
+- Onboarding documentation: available in `docs/client-onboarding.md`
+- Git baseline: commit `0f591d7` pushed to `origin/main`; working tree was clean at snapshot time
+- CI: workflow is defined in `.github/workflows/ci.yml`; Lighthouse budget exists, but remote CI status is not recorded here
 
 ## 2. What the Project Is
 
@@ -191,7 +193,8 @@ This is the main architectural strength of the repo and is the closest thing to 
 
 ### 8.3 Not yet production-ready
 
-- Current build is failing due to a missing/unsupported Tailwind class pattern in `src/styles/global.css`
+- `npm run build` passes locally; it reported a Cloudflare/Sharp runtime compatibility warning, which did not block the static build
+- Business-specific links, form handling, and demo content still need client-approved production values
 - The Cloudflare adapter remains enabled even though the project is static-first; the repo is not clearly committed to a pure-static vs hybrid deployment model
 - The theming engine is partially implemented; the client onboarding workflow is documented in `docs/client-onboarding.md`
 - No end-to-end integration or feature tests beyond CI/static checks
@@ -200,13 +203,13 @@ This is the main architectural strength of the repo and is the closest thing to 
 
 ### Current verification result
 
-A local build attempt (`npm run build`) currently fails:
+A local `npm run build` completed successfully on 2026-10-04:
 
-- `src/styles/global.css` includes `selection:bg-ark-accent/30`
-- Tailwind rejects that utility during PostCSS processing
-- The failure prevents the project from shipping a clean build
+- `astro check`: 0 errors, 0 warnings, 0 hints
+- `astro build`: completed and prerendered the site's routes
+- Astro emitted a warning that Cloudflare does not support Sharp at runtime; this did not fail the build. The adapter notes that `imageService: "compile"` can be used for build-time optimization of prerendered images.
 
-This is the most important blocker to resolve before the project is ready to treat as a stable template or client-facing site.
+This confirms the current source builds locally; it does not verify deployed behavior, third-party form delivery, or remote CI.
 
 ### Existing quality scaffolding
 
@@ -216,20 +219,20 @@ This is the most important blocker to resolve before the project is ready to tre
 
 ## 10. High-Level Risks And Gaps
 
-1. Build is currently red.
-2. Placeholder business links and contact destinations remain in config.
-3. Static content is content-rich but not yet client-ready for real production use.
-4. Deployment strategy is configured but not cleanly aligned with the project’s actual static architecture.
-5. The design system is strong, but the repo is not yet fully hardened for handoff or multi-brand implementation.
+1. Client-facing placeholders remain and must be replaced before launch.
+2. Static content is content-rich but not yet client-ready for real production use.
+3. Deployment strategy is configured but not cleanly aligned with the project’s actual static architecture.
+4. The design system is partially tokenized; hardcoded text/border colors and the logo/header integration may require client-specific changes.
 
 ## 11. Recommended Next Priorities
 
-1. Fix the Tailwind/CSS build blocker in `src/styles/global.css`
-2. Replace all placeholder CTA and form endpoints with real production values
-3. Decide whether the project will remain Cloudflare adapter-backed static output or be fully simplified to a pure static build
-4. Replace the hand-maintained sitemap with Astro-generated sitemap tooling if the project invests in SEO expansion
-5. Finalize the multi-tenant brand/theme workflow and document it for future client clones
+1. Replace placeholder CTA, booking, and form destinations with client-approved production values.
+2. Replace demo copy, pricing, statistics, and portfolio entries with approved client content.
+3. Complete the brand assets and check whether the header should render the client logo.
+4. Confirm the Cloudflare Pages project, domain, sitemap, robots, and deployment strategy for the target site.
+5. Decide whether to retain the Cloudflare adapter and whether to generate the currently hand-maintained sitemap.
+6. Extend design tokens where needed and add integration/end-to-end coverage if the template's scope requires it.
 
 ## 12. Bottom Line
 
-The repo is a promising and largely structured marketing-site template with a solid content/config architecture and strong design-system intent. It is not yet in a clean green-build state, and several placeholder items remain. The current project status is best described as “mostly scaffolded, partially branded, and build-blocked by a CSS utility issue.”
+The repo is a structured, config-driven marketing-site template with reusable routes, components, and documented client-onboarding steps. Its local production build is green and a baseline commit is published on `main`. It is not yet production-ready for a particular client: placeholders, assets, external integrations, and deployment details still need to be supplied and verified.
