@@ -1,0 +1,154 @@
+---
+interface NavLink {
+  label: string;
+  href: string;
+}
+
+interface Props {
+  links: NavLink[];
+  currentPath?: string;
+  class?: string;
+}
+
+const { links, currentPath = '/', class: className = '' } = Astro.props;
+
+// `build.format: 'directory'` means Astro.url.pathname arrives as "/portfolio/",
+// so trailing slashes must be normalized before comparing against hrefs.
+const normalize = (path: string) => path.replace(/\/+$/, '') || '/';
+const isActive = (href: string) => normalize(currentPath) === normalize(href);
+---
+
+<nav class={`flex items-center gap-2 ${className}`} aria-label="Main navigation" data-ark-nav>
+  <ul class="hidden items-center gap-8 md:flex">
+    {links.map((link) => (
+      <li>
+        <a
+          href={link.href}
+          class:list={[
+            'text-sm font-medium tracking-wide text-zinc-400 transition-colors duration-200 ease-ark hover:text-white',
+            isActive(link.href) && 'text-white',
+          ]}
+          aria-current={isActive(link.href) ? 'page' : undefined}
+        >
+          {link.label}
+        </a>
+      </li>
+    ))}
+  </ul>
+
+  <button
+    type="button"
+    data-nav-toggle
+    class="relative z-50 flex h-10 w-10 items-center justify-center rounded-full border border-white/[0.08] bg-surface/50 text-white backdrop-blur-md transition-all duration-300 ease-ark hover:bg-surface-hover focus:outline-none focus:ring-2 focus:ring-ark-accent/50 md:hidden"
+    aria-expanded="false"
+    aria-controls="ark-mobile-menu"
+    aria-label="Open menu"
+  >
+    <svg
+      class="h-5 w-5"
+      data-icon="open"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      stroke-width="2"
+      aria-hidden="true"
+    >
+      <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+    </svg>
+    <svg
+      class="hidden h-5 w-5"
+      data-icon="close"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      stroke-width="2"
+      aria-hidden="true"
+    >
+      <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+    </svg>
+  </button>
+
+  <div
+    id="ark-mobile-menu"
+    data-nav-menu
+    class="fixed inset-0 z-40 hidden flex-col items-center justify-center gap-8 bg-base/95 backdrop-blur-xl md:hidden"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Mobile navigation"
+  >
+    <ul class="flex flex-col items-center gap-6">
+      {links.map((link) => (
+        <li>
+          <a
+            href={link.href}
+            data-nav-link
+            class:list={[
+              'font-display text-2xl font-semibold tracking-tight text-white transition-colors duration-200 ease-ark hover:text-ark-accent',
+              isActive(link.href) && 'text-ark-accent',
+            ]}
+            aria-current={isActive(link.href) ? 'page' : undefined}
+          >
+            {link.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</nav>
+
+<script>
+  const initNav = (nav: HTMLElement) => {
+    const toggle = nav.querySelector<HTMLButtonElement>('[data-nav-toggle]');
+    const menu = nav.querySelector<HTMLElement>('[data-nav-menu]');
+    if (!toggle || !menu) return;
+
+    const iconOpen = toggle.querySelector('[data-icon="open"]');
+    const iconClose = toggle.querySelector('[data-icon="close"]');
+    const links = menu.querySelectorAll<HTMLAnchorElement>('[data-nav-link]');
+    const firstLink = links[0];
+    const lastLink = links[links.length - 1];
+
+    const setOpen = (open: boolean) => {
+      menu.classList.toggle('hidden', !open);
+      menu.classList.toggle('flex', open);
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      iconOpen?.classList.toggle('hidden', open);
+      iconClose?.classList.toggle('hidden', !open);
+      document.body.style.overflow = open ? 'hidden' : '';
+    };
+
+    const close = () => {
+      setOpen(false);
+      toggle.focus();
+    };
+
+    toggle.addEventListener('click', () => {
+      const open = toggle.getAttribute('aria-expanded') === 'true';
+      setOpen(!open);
+      if (!open) requestAnimationFrame(() => firstLink?.focus());
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') close();
+    });
+
+    menu.addEventListener('keydown', (event) => {
+      if (event.key !== 'Tab' || toggle.getAttribute('aria-expanded') !== 'true') return;
+
+      if (event.shiftKey && document.activeElement === firstLink) {
+        event.preventDefault();
+        lastLink?.focus();
+      } else if (!event.shiftKey && document.activeElement === lastLink) {
+        event.preventDefault();
+        firstLink?.focus();
+      }
+    });
+
+    links.forEach((link) => link.addEventListener('click', close));
+  };
+
+  document.querySelectorAll<HTMLElement>('[data-ark-nav]').forEach(initNav);
+</script>

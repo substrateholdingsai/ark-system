@@ -1,0 +1,17 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Ark System — Cloudflare local secrets (wrangler dev / astro dev with the
+# Cloudflare adapter). Copy to `.dev.vars`:  cp .dev.vars.example .dev.vars
+#
+# `.dev.vars` is gitignored. Use it for values that Pages Functions need.
+# Production secrets:  wrangler pages secret put <KEY>
+# Do NOT put PUBLIC_* values here — those belong in `.env`.
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Payment provider secrets (server only)
+STRIPE_SECRET_KEY=sk_test_xxxxxxxxxxxxxxxxxxxx
+MERCADO_PAGO_ACCESS_TOKEN=APP_USR-xxxxxxxxxxxxxxxx
+BTCPAY_URL=https://btcpay.example.com
+BTCPAY_API_KEY=xxxxxxxxxxxxxxxx
+
+# Analytics domain (also settable as PUBLIC_PLAUSIBLE_DOMAIN in .env)
+PUBLIC_PLAUSIBLE_DOMAIN=ark.systems

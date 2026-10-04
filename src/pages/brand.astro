@@ -1,0 +1,136 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Brand preview">
+  <main class="mx-auto max-w-6xl space-y-12 px-4 py-12 sm:px-6 lg:px-8">
+    <header class="space-y-4 text-center">
+      <p class="text-sm font-semibold uppercase tracking-[0.2em] text-ark-accent">Brand system</p>
+      <h1 class="text-4xl font-bold tracking-tight text-white sm:text-5xl">Theme preview</h1>
+      <p class="mx-auto max-w-2xl text-base text-zinc-300 sm:text-lg">
+        Validation of the multi-tenant theming model by forcing both the neon and amber palettes in the
+        same view without any JavaScript toggle.
+      </p>
+    </header>
+
+    <section class="space-y-6">
+      <div class="flex items-center gap-3">
+        <span class="h-3.5 w-3.5 rounded-full bg-cyan-400"></span>
+        <h2 class="text-2xl font-semibold text-white">Neon theme</h2>
+      </div>
+
+      <div data-theme="neon" class="space-y-8 rounded-3xl border border-white/[0.08] bg-surface/50 p-6 shadow-ark-card sm:p-8">
+        <div>
+          <p class="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-zinc-400">Palette</p>
+          <div class="flex flex-wrap gap-4">
+            <div class="flex h-20 w-20 items-end rounded-2xl bg-ark-accent p-2 text-xs font-bold text-black shadow-lg shadow-ark-accent/20">
+              accent
+            </div>
+            <div class="flex h-20 w-20 items-end rounded-2xl border border-white/[0.08] bg-base p-2 text-xs font-medium text-white">
+              base
+            </div>
+            <div class="flex h-20 w-20 items-end rounded-2xl bg-white p-2 text-xs font-bold text-black">
+              text
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-4">
+          <p class="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-400">Typography</p>
+          <h3 class="text-4xl font-bold tracking-tight text-white">Heading 1</h3>
+          <h4 class="text-2xl font-semibold text-white">Heading 2</h4>
+          <p class="max-w-2xl text-base leading-relaxed text-zinc-300">
+            This paragraph checks readability and contrast on the default dark card surface. The goal is a
+            clean, premium tone that still reads comfortably at body copy size.
+          </p>
+        </div>
+
+        <div class="space-y-4">
+          <p class="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-400">Buttons</p>
+          <div class="flex flex-wrap gap-4">
+            <button class="inline-flex h-11 items-center justify-center rounded-full bg-ark-accent px-6 text-sm font-semibold text-black transition hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-ark-accent/60">
+              Primary
+            </button>
+            <button class="inline-flex h-11 items-center justify-center rounded-full border border-ark-accent/40 bg-white/[0.02] px-6 text-sm font-medium text-ark-accent transition hover:bg-ark-accent/10 focus:outline-none focus:ring-2 focus:ring-ark-accent/60">
+              Secondary
+            </button>
+            <button class="inline-flex h-11 items-center justify-center rounded-full px-6 text-sm font-medium text-zinc-300 transition hover:bg-white/[0.04] hover:text-white focus:outline-none focus:ring-2 focus:ring-ark-accent/60">
+              Ghost
+            </button>
+          </div>
+        </div>
+
+        <div class="max-w-md space-y-3">
+          <p class="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-400">Form controls</p>
+          <label class="block text-sm font-medium text-zinc-200" for="neon-email">Email</label>
+          <input
+            id="neon-email"
+            type="email"
+            placeholder="hello@brand.dev"
+            class="w-full rounded-xl border border-white/[0.08] bg-white/[0.03] px-4 py-3 text-sm text-white placeholder:text-zinc-500 focus:border-ark-accent focus:outline-none focus:ring-2 focus:ring-ark-accent/30"
+          />
+        </div>
+      </div>
+    </section>
+
+    <section class="space-y-6">
+      <div class="flex items-center gap-3">
+        <span class="h-3.5 w-3.5 rounded-full bg-amber-500"></span>
+        <h2 class="text-2xl font-semibold text-white">Amber theme</h2>
+      </div>
+
+      <div data-theme="amber" class="space-y-8 rounded-3xl border border-white/[0.08] bg-surface/50 p-6 shadow-ark-card sm:p-8">
+        <div>
+          <p class="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-zinc-400">Palette</p>
+          <div class="flex flex-wrap gap-4">
+            <div class="flex h-20 w-20 items-end rounded-2xl bg-ark-accent p-2 text-xs font-bold text-black shadow-lg shadow-ark-accent/20">
+              accent
+            </div>
+            <div class="flex h-20 w-20 items-end rounded-2xl border border-white/[0.08] bg-base p-2 text-xs font-medium text-white">
+              base
+            </div>
+            <div class="flex h-20 w-20 items-end rounded-2xl bg-white p-2 text-xs font-bold text-black">
+              text
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-4">
+          <p class="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-400">Typography</p>
+          <h3 class="text-4xl font-bold tracking-tight text-white">Heading 1</h3>
+          <h4 class="text-2xl font-semibold text-white">Heading 2</h4>
+          <p class="max-w-2xl text-base leading-relaxed text-zinc-300">
+            This second panel confirms the amber variant preserves the same hierarchy, spacing, and contrast
+            rules while switching the accent token and its hover states.
+          </p>
+        </div>
+
+        <div class="space-y-4">
+          <p class="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-400">Buttons</p>
+          <div class="flex flex-wrap gap-4">
+            <button class="inline-flex h-11 items-center justify-center rounded-full bg-ark-accent px-6 text-sm font-semibold text-black transition hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-ark-accent/60">
+              Primary
+            </button>
+            <button class="inline-flex h-11 items-center justify-center rounded-full border border-ark-accent/40 bg-white/[0.02] px-6 text-sm font-medium text-ark-accent transition hover:bg-ark-accent/10 focus:outline-none focus:ring-2 focus:ring-ark-accent/60">
+              Secondary
+            </button>
+            <button class="inline-flex h-11 items-center justify-center rounded-full px-6 text-sm font-medium text-zinc-300 transition hover:bg-white/[0.04] hover:text-white focus:outline-none focus:ring-2 focus:ring-ark-accent/60">
+              Ghost
+            </button>
+          </div>
+        </div>
+
+        <div class="max-w-md space-y-3">
+          <p class="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-400">Form controls</p>
+          <label class="block text-sm font-medium text-zinc-200" for="amber-email">Email</label>
+          <input
+            id="amber-email"
+            type="email"
+            placeholder="hello@brand.dev"
+            class="w-full rounded-xl border border-white/[0.08] bg-white/[0.03] px-4 py-3 text-sm text-white placeholder:text-zinc-500 focus:border-ark-accent focus:outline-none focus:ring-2 focus:ring-ark-accent/30"
+          />
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>

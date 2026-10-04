@@ -1,0 +1,14 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/sections/Hero.astro';
+import TechStack from '../components/sections/TechStack.astro';
+import PortfolioGrid from '../components/sections/PortfolioGrid.astro';
+import PricingTable from '../components/sections/PricingTable.astro';
+---
+
+<BaseLayout>
+  <Hero />
+  <TechStack />
+  <PortfolioGrid limit={3} />
+  <PricingTable />
+</BaseLayout>

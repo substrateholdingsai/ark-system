@@ -1,0 +1,105 @@
+PROPRIETARY SOFTWARE LICENSE AGREEMENT
+
+Ark System
+Copyright (c) 2026 Substrate Holdings LLC. All Rights Reserved.
+
+NOTICE: This software and its accompanying documentation, source code, design
+assets, and configuration (collectively, the "Software") are the confidential
+and proprietary property of Substrate Holdings LLC ("Substrate"). This file is
+a license agreement, not an open source license. No rights are granted by
+implication, estoppel, or otherwise except as expressly stated herein.
+
+1. OWNERSHIP
+
+   1.1 Title. Substrate retains all right, title, and interest in and to the
+       Software, including all intellectual property rights therein.
+
+   1.2 No Implied License. Nothing in this Agreement grants permission to use
+       the Software except as expressly granted in Section 2.
+
+2. GRANT OF RIGHTS — PERMITTED USE
+
+   Subject to the restrictions in Section 3, Substrate grants you a limited,
+   non-exclusive, non-transferable, revocable license to:
+
+   2.1 Use the Software for commercial purposes in projects you own or are
+       authorized to build for a client.
+
+   2.2 Modify the Software to meet the specific requirements of your project.
+
+   2.3 Deploy an unlimited number of copies of the Software to Cloudflare
+       Pages or any substantially similar static hosting platform.
+
+3. RESTRICTIONS
+
+   Except as expressly permitted above, you may NOT:
+
+   3.1 Redistribute, sublicense, resell, or make the Software available to any
+       third party as a template, starter kit, boilerplate, or component
+       library, whether modified or unmodified.
+
+   3.2 Publish the Software, in whole or in substantial part, in any public
+       repository, marketplace, or template gallery without prior written
+       consent from Substrate.
+
+   3.3 Remove, obscure, or alter any copyright, trademark, attribution, or
+       proprietary notice contained in the Software or its documentation.
+
+   3.4 Represent yourself as the author or original creator of the Software.
+
+   3.5 Use the Software to build a product that competes with Ark System as a
+       commercial template or white-label platform, without written consent.
+
+4. CLIENT DELIVERABLES
+
+   Where you deploy the Software under Section 2.3 for a client, that client
+   receives a license to that specific deployed build only. A client does not
+   receive a license to the Software itself, to this repository, or to any
+   derivative template.
+
+5. TERMINATION
+
+   This Agreement is effective until terminated. It terminates automatically
+   upon any breach of Section 3. Upon termination, you must cease all use of
+   the Software and delete all copies, including deployed builds and copies in
+   version control systems.
+
+6. NO WARRANTY
+
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+   FITNESS FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT. SUBSTRATE DOES NOT
+   WARRANT THAT THE SOFTWARE WILL BE ERROR-FREE OR UNINTERRUPTED.
+
+7. LIMITATION OF LIABILITY
+
+   TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT SHALL
+   SUBSTRATE BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+   EXEMPLARY, OR CONSEQUENTIAL DAMAGES, OR FOR ANY LOSS OF PROFITS, REVENUE,
+   DATA, OR BUSINESS INTERRUPTION, ARISING OUT OF OR IN CONNECTION WITH THE
+   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
+
+8. THIRD-PARTY COMPONENTS
+
+   The Software incorporates open-source third-party components, including but
+   not limited to Astro, Tailwind CSS, TypeScript, and JetBrains Mono. Such
+   components remain governed by their own licenses, as identified in the
+   project documentation. This Agreement does not restrict your rights in those
+   components.
+
+9. CONFIDENTIALITY
+
+   You agree not to disclose, publish, or share the Software, this Agreement, or
+   any non-public information regarding Substrate's business, technology, or
+   roadmap with any third party.
+
+10. CONTACT
+
+    For enterprise licensing, white-label arrangements, or permission to
+    redistribute the Software, contact: legal@ark.systems
+
+11. GOVERNING LAW
+
+    This Agreement shall be governed by and construed in accordance with the
+    laws applicable at Substrate's principal place of business, without regard
+    to its conflict of laws principles.

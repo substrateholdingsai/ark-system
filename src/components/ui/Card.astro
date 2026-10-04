@@ -1,0 +1,24 @@
+---
+interface Props {
+  href?: string;
+  target?: string;
+  rel?: string;
+  class?: string;
+  as?: 'div' | 'article' | 'li';
+  [key: string]: unknown;
+}
+
+const { href, target, rel, class: className = '', as: Tag = 'div', ...restProps } = Astro.props;
+
+const base = 'ark-card';
+---
+
+{href ? (
+  <a href={href} target={target} rel={rel} class:list={[base, className]} {...restProps}>
+    <slot />
+  </a>
+) : (
+  <Tag class:list={[base, className]} {...restProps}>
+    <slot />
+  </Tag>
+)}

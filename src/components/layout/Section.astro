@@ -1,0 +1,48 @@
+---
+import Container from './Container.astro';
+
+interface Props {
+  /** 'default' = bg-base, 'surface' = bg-surface + border-y, 'void' = bg-void */
+  variant?: 'default' | 'surface' | 'void';
+
+  /** 'sm' = py-16 sm:py-20, 'md' = py-20 sm:py-24 (default), 'lg' = py-24 sm:py-32, 'xl' = py-32 sm:py-40 */
+  padding?: 'sm' | 'md' | 'lg' | 'xl';
+
+  /** 'full' opts out of the inner Container for full-bleed backgrounds */
+  width?: 'contained' | 'full';
+
+  /** Anchor target, e.g. id="pricing" */
+  id?: string;
+
+  class?: string;
+}
+
+const {
+  variant = 'default',
+  padding = 'md',
+  width = 'contained',
+  id,
+  class: className = '',
+} = Astro.props;
+
+const variantClasses = {
+  default: 'bg-base',
+  surface: 'bg-surface border-y border-white/[0.08]',
+  void: 'bg-void',
+};
+
+const paddingClasses = {
+  sm: 'py-16 sm:py-20',
+  md: 'py-20 sm:py-24',
+  lg: 'py-24 sm:py-32',
+  xl: 'py-32 sm:py-40',
+};
+
+const containerSize = width === 'full' ? 'full' : 'container';
+---
+
+<section {id} class={`${variantClasses[variant]} ${paddingClasses[padding]} ${className}`}>
+  <Container size={containerSize}>
+    <slot />
+  </Container>
+</section>

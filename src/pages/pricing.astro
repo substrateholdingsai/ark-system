@@ -1,0 +1,129 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PricingTable from '../components/sections/PricingTable.astro';
+import Section from '../components/layout/Section.astro';
+import Container from '../components/layout/Container.astro';
+import Badge from '../components/ui/Badge.astro';
+import Button from '../components/ui/Button.astro';
+import Card from '../components/ui/Card.astro';
+import { config } from '@/data/config';
+
+const faqs = [
+  {
+    q: 'Do I need to know how to code?',
+    a: 'No. We handle all the technical setup, deployment, and configuration. You just provide the content and we deliver a production-ready web app.',
+  },
+  {
+    q: 'What happens after the site is deployed?',
+    a: "Nothing. That's the point. Static sites on Cloudflare Pages require zero maintenance, no plugin updates, no security patches. It just works.",
+  },
+  {
+    q: 'Can I edit the content myself?',
+    a: 'Yes. We provide a simple config file where you can update text, images, and links. No CMS dashboard to learn, no database to manage.',
+  },
+  {
+    q: 'What if I need to add more pages later?',
+    a: 'The Ark system is modular. We can add blog posts, product pages, or custom sections without rebuilding the entire site.',
+  },
+  {
+    q: 'Do you offer ongoing support?',
+    a: 'The Launch and Scale packages include 30 days of support. For ongoing maintenance, we offer optional retainer packages.',
+  },
+];
+---
+
+<BaseLayout title={`Pricing | ${config.brand.name}`}>
+  <!-- Hero Section -->
+  <Section variant="void" padding="lg">
+    <Container class="text-center">
+      <Badge class="mb-4">Transparent Pricing</Badge>
+      <h1 class="text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
+        Build once. Scale infinitely.
+      </h1>
+      <p class="mx-auto mt-6 max-w-2xl text-lg text-zinc-400">
+        No hidden fees, no monthly platform taxes, no surprise costs. Just pure, edge-native
+        infrastructure at a fair price.
+      </p>
+    </Container>
+  </Section>
+
+  <!-- Pricing Table -->
+  <PricingTable />
+
+  <!-- Comparison Section -->
+  <Section variant="default" padding="lg">
+    <Container>
+      <div class="text-center mb-12">
+        <h2 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">
+          Why Ark beats the alternatives.
+        </h2>
+        <p class="mt-4 text-zinc-400">We don't play the monthly subscription game.</p>
+      </div>
+      <div class="grid gap-6 md:grid-cols-3">
+        <Card class="p-6">
+          <h3 class="text-lg font-bold text-white mb-2">WordPress</h3>
+          <ul class="text-sm text-zinc-400 space-y-2">
+            <li>Slow load times</li>
+            <li>Constant plugin updates</li>
+            <li>Security vulnerabilities</li>
+            <li>Monthly hosting fees</li>
+          </ul>
+        </Card>
+        <Card class="p-6">
+          <h3 class="text-lg font-bold text-white mb-2">Website Builders</h3>
+          <ul class="text-sm text-zinc-400 space-y-2">
+            <li>Locked into their platform</li>
+            <li>Monthly subscription fees</li>
+            <li>Limited customization</li>
+            <li>Poor performance scores</li>
+          </ul>
+        </Card>
+        <Card class="p-6 border-ark-accent/30 shadow-ark-glow">
+          <h3 class="text-lg font-bold text-ark-accent mb-2">Ark System</h3>
+          <ul class="text-sm text-white space-y-2">
+            <li>Instant load times (Edge-native)</li>
+            <li>Zero maintenance</li>
+            <li>100% yours to keep</li>
+            <li>$0/month hosting (Cloudflare)</li>
+          </ul>
+        </Card>
+      </div>
+    </Container>
+  </Section>
+
+  <!-- FAQ Section -->
+  <Section variant="surface" padding="lg">
+    <Container>
+      <div class="text-center mb-12">
+        <h2 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">
+          Frequently asked questions.
+        </h2>
+      </div>
+      <div class="mx-auto max-w-3xl space-y-6">
+        {faqs.map((faq) => (
+          <Card class="p-6">
+            <h3 class="text-lg font-semibold text-white">{faq.q}</h3>
+            <p class="mt-2 text-zinc-400">{faq.a}</p>
+          </Card>
+        ))}
+      </div>
+    </Container>
+  </Section>
+
+  <!-- CTA Section -->
+  <Section variant="void" padding="lg">
+    <Container class="text-center">
+      <h2 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">
+        Ready to stop paying rent for your website?
+      </h2>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-zinc-400">
+        Join the businesses that have moved to frictionless, edge-native infrastructure.
+      </p>
+      <div class="mt-8">
+        <Button variant="primary" href={config.contact.calComLink}>
+          Get Started Today
+        </Button>
+      </div>
+    </Container>
+  </Section>
+</BaseLayout>

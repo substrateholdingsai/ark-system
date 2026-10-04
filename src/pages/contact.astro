@@ -1,0 +1,79 @@
+---
+// src/pages/contact.astro
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Section from '../components/layout/Section.astro';
+import Container from '../components/layout/Container.astro';
+import Input from '../components/ui/Input.astro';
+import Button from '../components/ui/Button.astro';
+import { config } from '@/data/config';
+---
+
+<BaseLayout title="Contact | Ark">
+  <Section variant="default" padding="lg">
+    <Container size="prose" class="text-center mb-12">
+      <h2 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">
+        Let's build your Ark.
+      </h2>
+      <p class="mt-4 text-lg text-zinc-400">
+        Book a call or send a message. We respond within 24 hours.
+      </p>
+    </Container>
+
+    <Container size="prose">
+      <div class="ark-card p-8 sm:p-10">
+        <!-- TODO: Replace YOUR_FORM_ID with real Formspree/Cloudflare Worker endpoint -->
+        <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST" class="space-y-6">
+          <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+            <Input
+              label="First Name"
+              name="first_name"
+              type="text"
+              required
+              autocomplete="given-name"
+            />
+            <Input label="Last Name" name="last_name" type="text" autocomplete="family-name" />
+          </div>
+
+          <Input
+            label="Email"
+            name="email"
+            type="email"
+            required
+            autocomplete="email"
+            placeholder="you@company.com"
+          />
+          <Input
+            label="Current Website (Optional)"
+            name="website"
+            type="url"
+            autocomplete="url"
+            placeholder="https://..."
+          />
+          <Input
+            label="How can we help?"
+            name="message"
+            type="textarea"
+            required
+            placeholder="Tell us about your project..."
+          />
+
+          <Button variant="primary" class="w-full">
+            Send Message
+          </Button>
+        </form>
+
+        <div class="mt-8 pt-6 border-t border-white/[0.08] text-center">
+          <p class="text-sm text-zinc-500">
+            Prefer to schedule a call?
+            <a
+              href={config.contact.calComLink}
+              class="font-semibold text-ark-accent hover:text-ark-accent-hover transition-colors"
+            >
+              Book via Cal.com →
+            </a>
+          </p>
+        </div>
+      </div>
+    </Container>
+  </Section>
+</BaseLayout>

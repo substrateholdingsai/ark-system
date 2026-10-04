@@ -1,0 +1,39 @@
+---
+import '../styles/global.css';
+import Seo from '../components/layout/Seo.astro';
+import Header from '../components/layout/Header.astro';
+import Footer from '../components/layout/Footer.astro';
+import { config, pageTitle } from '../data/config';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+}
+
+const { title = pageTitle, description = config.site.description, image } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+    />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="sitemap" href="/sitemap.xml" />
+    <Seo title={title} description={description} image={image} />
+  </head>
+  <body>
+    <Header />
+    <main>
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

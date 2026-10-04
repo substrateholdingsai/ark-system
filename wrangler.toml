@@ -1,0 +1,46 @@
+name = "ark-system"
+compatibility_date = "2026-01-01"
+pages_build_output_dir = "dist"
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Cloudflare Pages
+#
+# This project is a pure static build: astro.config.mjs sets output: 'static'
+# and the deploy script runs `wrangler pages deploy dist`.
+#
+# Auto-deploy: connect this repo in the Cloudflare Dashboard
+#   Workers & Pages → Create → Pages → Connect to Git
+#   Build command:      npm run build
+#   Build output dir:   dist
+#
+# Manual deploy:
+#   npm run build && npm run deploy
+#
+# Preview deploy for a branch:
+#   npx wrangler pages deploy dist --branch=client-acme
+#
+# ─────────────────────────────────────────────────────────────────────────────
+#
+# SECRETS — never write them in this file.
+#
+#   Local:   copy .dev.vars.example → .dev.vars   (gitignored)
+#   Remote:  wrangler pages secret put STRIPE_SECRET_KEY
+#
+# ─────────────────────────────────────────────────────────────────────────────
+#
+# FLAGS
+#
+# nodejs_compat is NOT currently needed — the site ships no server code. If you
+# switch astro.config.mjs to output: 'server' or add src/pages/api/*.ts, add it
+# here or that code will throw at runtime:
+#
+#   compatibility_flags = ["nodejs_compat"]
+#
+# ─────────────────────────────────────────────────────────────────────────────
+#
+# [vars]
+# Only non-secret values. Set these in the Dashboard under Pages → Settings →
+# Environment variables instead of committing them.
+#
+# [env.preview.vars]
+# Same, scoped to preview branch deploys.

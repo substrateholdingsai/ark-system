@@ -1,0 +1,37 @@
+---
+interface Props {
+  variant?: 'primary' | 'secondary';
+  href?: string;
+  target?: string;
+  rel?: string;
+  type?: 'button' | 'submit';
+  disabled?: boolean;
+  class?: string;
+  [key: string]: unknown;
+}
+
+const {
+  variant = 'primary',
+  href,
+  target,
+  rel,
+  type = 'button',
+  disabled = false,
+  class: className = '',
+  ...restProps
+} = Astro.props;
+
+const baseClass = variant === 'primary' ? 'ark-btn-primary' : 'ark-btn-secondary';
+const disabledClass = 'disabled:opacity-50 disabled:pointer-events-none';
+const classes = [baseClass, disabled && disabledClass, className];
+---
+
+{href ? (
+  <a href={href} target={target} rel={rel} class:list={classes} {...restProps}>
+    <slot />
+  </a>
+) : (
+  <button type={type} disabled={disabled} class:list={classes} {...restProps}>
+    <slot />
+  </button>
+)}

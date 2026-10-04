@@ -1,0 +1,46 @@
+{
+  "name": "ark-system",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "Frictionless, edge-native web infrastructure. Build once, deploy everywhere.",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro check && astro build",
+    "check": "astro check",
+    "preview": "astro preview",
+    "deploy": "wrangler pages deploy dist",
+    "astro": "astro",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "lighthouse": "lhci autorun",
+    "verify": "npm run format:check && npm run lint && npm run build"
+  },
+  "dependencies": {
+    "@astrojs/cloudflare": "^12.0.0",
+    "@astrojs/tailwind": "^5.1.0",
+    "astro": "^5.0.0",
+    "sharp": "^0.33.0",
+    "tailwindcss": "^3.4.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.0",
+    "@eslint/js": "^10.0.1",
+    "@lhci/cli": "^0.15.1",
+    "@types/node": "^22.0.0",
+    "eslint": "^10.12.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-astro": "^1.7.0",
+    "globals": "^17.13.0",
+    "prettier": "^3.9.9",
+    "prettier-plugin-astro": "^1.1.0",
+    "typescript": "^5.6.0",
+    "typescript-eslint": "^8.71.0",
+    "wrangler": "^3.80.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

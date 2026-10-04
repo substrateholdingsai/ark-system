@@ -1,0 +1,35 @@
+---
+import Nav from './Nav.astro';
+import Button from '../ui/Button.astro';
+import { config } from '@/data/config';
+
+const navLinks = [
+  { label: 'Portfolio', href: '/portfolio' },
+  { label: 'Pricing', href: '/pricing' },
+  { label: 'Contact', href: '/contact' },
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<header class="sticky top-0 z-50 w-full border-b border-white/[0.08] bg-base/80 backdrop-blur-lg">
+  <div class="mx-auto flex h-16 max-w-ark-container items-center justify-between px-6 sm:px-8">
+    <!-- Logo -->
+    <a
+      href="/"
+      class="flex items-center gap-2 text-xl font-display font-bold tracking-tight text-white transition-opacity hover:opacity-80"
+    >
+      <span class="text-ark-accent">◆</span> {config.brand.name}
+    </a>
+
+    <!-- Navigation (Desktop + Mobile) -->
+    <Nav links={navLinks} currentPath={currentPath} />
+
+    <!-- CTA Button -->
+    <div class="hidden sm:block">
+      <Button variant="primary" href={config.contact.calComLink}>
+        Book a Call
+      </Button>
+    </div>
+  </div>
+</header>

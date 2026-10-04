@@ -1,0 +1,23 @@
+# Ark System — Cloudflare Pages redirects
+# Docs: https://developers.cloudflare.com/pages/configuration/redirects/
+# Deployed verbatim from public/_redirects to dist/_redirects.
+
+# ── Canonical host ──────────────────────────────────────────────────────────
+# One hostname, one URL. Every variant below 301s to https://ark.systems.
+# When you clone this system for a client, replace every occurrence.
+#
+# NOTE: These must agree with `site` in astro.config.mjs, `site.url` in
+# src/data/config.ts, and PUBLIC_SITE_URL in .env — see docs/map.md §8.
+
+http://ark.systems/*      https://ark.systems/:splat   301
+https://ark.systems/*     https://ark.systems/:splat   301
+http://www.ark.systems/*  https://ark.systems/:splat   301
+https://www.ark.systems/* https://ark.systems/:splat   301
+
+# ── Trailing slash normalisation ───────────────────────────────────────────
+# build.format is 'directory' and trailingSlash is 'ignore', so dist holds
+# /pricing/index.html. Pages serves /pricing directly; this only guards against
+# hand-typed /pricing/ links.
+/pricing/   /pricing    301
+/portfolio/ /portfolio  301
+/contact/   /contact    301

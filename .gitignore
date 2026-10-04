@@ -1,0 +1,234 @@
+# ==========================================================================
+# Ark System — .gitignore
+# Stack: Astro 5 · TypeScript · Tailwind 3 · Cloudflare Pages/Workers
+# ==========================================================================
+
+# --------------------------------------------------------------------------
+# Dependencies
+# --------------------------------------------------------------------------
+node_modules/
+jspm_packages/
+web_modules/
+
+# pnpm
+.pnpm-store/
+.pnpm-debug.log*
+
+# Yarn (Berry / PnP)
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+.pnp.*
+
+# Bun
+bun.lockb
+bun.lock
+bunx-*
+bun-error.log*
+
+# --------------------------------------------------------------------------
+# Build output / framework caches
+# --------------------------------------------------------------------------
+# Astro
+dist/
+.astro/
+.output/
+.vercel/
+.netlify/
+.nuxt/
+.svelte-kit/
+.next/
+out/
+build/
+storybook-static/
+
+# Astro content / integrations
+.astro/collections/
+src/content/generated/
+
+# Compiler / bundler caches
+.cache/
+.parcel-cache/
+.turbo/
+.turbo-cache/
+.eslintcache
+.stylelintcache
+.swc/
+.vite/
+*.tsbuildinfo
+
+# --------------------------------------------------------------------------
+# Environment / secrets  (NEVER commit these)
+# --------------------------------------------------------------------------
+.env
+.env.*
+!.env.example
+!.env.sample
+!.env.template
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+*.jks
+secrets.json
+secrets.yaml
+secrets.yml
+credentials.json
+service-account*.json
+.netrc
+.npmrc.local
+.pypirc
+
+# --------------------------------------------------------------------------
+# Cloudflare (Pages / Workers / Wrangler)
+# --------------------------------------------------------------------------
+.wrangler/
+/worker/
+worker-configuration.d.ts
+workers-sdk/
+.dev.vars
+.dev.vars.*
+!.dev.vars.example
+
+# --------------------------------------------------------------------------
+# Test / coverage / e2e output
+# --------------------------------------------------------------------------
+coverage/
+.nyc_output/
+*.lcov
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+cypress/screenshots/
+cypress/videos/
+cypress/downloads/
+.vitest/
+.jest-cache/
+
+# Lighthouse CI
+.lighthouseci/
+
+# --------------------------------------------------------------------------
+# Logs & debugging
+# --------------------------------------------------------------------------
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+report.xml
+report.html
+*.pid
+*.pid.lock
+*.seed
+
+# --------------------------------------------------------------------------
+# Runtime data & caches (session stores, DBs, queues)
+# --------------------------------------------------------------------------
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+*.sqlite3-journal
+*.rdb
+dump.rdb
+appendonly.aof
+sessions/
+.session/
+
+# --------------------------------------------------------------------------
+# Generated artifacts
+# --------------------------------------------------------------------------
+*.tsbuildinfo
+
+# --------------------------------------------------------------------------
+# OS files
+# --------------------------------------------------------------------------
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Thumbs.db:encryptable
+desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# --------------------------------------------------------------------------
+# Editor / IDE
+# --------------------------------------------------------------------------
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/settings.example.json
+!.vscode/launch.example.json
+!.vscode/tasks.example.json
+.idea/
+*.code-workspace
+*.code-workspace.user
+.fleet/
+.zed/
+# JetBrains
+*.iml
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/**/usage.statistics.xml
+.idea/**/dictionaries
+.idea/**/shelf
+
+# Sublime Text
+*.sublime-workspace
+*.sublime-project
+
+# Vim / Emacs
+*.swp
+*.swo
+*~
+\#*\#
+.\#*
+.\#*\#
+
+# --------------------------------------------------------------------------
+# OS / package manager noise
+# --------------------------------------------------------------------------
+*.tgz
+*.tar.gz
+*.zip
+*.crdownload
+*.part
+package-lock.json.bak
+yarn.lock.bak
+pnpm-lock.yaml.bak
+
+# --------------------------------------------------------------------------
+# Project-specific build artifacts
+# --------------------------------------------------------------------------
+# Astro preview / inspection output
+.astro-preview/
+# Design / screenshot output (repo root only — test snapshots stay tracked)
+/screenshots/
+/snapshots/
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.orig
+/tmp/
+/temp/
+
+# --------------------------------------------------------------------------
+# Documentation build output
+# --------------------------------------------------------------------------
+docs/.vitepress/cache/
+docs/.vitepress/dist/
+docs/public/.vitepress/
+*.pdf.bak

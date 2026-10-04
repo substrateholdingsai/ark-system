@@ -1,0 +1,138 @@
+---
+interface Props {
+  label?: string;
+  name: string;
+  type?: 'text' | 'email' | 'password' | 'number' | 'textarea' | 'select' | 'url';
+  value?: string;
+  placeholder?: string;
+  error?: string;
+  hint?: string;
+  required?: boolean;
+  autocomplete?: string;
+  options?: { label: string; value: string }[];
+  class?: string;
+  [key: string]: unknown;
+}
+
+const {
+  label,
+  name,
+  type = 'text',
+  value,
+  placeholder,
+  error,
+  hint,
+  required = false,
+  autocomplete,
+  options = [],
+  class: className = '',
+  ...restProps
+} = Astro.props;
+
+const id = `field-${name}`;
+const isTextarea = type === 'textarea';
+const isSelect = type === 'select';
+const hasError = Boolean(error);
+const hasValue = value !== undefined;
+
+const errorId = `${id}-error`;
+const hintId = `${id}-hint`;
+const describedBy =
+  [hasError ? errorId : null, hint ? hintId : null].filter(Boolean).join(' ') || undefined;
+
+// Wire semantic tokens based on state
+const stateClass = hasError
+  ? 'ark-input-error'
+  : 'focus:border-ark-accent/50 focus:ring-ark-accent/30';
+
+const inputClasses = ['ark-input', stateClass, className];
+---
+
+<div class="space-y-2">
+  {label && (
+    <label for={id} class="block text-[13px] font-medium text-zinc-300">
+      {label}
+      {required && (
+        <span class="text-error ml-1" aria-hidden="true">
+          *
+        </span>
+      )}
+    </label>
+  )}
+
+  {isTextarea && hasValue && <textarea
+    id={id}
+    name={name}
+    placeholder={placeholder}
+    required={required}
+    rows={4}
+    aria-invalid={hasError ? 'true' : undefined}
+    aria-describedby={describedBy}
+    class:list={inputClasses}
+    {...restProps}
+  >{value}</textarea>}
+
+  {isTextarea && !hasValue && <textarea
+    id={id}
+    name={name}
+    placeholder={placeholder}
+    required={required}
+    rows={4}
+    aria-invalid={hasError ? 'true' : undefined}
+    aria-describedby={describedBy}
+    class:list={inputClasses}
+    {...restProps}
+  >{Astro.slots.render('default')}</textarea>}
+
+  {isSelect && (
+    <select
+      id={id}
+      name={name}
+      required={required}
+      aria-invalid={hasError ? 'true' : undefined}
+      aria-describedby={describedBy}
+      class:list={inputClasses}
+      {...restProps}
+    >
+      {placeholder && (
+        <option value="" disabled selected={!hasValue}>
+          {placeholder}
+        </option>
+      )}
+      {options.map((opt) => (
+        <option value={opt.value} selected={opt.value === value}>
+          {opt.label}
+        </option>
+      ))}
+      <slot />
+    </select>
+  )}
+
+  {!isTextarea && !isSelect && (
+    <input
+      id={id}
+      name={name}
+      type={type}
+      value={value}
+      placeholder={placeholder}
+      required={required}
+      autocomplete={autocomplete}
+      aria-invalid={hasError ? 'true' : undefined}
+      aria-describedby={describedBy}
+      class:list={inputClasses}
+      {...restProps}
+    />
+  )}
+
+  {hasError && (
+    <p id={errorId} role="alert" class="text-[12px] text-error">
+      {error}
+    </p>
+  )}
+
+  {hint && (
+    <p id={hintId} class="text-[12px] text-ark-muted">
+      {hint}
+    </p>
+  )}
+</div>

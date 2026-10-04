@@ -1,0 +1,80 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    name: Format, Lint, Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: npm
+
+      - run: npm ci
+
+      - name: Format check
+        run: npm run format:check
+
+      - name: Lint
+        run: npm run lint
+
+      # `npm run build` runs `astro check` first — a type error fails the build.
+      - name: Build
+        run: npm run build
+
+      - name: Verify Pages files landed in dist
+        run: |
+          test -f dist/_headers
+          test -f dist/_redirects
+          test -f dist/index.html
+
+  lighthouse:
+    name: Lighthouse >= 95
+    runs-on: ubuntu-latest
+    needs: quality
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: npm
+
+      - run: npm ci
+      - run: npm run build
+
+      # Chrome is preinstalled on ubuntu-latest, so lighthouserc.json's
+      # staticDistDir serves ./dist without needing a public URL.
+      - name: Lighthouse CI
+        uses: treosh/lighthouse-ci-action@v12
+        with:
+          configPath: './lighthouserc.json'
+          uploadArtifacts: false
+
+      - name: Archive Lighthouse report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-report
+          path: ./.lighthouseci
+          retention-days: 14
+
+  # Deployment is handled by the Cloudflare Pages Git integration
+  # (Workers & Pages -> Settings -> Builds), which deploys on every push to
+  # main using `npm run build` and `dist`. Do not add a wrangler deploy step
+  # here or every push would publish twice.

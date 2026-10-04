@@ -1,0 +1,38 @@
+# Ark System — Cloudflare Pages headers
+# Docs: https://developers.cloudflare.com/pages/configuration/headers/
+# Deployed verbatim from public/_headers to dist/_headers.
+
+# ── Content-Security-Policy ────────────────────────────────────────────────
+# 'unsafe-inline' in script-src is required because src/components/sections/
+# CalEmbed.astro injects its loader with <script is:inline>. To remove it,
+# convert that script to a bundled Astro <script> (drop is:inline) and add a
+# per-response hash or move the loader to a same-origin file.
+#
+# frame-src covers the Cal.com booking iframe only; it does not allow us to be
+# framed (see frame-ancestors).
+/*
+  Content-Security-Policy: default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self' https://formspree.io; img-src 'self' data: https:; font-src 'self' https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self' 'unsafe-inline' https://assets.cal.com https://plausible.io; connect-src 'self' https://plausible.io https://formspree.io https://*.cal.com; manifest-src 'self'
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), interest-cohort=()
+  Cross-Origin-Opener-Policy: same-origin
+  X-Frame-Options: DENY
+
+# ── Transport security ─────────────────────────────────────────────────────
+/*
+  Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+
+# ── Caching ─────────────────────────────────────────────────────────────────
+# /_astro/* filenames are content-hashed by Vite → safe to cache forever.
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# /assets/* filenames are NOT hashed (e.g. /assets/portfolio/labianca.jpg), so
+# they must be revalidated or updated art would never reach visitors.
+/assets/*
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+  X-Content-Type-Options: nosniff
+
+# HTML must revalidate so a redeploy is picked up immediately.
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate
