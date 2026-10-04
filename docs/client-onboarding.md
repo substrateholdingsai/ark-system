@@ -2,7 +2,7 @@
 
 Guía rápida para preparar una copia de Ark System para una nueva marca. La mayoría del contenido y los enlaces se cambian en `src/data/config.ts`; los colores se definen en `src/styles/global.css`. No edites componentes para cambiar contenido de marca salvo que el diseño requiera una estructura nueva.
 
-El enfoque es *config-driven*: empieza por la configuración y los tokens CSS y modifica componentes solo cuando el cliente necesite una estructura o un recurso de marca que el template no admita.
+El enfoque es _config-driven_: empieza por la configuración y los tokens CSS y modifica componentes solo cuando el cliente necesite una estructura o un recurso de marca que el template no admita.
 
 > **Estado actual del template:** la paleta global es oscura y los acentos de tema `neon` y `amber` están definidos. El layout principal todavía no establece `data-theme`, así que para aplicar otra paleta a todo el sitio cambia los tokens de `:root`. La página `/brand` permite comparar `neon` y `amber` en una misma vista, pero no se incluye en la navegación.
 >

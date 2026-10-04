@@ -38,7 +38,9 @@ import { config } from '@/data/config';
                 {tier.currency === 'USD' ? '$' : ''}
                 {tier.price}
               </span>
-              {(tier as any).period && <span class="text-sm text-zinc-400">/{(tier as any).period}</span>}
+              {(tier as any).period && (
+                <span class="text-sm text-zinc-400">/{(tier as any).period}</span>
+              )}
             </div>
 
             <ul class="mt-8 space-y-4 flex-1">
