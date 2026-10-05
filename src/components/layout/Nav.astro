@@ -1,8 +1,5 @@
 ---
-interface NavLink {
-  label: string;
-  href: string;
-}
+import type { NavLink } from '@/data/config';
 
 interface Props {
   links: NavLink[];
@@ -15,7 +12,8 @@ const { links, currentPath = '/', class: className = '' } = Astro.props;
 // `build.format: 'directory'` means Astro.url.pathname arrives as "/portfolio/",
 // so trailing slashes must be normalized before comparing against hrefs.
 const normalize = (path: string) => path.replace(/\/+$/, '') || '/';
-const isActive = (href: string) => normalize(currentPath) === normalize(href);
+const isActive = (href: string) =>
+  !href.includes('#') && normalize(currentPath) === normalize(href);
 ---
 
 <nav class={`flex items-center gap-2 ${className}`} aria-label="Main navigation" data-ark-nav>
@@ -24,6 +22,8 @@ const isActive = (href: string) => normalize(currentPath) === normalize(href);
       <li>
         <a
           href={link.href}
+          target={link.external ? '_blank' : undefined}
+          rel={link.external ? 'noopener noreferrer' : undefined}
           class:list={[
             'text-sm font-medium tracking-wide text-zinc-400 transition-colors duration-200 ease-ark hover:text-white',
             isActive(link.href) && 'text-white',
@@ -83,6 +83,8 @@ const isActive = (href: string) => normalize(currentPath) === normalize(href);
         <li>
           <a
             href={link.href}
+            target={link.external ? '_blank' : undefined}
+            rel={link.external ? 'noopener noreferrer' : undefined}
             data-nav-link
             class:list={[
               'font-display text-2xl font-semibold tracking-tight text-white transition-colors duration-200 ease-ark hover:text-ark-accent',

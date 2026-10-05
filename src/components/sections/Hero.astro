@@ -5,7 +5,7 @@ import Container from '../layout/Container.astro';
 import { config } from '@/data/config';
 ---
 
-<section class="relative overflow-hidden bg-void py-24 sm:py-32 lg:py-40">
+<section id="que-es" class="relative overflow-hidden bg-void py-24 sm:py-32 lg:py-40">
   <!-- Ambient Glow & Grid Background -->
   <div class="absolute inset-0 -z-10">
     <div class="ark-glow absolute left-1/2 top-0 -translate-x-1/2 h-[500px] w-[800px] rounded-full opacity-50"></div>
@@ -13,10 +13,10 @@ import { config } from '@/data/config';
   </div>
 
   <Container class="text-center">
-    <Badge class="mb-6">{config.brand.name}</Badge>
+    <Badge class="mb-6">{config.brand.displayName}</Badge>
 
     <h1 class="mx-auto max-w-4xl text-4xl font-bold tracking-tight text-white sm:text-6xl lg:text-7xl animate-fade-up">
-      {config.brand.tagline}
+      {config.hero.headline}
     </h1>
 
     <p
@@ -30,13 +30,33 @@ import { config } from '@/data/config';
       class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-up"
       style="animation-delay: 200ms;"
     >
-      <Button variant="primary" href={config.hero.primaryCta.href}>
+      <Button
+        variant={
+          config.hero.primaryCta.variant === 'ghost' ? 'ghost' : config.hero.primaryCta.variant
+        }
+        href={config.hero.primaryCta.href}
+        target={config.hero.primaryCta.external ? '_blank' : undefined}
+        rel={config.hero.primaryCta.external ? 'noopener noreferrer' : undefined}
+      >
         {config.hero.primaryCta.label}
       </Button>
-      <Button variant="secondary" href={config.hero.secondaryCta.href}>
-        {config.hero.secondaryCta.label}
-      </Button>
+      {config.hero.secondaryCta && (
+        <Button
+          variant={
+            config.hero.secondaryCta.variant === 'ghost'
+              ? 'ghost'
+              : config.hero.secondaryCta.variant
+          }
+          href={config.hero.secondaryCta.href}
+          target={config.hero.secondaryCta.external ? '_blank' : undefined}
+          rel={config.hero.secondaryCta.external ? 'noopener noreferrer' : undefined}
+        >
+          {config.hero.secondaryCta.label}
+        </Button>
+      )}
     </div>
+
+    {config.hero.microcopy && <p class="mt-5 text-sm text-zinc-500">{config.hero.microcopy}</p>}
 
     <dl
       class="mx-auto mt-16 grid max-w-3xl grid-cols-3 gap-6 animate-fade-up"

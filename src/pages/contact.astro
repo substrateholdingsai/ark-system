@@ -22,7 +22,7 @@ import { config } from '@/data/config';
     <Container size="prose">
       <div class="ark-card p-8 sm:p-10">
         <!-- TODO: Replace YOUR_FORM_ID with real Formspree/Cloudflare Worker endpoint -->
-        <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST" class="space-y-6">
+        <form action={config.contact.formEndpoint} method="POST" class="space-y-6">
           <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
             <Input
               label="First Name"
@@ -57,16 +57,26 @@ import { config } from '@/data/config';
             placeholder="Tell us about your project..."
           />
 
-          <Button variant="primary" class="w-full">
-            Send Message
+          <Button
+            variant="primary"
+            type="submit"
+            disabled={!config.contact.formEndpoint}
+            class="w-full"
+          >
+            {config.contact.formEndpoint ? 'Enviar mensaje' : 'Formulario no configurado'}
           </Button>
+          {!config.contact.formEndpoint && (
+            <p class="text-center text-xs text-amber-400">
+              El formulario estará disponible cuando se configure el endpoint de contacto.
+            </p>
+          )}
         </form>
 
         <div class="mt-8 pt-6 border-t border-white/[0.08] text-center">
           <p class="text-sm text-zinc-500">
             Prefer to schedule a call?
             <a
-              href={config.contact.calComLink}
+              href={config.contact.bookingUrl}
               class="font-semibold text-ark-accent hover:text-ark-accent-hover transition-colors"
             >
               Book via Cal.com →

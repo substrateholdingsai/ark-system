@@ -5,13 +5,13 @@
 
 ## 1. Executive Summary
 
-Ark System is a static marketing / conversion-site template for an edge-native web infrastructure brand. The project is built with Astro, Tailwind CSS, TypeScript, and Cloudflare Pages. The repo contains a functioning site scaffold, a content-driven configuration layer, and CI/Lighthouse checks. The production build currently passes locally, but the template is not client-ready until placeholder content and external service destinations are configured.
+Ark System is a static marketing / conversion-site template for an edge-native web infrastructure brand. The project is built with Astro, Tailwind CSS, TypeScript, and Cloudflare Pages. The repo contains a functioning site scaffold, a typed config contract with Ark as Client 0, and CI/Lighthouse checks. The production build passes locally, but the template is not client-ready until placeholder content and external service destinations are configured.
 
 Status at a glance:
 
 - Build status: green locally (`npm run build` completed successfully on 2026-10-04)
 - Core platform: Astro 5 + Tailwind 3 + Cloudflare Pages
-- Content model: implemented and centralized in `src/data/config.ts`
+- Content model: typed reusable contract and Ark Client 0 instance in `src/data/config.ts`
 - Route architecture: implemented for 5 content pages (including `/brand`) and 404
 - Deployment config: present, but adapter/output strategy is not fully intentional
 - Placeholder content: still present, including contact/booking destinations, form endpoint, and sample pricing/portfolio content
@@ -51,7 +51,7 @@ Current implementation details:
 - CI performs `npm run build` and runs Lighthouse checks against `./dist`
 - The project has a generated `dist/` directory checked in from the latest local build attempt
 
-Important caveat: the repo currently reports a build failure during CSS processing, so the deployment status is effectively “configured, but not green.”
+The local build currently passes. The Cloudflare adapter reports a non-blocking Sharp runtime compatibility warning; this does not establish remote CI or production deployment status.
 
 ## 4. Repository Structure
 
@@ -62,6 +62,7 @@ ark-system/
 │       └── ci.yml                     CI pipeline: format, lint, build, Lighthouse
 ├── docs/
 │   ├── assets.md
+│   ├── ark-brand-copy.md             Fuente de verdad narrativa de Ark (Cliente 0)
 │   ├── client-onboarding.md           Runbook para clonar y personalizar una marca
 │   ├── designsystem.md
 │   └── map.md                        This document
@@ -87,6 +88,7 @@ ark-system/
 │   │   │   └── Seo.astro
 │   │   ├── sections/
 │   │   │   ├── CalEmbed.astro
+│   │   │   ├── ConfiguredContent.astro  Config-driven problem, process, use-case, and cost sections
 │   │   │   ├── Hero.astro
 │   │   │   ├── PortfolioGrid.astro
 │   │   │   ├── PricingTable.astro
@@ -97,7 +99,7 @@ ark-system/
 │   │       ├── Card.astro
 │   │       └── Input.astro
 │   ├── data/
-│   │   └── config.ts                  Central content/config source
+│   │   └── config.ts                  Typed site contract and Ark Client 0 content
 │   ├── layouts/
 │   │   └── BaseLayout.astro
 │   ├── pages/

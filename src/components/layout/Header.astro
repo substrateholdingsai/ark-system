@@ -3,12 +3,6 @@ import Nav from './Nav.astro';
 import Button from '../ui/Button.astro';
 import { config } from '@/data/config';
 
-const navLinks = [
-  { label: 'Portfolio', href: '/portfolio' },
-  { label: 'Pricing', href: '/pricing' },
-  { label: 'Contact', href: '/contact' },
-];
-
 const currentPath = Astro.url.pathname;
 ---
 
@@ -19,16 +13,24 @@ const currentPath = Astro.url.pathname;
       href="/"
       class="flex items-center gap-2 text-xl font-display font-bold tracking-tight text-white transition-opacity hover:opacity-80"
     >
-      <span class="text-ark-accent">◆</span> {config.brand.name}
+      <img src={config.brand.logoSrc} alt="" class="h-8 w-8" />
+      <span>{config.brand.displayName}</span>
     </a>
 
     <!-- Navigation (Desktop + Mobile) -->
-    <Nav links={navLinks} currentPath={currentPath} />
+    <Nav links={config.nav} currentPath={currentPath} />
 
     <!-- CTA Button -->
     <div class="hidden sm:block">
-      <Button variant="primary" href={config.contact.calComLink}>
-        Book a Call
+      <Button
+        variant={
+          config.hero.primaryCta.variant === 'ghost' ? 'ghost' : config.hero.primaryCta.variant
+        }
+        href={config.hero.primaryCta.href}
+        target={config.hero.primaryCta.external ? '_blank' : undefined}
+        rel={config.hero.primaryCta.external ? 'noopener noreferrer' : undefined}
+      >
+        {config.hero.primaryCta.label}
       </Button>
     </div>
   </div>

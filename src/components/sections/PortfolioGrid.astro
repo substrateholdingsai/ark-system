@@ -33,11 +33,7 @@ import { config } from '@/data/config';
               <h3 class="text-xl font-semibold text-white group-hover:text-ark-accent transition-colors">
                 {project.name}
               </h3>
-              <p class="mt-2 text-sm text-zinc-400">
-                {(project as any).description ||
-                  (project as any).blurb ||
-                  'Edge-native static site with headless CMS integration and sub-second global load times.'}
-              </p>
+              <p class="mt-2 text-sm text-zinc-400">{project.description}</p>
               <div class="mt-4 flex items-center gap-2 text-sm font-medium text-ark-accent">
                 View Live Site
                 <svg

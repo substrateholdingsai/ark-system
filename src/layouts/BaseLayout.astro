@@ -11,11 +11,11 @@ interface Props {
   image?: string;
 }
 
-const { title = pageTitle, description = config.site.description, image } = Astro.props;
+const { title = pageTitle, description = config.hero.subheadline, image } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={config.locale} data-theme={config.theme.default}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -25,7 +25,7 @@ const { title = pageTitle, description = config.site.description, image } = Astr
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
     />
-    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" href={config.brand.faviconSrc} sizes="any" />
     <link rel="sitemap" href="/sitemap.xml" />
     <Seo title={title} description={description} image={image} />
   </head>
