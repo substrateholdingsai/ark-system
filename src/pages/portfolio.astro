@@ -1,53 +1,83 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import PortfolioGrid from '../components/sections/PortfolioGrid.astro';
 import Section from '../components/layout/Section.astro';
 import Container from '../components/layout/Container.astro';
-import Badge from '../components/ui/Badge.astro';
-import Button from '../components/ui/Button.astro';
-import { config } from '@/data/config';
+import TemozoniaApp from '../components/portfolio/TemozoniaApp.jsx';
 ---
 
-<BaseLayout title="Portfolio | Ark">
-  <!-- Hero Section -->
-  <Section variant="void" padding="lg">
-    <Container class="text-center">
-      <Badge class="mb-4">Our Work</Badge>
-      <h1 class="text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
-        Frictionless by design.
-      </h1>
-      <p class="mx-auto mt-6 max-w-2xl text-lg text-zinc-400">
-        See how the Ark engine adapts to different industries while maintaining 100/100 Lighthouse
-        performance and zero maintenance overhead.
-      </p>
-      <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
-        <Button variant="primary" href={config.contact.bookingUrl}>
-          Start Your Project
-        </Button>
-        <Button variant="secondary" href="/pricing">
-          View Pricing
-        </Button>
+<BaseLayout title="Portafolio | Ark System">
+  <Section id="portfolio" variant="void" padding="lg">
+    <Container>
+      <div class="mb-16 text-center">
+        <p class="mb-3 font-mono text-sm uppercase tracking-widest text-accent">
+          Tecnología que impulsa negocios reales
+        </p>
+        <h1 class="mb-6 text-4xl font-bold text-white sm:text-5xl">Casos de Éxito</h1>
+        <p class="mx-auto max-w-3xl text-lg leading-relaxed text-zinc-400">
+          Diseñamos experiencias rápidas y confiables con arquitectura edge-native: aplicaciones
+          serverless que escalan con la demanda, entregan contenido cerca de cada cliente y conectan
+          pagos modernos con los canales de venta que las personas ya usan.
+        </p>
       </div>
-    </Container>
-  </Section>
 
-  <!-- Portfolio Grid -->
-  <PortfolioGrid />
+      <div class="grid gap-12">
+        <article class="group relative mb-12 overflow-hidden rounded-2xl border border-border bg-surface">
+          <div class="p-8 md:p-12">
+            <div class="mb-8 flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
+              <div>
+                <span class="mb-2 block font-mono text-sm text-accent">
+                  CLIENTE 02 • E-COMMERCE EDGE
+                </span>
+                <h2 class="text-3xl font-bold text-white">Temozonia Carnes Ahumadas</h2>
+              </div>
+              <a
+                href="https://temozonia.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="font-mono text-sm text-zinc-500 transition-colors hover:text-white"
+              >
+                VISITAR SITIO REAL →
+              </a>
+            </div>
 
-  <!-- CTA Section -->
-  <Section variant="surface" padding="lg">
-    <Container class="text-center">
-      <h2 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">
-        Ready to build your Ark?
-      </h2>
-      <p class="mx-auto mt-4 max-w-2xl text-lg text-zinc-400">
-        From concept to edge-deployed in days, not months. No monthly fees, no platform lock-in, no
-        maintenance headaches.
-      </p>
-      <div class="mt-8">
-        <Button variant="primary" href={config.contact.bookingUrl}>
-          Book a Consultation
-        </Button>
+            <p class="mb-8 max-w-3xl leading-relaxed text-zinc-400">
+              Una tienda directa al consumidor que combina una experiencia de compra ágil con
+              checkout híbrido: BTCPay Server y Lightning Network para pagos digitales, más
+              WhatsApp Business para cerrar pedidos. Su infraestructura serverless en el edge está
+              preparada para responder a picos de tráfico sin mantener servidores dedicados.
+            </p>
+
+            <div class="overflow-hidden rounded-xl border border-border shadow-2xl">
+              <TemozoniaApp client:visible />
+            </div>
+
+            <div class="mt-6 flex flex-wrap gap-x-4 gap-y-2 font-mono text-xs text-zinc-500">
+              <span>⚡ Isla React con hidratación visible</span>
+              <span>🛒 Estado del carrito en cliente</span>
+              <span>💳 Checkout multicanal</span>
+            </div>
+          </div>
+        </article>
+
+        <article
+          class="rounded-2xl border border-border bg-surface p-8 opacity-70 transition-opacity hover:opacity-100 md:p-12"
+        >
+          <span class="mb-2 block font-mono text-sm text-accent">
+            CLIENTE 01 • EDUCACIÓN
+          </span>
+          <h2 class="mb-4 text-3xl font-bold text-white">Acepta Bitcoin</h2>
+          <p class="mb-6 text-zinc-400">
+            Portal educativo y directorio de comercios crypto-friendly en LatAm.
+          </p>
+          <a
+            href="https://www.aceptabitcoin.org"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="border-b border-white/30 pb-1 text-white transition-colors hover:border-white"
+          >
+            Ver caso de estudio
+          </a>
+        </article>
       </div>
     </Container>
   </Section>

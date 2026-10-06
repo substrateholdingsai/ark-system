@@ -3,6 +3,7 @@ import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'astro/config';
 import tailwind from '@astrojs/tailwind';
 import cloudflare from '@astrojs/cloudflare';
+import react from '@astrojs/react';
 
 /** @param {string} path */
 const src = (path) => fileURLToPath(new URL(path, import.meta.url));
@@ -23,6 +24,7 @@ export default defineConfig({
   }),
   // Tailwind integration
   integrations: [
+    react(),
     tailwind({
       applyBaseStyles: false, // We handle this in global.css
     }),
