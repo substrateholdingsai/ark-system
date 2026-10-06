@@ -10,7 +10,7 @@
   "kv_namespaces": [
     {
       "binding": "SESSION",
-      "id": "SESSION"
+      "id": "316c37d5fe864e4bab912a0dbbe6b00a"
     }
   ],
   "observability": { "enabled": true }

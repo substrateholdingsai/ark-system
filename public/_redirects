@@ -3,16 +3,14 @@
 # Deployed verbatim from public/_redirects to dist/_redirects.
 
 # ── Canonical host ──────────────────────────────────────────────────────────
-# One hostname, one URL. Every variant below 301s to https://ark.systems.
-# When you clone this system for a client, replace every occurrence.
+# Workers redirects require relative URLs only — absolute host redirects are
+# configured in the Cloudflare Dashboard (Rules → Redirects) instead.
+# When you clone this system for a client, update the Dashboard rule.
 #
 # NOTE: These must agree with `site` in astro.config.mjs, `site.url` in
 # src/data/config.ts, and PUBLIC_SITE_URL in .env — see docs/map.md §8.
 
-http://ark.systems/*      https://ark.systems/:splat   301
-https://ark.systems/*     https://ark.systems/:splat   301
-http://www.ark.systems/*  https://ark.systems/:splat   301
-https://www.ark.systems/* https://ark.systems/:splat   301
+# ── Trailing slash normalisation ────────────────────────────────────────────
 
 # ── Trailing slash normalisation ───────────────────────────────────────────
 # build.format is 'directory' and trailingSlash is 'ignore', so dist holds

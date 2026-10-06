@@ -326,7 +326,22 @@ dist/
 
 ```bash
 npm run build
-npm run deploy   # runs: wrangler pages deploy dist
+npm run deploy   # runs: wrangler deploy
 ```
 
-> Note: `npm run deploy` still uses `wrangler pages deploy dist`, but with `wrangler.jsonc` present Wrangler 4 will pick up the Worker config automatically. Update the script to `wrangler deploy` when ready to ship as a Worker.
+### 13.6 Live Status (2026-10-06)
+
+- **URL**: https://ark-system.substrateholdingsai.workers.dev
+- **Version ID**: `06349b85-3fe6-422e-a8da-eec7918862a3`
+- **Bindings**: `SESSION` KV namespace (`316c37d5fe864e4bab912a0dbbe6b00a`), `ASSETS`
+- **Worker startup time**: 29 ms
+- **Assets uploaded**: 18 files (886.46 KiB)
+
+### 13.7 Deployment Troubleshooting Log
+
+| Error | Fix |
+|---|---|
+| `CLOUDFLARE_API_TOKEN` required | Generate token at https://developers.cloudflare.com/api/tokens/ using the "Create API Token" preset |
+| `Uploading a Pages _worker.js directory as an asset` | Add `dist/.assetsignore` containing `_worker.js` |
+| `Invalid _redirects configuration: Only relative URLs are allowed` | Rewrite `public/_redirects` to use relative paths only; host canonicalisation moves to Dashboard Rules |
+| `KV namespace 'SESSION' is not valid` | Create namespace via API (`POST /accounts/<id>/storage/kv/namespaces` with `{"name":"SESSION","title":"SESSION"}`) and store its real `id` in `wrangler.jsonc` |
