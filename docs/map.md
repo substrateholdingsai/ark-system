@@ -1,27 +1,28 @@
 ﻿# Ark System — Project Map
 
-> Current status snapshot for the repo as of 2026-10-04.
+> Current status snapshot for the repo as of 2026-10-05.
 > This document reflects the actual implementation in the codebase today, not the original aspirational roadmap.
 
 ## 1. Executive Summary
 
-Ark System is a static marketing / conversion-site template for an edge-native web infrastructure brand. The project is built with Astro, Tailwind CSS, TypeScript, and Cloudflare Pages. The repo contains a functioning site scaffold, a typed config contract with Ark as Client 0, and CI/Lighthouse checks. The production build passes locally, but the template is not client-ready until placeholder content and external service destinations are configured.
+Ark System is a static marketing / conversion-site template for an edge-native web infrastructure brand. The project is built with Astro, Tailwind CSS, TypeScript, and Cloudflare Pages. The repo contains a functioning site scaffold, a typed config contract with Ark as Client 0, and CI/Lighthouse checks. The production build passes locally.
 
 Status at a glance:
 
-- Build status: green locally (`npm run build` completed successfully on 2026-10-04)
+- Build status: **green** locally (`npm run build` completed successfully on 2026-10-05)
 - Core platform: Astro 5 + Tailwind 3 + Cloudflare Pages
 - Content model: typed reusable contract and Ark Client 0 instance in `src/data/config.ts`
 - Route architecture: implemented for 5 content pages (including `/brand`) and 404
 - Deployment config: present, but adapter/output strategy is not fully intentional
 - Placeholder content: still present, including contact/booking destinations, form endpoint, and sample pricing/portfolio content
 - Onboarding documentation: available in `docs/client-onboarding.md`
-- Git baseline: commit `0f591d7` pushed to `origin/main`; working tree was clean at snapshot time
+- Git baseline: commit `0f591d7` pushed to `origin/main`; working tree has local changes on branch `feat/ark-config-v1`
 - CI: workflow is defined in `.github/workflows/ci.yml`; Lighthouse budget exists, but remote CI status is not recorded here
+- **Vector assets**: 10 SVG assets generated via `scripts/generate-assets.py` in `public/assets/vector/`
 
 ## 2. What the Project Is
 
-The repo is best described as a content-driven marketing site template rather than a general-purpose application backend. It is meant to sell an “Ark” brand as a web infrastructure package and provide a reusable reference implementation for future client brands.
+The repo is best described as a content-driven marketing site template rather than a general-purpose application backend. It is meant to sell an "Ark" brand as a web infrastructure package and provide a reusable reference implementation for future client brands.
 
 The guiding design decisions in code are:
 
@@ -49,7 +50,7 @@ Current implementation details:
 - Cloudflare adapter is enabled in `astro.config.mjs`
 - `wrangler.toml` is present and the project is configured for Cloudflare Pages deployment
 - CI performs `npm run build` and runs Lighthouse checks against `./dist`
-- The project has a generated `dist/` directory checked in from the latest local build attempt
+- The project has a generated `dist/` directory from the latest local build attempt
 
 The local build currently passes. The Cloudflare adapter reports a non-blocking Sharp runtime compatibility warning; this does not establish remote CI or production deployment status.
 
@@ -75,8 +76,21 @@ ark-system/
 │   └── assets/
 │       ├── ark-logo.svg
 │       ├── og-default.png
+│       ├── vector/                   NEW: Generated vector assets
+│       │   ├── logo-mark.svg
+│       │   ├── favicon.svg
+│       │   ├── grid-accent.svg
+│       │   ├── grid-gold.svg
+│       │   ├── glow-accent.svg
+│       │   ├── glow-gold.svg
+│       │   ├── glow-success.svg
+│       │   ├── portfolio-placeholder-1.svg
+│       │   ├── portfolio-placeholder-2.svg
+│       │   └── portfolio-placeholder-3.svg
 │       └── portfolio/
 │           └── labianca.jpg
+├── scripts/                           NEW: Asset generation script
+│   └── generate-assets.py
 ├── src/
 │   ├── components/
 │   │   ├── layout/
@@ -107,7 +121,8 @@ ark-system/
 │   │   ├── contact.astro
 │   │   ├── index.astro
 │   │   ├── portfolio.astro
-│   │   └── pricing.astro
+│   │   ├── pricing.astro
+│   │   └── brand.astro
 │   ├── styles/
 │   │   └── global.css                 Core theme tokens and base component styles
 │   ├── utils/
@@ -141,6 +156,7 @@ The site includes the following implemented pages:
 - `/pricing` — pricing page
 - `/contact` — contact form + Cal.com embed
 - `/404` — branded not-found view
+- `/brand` — brand system preview page (internal)
 
 The route model is file-based and follows Astro conventions.
 
@@ -183,6 +199,11 @@ This is the main architectural strength of the repo and is the closest thing to 
 - Config-driven landing page sections
 - Cloudflare Pages deployment configuration
 - CI workflow and Lighthouse budget configuration
+- **Vector asset generation script (`scripts/generate-assets.py`)**
+- **10 SVG brand assets (logo, favicon, glows, grids, portfolio placeholders)**
+- **Hero section uses vector glow/grid backgrounds**
+- **Portfolio grid uses vector placeholders with hover animations**
+- **BaseLayout uses proper SVG favicon with type attribute**
 
 ### 8.2 Present but incomplete / placeholder-driven
 
@@ -205,7 +226,7 @@ This is the main architectural strength of the repo and is the closest thing to 
 
 ### Current verification result
 
-A local `npm run build` completed successfully on 2026-10-04:
+A local `npm run build` completed successfully on 2026-10-05:
 
 - `astro check`: 0 errors, 0 warnings, 0 hints
 - `astro build`: completed and prerendered the site's routes
@@ -223,14 +244,14 @@ This confirms the current source builds locally; it does not verify deployed beh
 
 1. Client-facing placeholders remain and must be replaced before launch.
 2. Static content is content-rich but not yet client-ready for real production use.
-3. Deployment strategy is configured but not cleanly aligned with the project’s actual static architecture.
+3. Deployment strategy is configured but not cleanly aligned with the project's actual static architecture.
 4. The design system is partially tokenized; hardcoded text/border colors and the logo/header integration may require client-specific changes.
 
 ## 11. Recommended Next Priorities
 
 1. Replace placeholder CTA, booking, and form destinations with client-approved production values.
 2. Replace demo copy, pricing, statistics, and portfolio entries with approved client content.
-3. Complete the brand assets and check whether the header should render the client logo.
+3. **COMPLETED: Brand assets generated and integrated (logo, favicon, backgrounds, placeholders)**
 4. Confirm the Cloudflare Pages project, domain, sitemap, robots, and deployment strategy for the target site.
 5. Decide whether to retain the Cloudflare adapter and whether to generate the currently hand-maintained sitemap.
 6. Extend design tokens where needed and add integration/end-to-end coverage if the template's scope requires it.
@@ -238,3 +259,5 @@ This confirms the current source builds locally; it does not verify deployed beh
 ## 12. Bottom Line
 
 The repo is a structured, config-driven marketing-site template with reusable routes, components, and documented client-onboarding steps. Its local production build is green and a baseline commit is published on `main`. It is not yet production-ready for a particular client: placeholders, assets, external integrations, and deployment details still need to be supplied and verified.
+
+**NEW (2026-10-05)**: Vector asset pipeline is operational. The brand visual system now has 10 production-ready SVGs generated programmatically, integrated into Hero (glow/grid backgrounds), Portfolio (geometric placeholders), and Layout (favicon/logo). This eliminates the previous dependency on manual asset creation.

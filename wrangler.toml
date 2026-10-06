@@ -1,6 +1,9 @@
 name = "ark-system"
-compatibility_date = "2026-01-01"
-pages_build_output_dir = "dist"
+compatibility_date = "2025-07-18"
+pages_build_output_dir = "./dist"
+
+[vars]
+ENVIRONMENT = "production"
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Cloudflare Pages

@@ -227,8 +227,12 @@ export interface SiteConfig {
   contact: {
     email: string;
     whatsapp?: string;
+    facebook?: string;
     formEndpoint: string; // URL real o placeholder marcado
     bookingUrl: string; // Cal.com real o placeholder
+  };
+  repo: {
+    url: string;
   };
 }
 
@@ -242,9 +246,9 @@ export const config: SiteConfig = {
     displayName: 'ARK SYSTEMS_',
     legalName: 'Substrate Holdings LLC',
     tagline: '0 servidores. 0 humo.',
-    domain: 'arksystems.dev', // PENDIENTE: Confirmar dominio final
-    logoSrc: '/assets/ark-logo.svg',
-    faviconSrc: '/favicon.ico',
+    domain: 'arksystems.dev',
+    logoSrc: '/assets/vector/logo-mark.svg',
+    faviconSrc: '/assets/vector/favicon.svg',
     ogImageSrc: '/assets/og-default.png',
   },
 
@@ -273,7 +277,7 @@ export const config: SiteConfig = {
     ],
     primaryCta: {
       label: 'AGENDAR DEMO',
-      href: 'https://cal.com/your-ark-team/demo', // PENDIENTE: URL real
+      href: 'https://cal.com/pablo-cortes-wuzivu/15min',
       external: true,
       variant: 'primary',
     },
@@ -534,7 +538,7 @@ export const config: SiteConfig = {
         total36Months: '$8,964 USD en 36 meses, 100% deducible según estructura fiscal acordada.',
         cta: {
           label: 'Empezar Leasing →',
-          href: 'https://cal.com/your-ark-team/leasing', // PENDIENTE: URL real
+          href: 'https://cal.com/pablo-cortes-wuzivu/15min',
           external: true,
           variant: 'primary',
         },
@@ -606,7 +610,7 @@ export const config: SiteConfig = {
       'Es hora de rentar futuro, no comprar obsolescencia. Deja de pagar por un museo digital. Renta una web que trabaja, deduce, y nunca da vergüenza presentar.',
     primary: {
       label: 'Agendar demo 15 min ↗',
-      href: 'https://cal.com/your-ark-team/demo', // PENDIENTE: URL real
+      href: 'https://cal.com/pablo-cortes-wuzivu/15min',
       external: true,
       variant: 'primary',
     },
@@ -626,10 +630,14 @@ export const config: SiteConfig = {
   },
 
   contact: {
-    email: 'hola@arksystems.dev', // PENDIENTE: Email real
-    whatsapp: '', // PENDIENTE: Número real
-    formEndpoint: '', // PENDIENTE: Formspree ID o Function URL
-    bookingUrl: 'https://cal.com/your-ark-team/demo', // PENDIENTE: URL real
+    email: 'substrateholdingsai@gmail.com',
+    whatsapp: '+525657062511',
+    facebook: 'https://www.facebook.com/profile.php?id=61595271624798',
+    formEndpoint: '/api/contact',
+    bookingUrl: 'https://cal.com/pablo-cortes-wuzivu/15min',
+  },
+  repo: {
+    url: 'https://github.com/substrateholdingsai/ark-system',
   },
 } as const;
 
