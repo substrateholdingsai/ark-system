@@ -10,13 +10,12 @@ const src = (path) => fileURLToPath(new URL(path, import.meta.url));
 // https://astro.build/config
 export default defineConfig({
   site: 'https://ark.systems',
-  // Static output for maximum performance and $0 hosting
-  output: 'static',
-  trailingSlash: 'ignore',
+  // Server output for Cloudflare Workers deployment
+  output: 'server',
   build: {
-    format: 'directory',
+    format: 'file',
   },
-  // Cloudflare Pages adapter for edge deployment
+  // Cloudflare adapter (Pages mode generates _worker.js with output: 'server')
   adapter: cloudflare({
     platformProxy: {
       enabled: true,
