@@ -1,6 +1,6 @@
 ---
 interface Props {
-  variant?: 'primary' | 'secondary';
+  variant?: 'primary' | 'secondary' | 'ghost';
   href?: string;
   target?: string;
   rel?: string;
@@ -21,7 +21,12 @@ const {
   ...restProps
 } = Astro.props;
 
-const baseClass = variant === 'primary' ? 'ark-btn-primary' : 'ark-btn-secondary';
+const baseClass =
+  variant === 'primary'
+    ? 'ark-btn-primary'
+    : variant === 'ghost'
+      ? 'ark-btn-ghost'
+      : 'ark-btn-secondary';
 const disabledClass = 'disabled:opacity-50 disabled:pointer-events-none';
 const classes = [baseClass, disabled && disabledClass, className];
 ---

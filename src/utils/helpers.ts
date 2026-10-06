@@ -13,7 +13,7 @@ export function formatPrice(tier: { price: number; currency: string }): string {
 }
 
 /**
- * Builds a Cal.com booking URL from config.contact.calComLink, pre-filling
+ * Builds a Cal.com booking URL from config.contact.bookingUrl, pre-filling
  * any fields provided as params.
  */
 export function buildCalUrl(
@@ -26,7 +26,7 @@ export function buildCalUrl(
     extra?: Record<string, string>;
   } = {},
 ): string {
-  const url = new URL(config.contact.calComLink);
+  const url = new URL(config.contact.bookingUrl);
   if (params.name) url.searchParams.set('name', params.name);
   if (params.email) url.searchParams.set('email', params.email);
   if (params.tier) url.searchParams.set('category', params.tier);
