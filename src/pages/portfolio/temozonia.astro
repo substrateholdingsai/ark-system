@@ -1,0 +1,78 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Section from '../../components/layout/Section.astro';
+import Container from '../../components/layout/Container.astro';
+import TemozoniaApp from '../../components/portfolio/TemozoniaApp.jsx';
+---
+
+<BaseLayout title="Temozonia — Portfolio | Ark System">
+  <Section id="portfolio-temozonia" variant="void" padding="lg">
+    <Container>
+      <div class="mb-12 text-center">
+        <a
+          href="/portfolio"
+          class="inline-flex items-center gap-2 font-mono text-sm text-zinc-500 hover:text-white transition-colors"
+        >
+          ← Volver al Portfolio
+        </a>
+        <div class="mt-6">
+          <span class="mb-2 block font-mono text-sm text-accent">
+            CLIENTE 02 • E-COMMERCE EDGE
+          </span>
+          <h1 class="text-4xl font-bold text-white sm:text-5xl">Temozonia Carnes Ahumadas</h1>
+        </div>
+        <p class="mx-auto mt-4 max-w-3xl text-lg leading-relaxed text-zinc-400">
+          Una tienda directa al consumidor que combina una experiencia de compra ágil con
+          checkout híbrido: BTCPay Server y Lightning Network para pagos digitales, más
+          WhatsApp Business para cerrar pedidos. Su infraestructura serverless en el edge está
+          preparada para responder a picos de tráfico sin mantener servidores dedicados.
+        </p>
+      </div>
+
+      <div class="overflow-hidden rounded-xl border border-border shadow-2xl">
+        <TemozoniaApp client:visible />
+      </div>
+
+      <div class="mt-8 grid gap-6 md:grid-cols-3">
+        <div class="rounded-lg border border-border bg-surface/50 p-6">
+          <h3 class="mb-2 font-mono text-sm text-accent">STACK</h3>
+          <ul class="space-y-1 text-zinc-400">
+            <li>Astro 5 + React 19 (islas)</li>
+            <li>Cloudflare Workers (edge)</li>
+            <li>Tailwind CSS</li>
+            <li>BTCPay Server + Lightning</li>
+          </ul>
+        </div>
+        <div class="rounded-lg border border-border bg-surface/50 p-6">
+          <h3 class="mb-2 font-mono text-sm text-accent">CARACTERÍSTICAS</h3>
+          <ul class="space-y-1 text-zinc-400">
+            <li>Catálogo de productos interactivo</li>
+            <li>Carrito con estado local en cliente</li>
+            <li>Checkout WhatsApp + Lightning</li>
+            <li>Copia CLABE con un click</li>
+          </ul>
+        </div>
+        <div class="rounded-lg border border-border bg-surface/50 p-6">
+          <h3 class="mb-2 font-mono text-sm text-accent">MÉTRICAS</h3>
+          <ul class="space-y-1 text-zinc-400">
+            <li>Lighthouse 95+</li>
+            <li>TTFB < 100ms en edge</li>
+            <li>0 servidores gestionados</li>
+            <li>Deploy atómico en 12s</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="mt-12 text-center">
+        <a
+          href="https://temozonia.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-2 font-mono text-sm text-zinc-500 transition-colors hover:text-white"
+        >
+          Ver sitio en producción →
+        </a>
+      </div>
+    </Container>
+  </Section>
+</BaseLayout>
