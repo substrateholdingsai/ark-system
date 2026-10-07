@@ -264,6 +264,7 @@ export const config: SiteConfig = {
     { label: 'PARA QUÉ', href: '/#para-que' },
     { label: 'COSTOS', href: '/#costos' },
     { label: 'PRICING', href: '/#pricing' },
+    { label: 'PORTFOLIO', href: '/portfolio' },
   ],
 
   hero: {
