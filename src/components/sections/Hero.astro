@@ -1,83 +1,213 @@
 ---
 import Button from '../ui/Button.astro';
-import Badge from '../ui/Badge.astro';
 import Container from '../layout/Container.astro';
-import { config } from '@/data/config';
+import { config, demos } from '@/data/config';
+
+const headlineWords = config.hero.headline.trim().split(/\s+/);
+const headlineLead = headlineWords.slice(0, -2).join(' ');
+const headlineAccent = headlineWords.slice(-2).join(' ');
+const leasingPlan = config.pricing.plans.find((plan) => plan.id === 'leasing');
 ---
 
-<section id="que-es" class="relative overflow-hidden bg-void py-24 sm:py-32 lg:py-40">
-  <!-- Ambient Glow & Grid Background -->
-  <div class="absolute inset-0 -z-10">
+<section
+  id="que-es"
+  class="relative isolate overflow-hidden border-b border-white/[0.06] bg-void py-20 sm:py-28 lg:py-32"
+>
+  <div class="pointer-events-none absolute inset-0 -z-10 overflow-hidden" aria-hidden="true">
+    <div class="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.035)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.035)_1px,transparent_1px)] bg-[size:64px_64px] [mask-image:radial-gradient(ellipse_80%_55%_at_50%_0%,#000_45%,transparent_100%)]"></div>
     <img
       src="/assets/vector/glow-accent.svg"
       alt=""
-      class="absolute left-1/2 top-0 -translate-x-1/2 h-[500px] w-[800px] opacity-50 pointer-events-none"
-      aria-hidden="true"
+      class="absolute left-1/2 top-[-12rem] w-[min(900px,120vw)] -translate-x-1/2 opacity-35"
     />
     <img
       src="/assets/vector/grid-accent.svg"
       alt=""
-      class="absolute inset-0 opacity-10 pointer-events-none"
-      aria-hidden="true"
+      class="absolute inset-0 h-full w-full object-cover opacity-[0.08]"
     />
+    <div class="absolute -right-40 top-1/3 h-96 w-96 rounded-full bg-ark-accent/10 blur-[120px]"></div>
   </div>
 
-  <Container class="text-center">
-    <Badge class="mb-6">{config.brand.displayName}</Badge>
-
-    <h1 class="mx-auto max-w-4xl text-4xl font-bold tracking-tight text-white sm:text-6xl lg:text-7xl animate-fade-up">
-      {config.hero.headline}
-    </h1>
-
-    <p
-      class="mx-auto mt-6 max-w-2xl text-lg leading-8 text-zinc-400 animate-fade-up"
-      style="animation-delay: 100ms;"
-    >
-      {config.hero.subheadline}
-    </p>
-
-    <div
-      class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-up"
-      style="animation-delay: 200ms;"
-    >
-      <Button
-        variant={
-          config.hero.primaryCta.variant === 'ghost' ? 'ghost' : config.hero.primaryCta.variant
-        }
-        href={config.hero.primaryCta.href}
-        target={config.hero.primaryCta.external ? '_blank' : undefined}
-        rel={config.hero.primaryCta.external ? 'noopener noreferrer' : undefined}
-      >
-        {config.hero.primaryCta.label}
-      </Button>
-      {config.hero.secondaryCta && (
-        <Button
-          variant={
-            config.hero.secondaryCta.variant === 'ghost'
-              ? 'ghost'
-              : config.hero.secondaryCta.variant
-          }
-          href={config.hero.secondaryCta.href}
-          target={config.hero.secondaryCta.external ? '_blank' : undefined}
-          rel={config.hero.secondaryCta.external ? 'noopener noreferrer' : undefined}
-        >
-          {config.hero.secondaryCta.label}
-        </Button>
-      )}
-    </div>
-
-    {config.hero.microcopy && <p class="mt-5 text-sm text-zinc-500">{config.hero.microcopy}</p>}
-
-    <dl
-      class="mx-auto mt-16 grid max-w-3xl grid-cols-3 gap-6 animate-fade-up"
-      style="animation-delay: 300ms;"
-    >
-      {config.hero.stats.map((stat) => (
-        <div>
-          <dt class="text-sm text-zinc-400">{stat.label}</dt>
-          <dd class="mt-1 text-3xl font-bold text-white">{stat.value}</dd>
+  <Container>
+    <div class="grid items-center gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:gap-10">
+      <div class="text-left">
+        <div class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3 py-1 text-[11px] font-bold tracking-widest text-zinc-300 backdrop-blur">
+          <span class="h-2 w-2 animate-pulse rounded-full bg-emerald-400"></span>
+          {config.brand.displayName} <span class="text-zinc-600">•</span> EDGE LIVE
+          <span class="text-zinc-600">•</span> {config.hero.stats[0]?.value ?? '95+'} LIGHTHOUSE
         </div>
-      ))}
-    </dl>
+
+        <h1 class="mt-6 max-w-3xl text-[36px] font-black leading-[0.98] tracking-[-0.035em] text-white sm:text-[52px] lg:text-[64px]">
+          {headlineLead} <span class="text-ark-accent">{headlineAccent}</span>
+        </h1>
+
+        <p class="mt-5 max-w-[52ch] text-base leading-7 text-zinc-400 sm:text-lg">
+          {config.hero.subheadline}
+        </p>
+
+        <div class="mt-8 flex flex-wrap items-center gap-3">
+          <Button
+            variant={
+              config.hero.primaryCta.variant === 'ghost' ? 'ghost' : config.hero.primaryCta.variant
+            }
+            href={config.hero.primaryCta.href}
+            target={config.hero.primaryCta.external ? '_blank' : undefined}
+            rel={config.hero.primaryCta.external ? 'noopener noreferrer' : undefined}
+            class="px-6 text-sm font-bold"
+          >
+            {config.hero.primaryCta.label}
+          </Button>
+          {config.hero.secondaryCta && (
+            <Button
+              variant={
+                config.hero.secondaryCta.variant === 'ghost'
+                  ? 'ghost'
+                  : config.hero.secondaryCta.variant
+              }
+              href={config.hero.secondaryCta.href}
+              target={config.hero.secondaryCta.external ? '_blank' : undefined}
+              rel={config.hero.secondaryCta.external ? 'noopener noreferrer' : undefined}
+              class="border-white/10 bg-white/[0.06] px-5 text-white hover:bg-white/[0.1]"
+            >
+              {config.hero.secondaryCta.label}
+            </Button>
+          )}
+        </div>
+
+        {config.hero.microcopy && (
+          <p class="mt-4 inline-flex items-center gap-2 text-xs text-zinc-500">
+            <span
+              class="grid h-3.5 w-3.5 place-items-center rounded-full border border-zinc-700 text-[9px] text-ark-accent"
+              aria-hidden="true"
+            >
+              ✓
+            </span>
+            {config.hero.microcopy}
+          </p>
+        )}
+
+        <dl class="mt-10 grid max-w-[440px] grid-cols-3 gap-4 border-t border-white/[0.06] pt-6 sm:gap-6">
+          {config.hero.stats.map((stat) => (
+            <div>
+              <dd class="text-2xl font-black tracking-tight text-white sm:text-[28px]">
+                {stat.value}
+              </dd>
+              <dt class="mt-1 text-[9px] font-bold uppercase tracking-[0.14em] text-zinc-500 sm:text-[10px] sm:tracking-widest">
+                {stat.label}
+              </dt>
+            </div>
+          ))}
+        </dl>
+      </div>
+
+      <div class="relative mx-auto w-full max-w-xl lg:mx-0 lg:max-w-none">
+        <div class="overflow-hidden rounded-[20px] border border-white/[0.08] bg-[#0A0A0B] shadow-[0_20px_60px_rgba(0,0,0,0.5),inset_0_1px_0_0_rgba(255,255,255,0.06)]">
+          <div class="flex h-12 items-center justify-between gap-3 border-b border-white/[0.06] bg-white/[0.02] px-4 sm:px-5">
+            <div class="flex shrink-0 items-center gap-2" aria-hidden="true">
+              <span class="h-3 w-3 rounded-full bg-red-500/80"></span>
+              <span class="h-3 w-3 rounded-full bg-yellow-500/80"></span>
+              <span class="h-3 w-3 rounded-full bg-green-500/80"></span>
+            </div>
+            <span class="truncate text-[10px] font-mono text-zinc-500 sm:text-[11px]">
+              src/data/config.ts <span class="text-zinc-700">•</span> single source of truth
+            </span>
+            <span class="shrink-0 rounded-full border border-emerald-400/20 bg-emerald-400/10 px-2 py-1 text-[9px] font-bold tracking-widest text-emerald-400">
+              BUILD OK
+            </span>
+          </div>
+
+          <div class="overflow-x-auto p-4 font-mono text-[10px] leading-5 sm:p-5 sm:text-xs">
+            <div class="whitespace-nowrap text-zinc-500">// Una fuente de verdad para el sitio</div>
+            <div class="mt-3 whitespace-nowrap">
+              <span class="text-zinc-500">export const</span>
+              <span class="font-bold text-white"> config </span>
+              <span class="text-zinc-500">=</span>
+              <span class="text-zinc-300"> {'{'}</span>
+            </div>
+            <div class="ml-4 whitespace-nowrap">
+              <span class="text-violet-300">brand</span>
+              <span class="text-zinc-500">:</span>
+              <span class="text-zinc-300"> {'{'}</span>
+              <span class="text-violet-300"> displayName</span>
+              <span class="text-zinc-500">:</span>
+              <span class="text-amber-300"> "{config.brand.displayName}"</span>
+              <span class="text-zinc-300"> {'}'}</span>
+              <span class="text-zinc-500">,</span>
+            </div>
+            <div class="ml-4 whitespace-nowrap">
+              <span class="text-violet-300">hero</span>
+              <span class="text-zinc-500">:</span>
+              <span class="text-zinc-300"> {'{'}</span>
+            </div>
+            <div class="ml-8 whitespace-nowrap">
+              <span class="text-violet-300">headline</span>
+              <span class="text-zinc-500">:</span>
+              <span class="text-amber-300"> "{config.hero.headline.slice(0, 30)}..."</span>
+              <span class="text-zinc-500">,</span>
+            </div>
+            <div class="ml-8 whitespace-nowrap">
+              <span class="text-violet-300">stats</span>
+              <span class="text-zinc-500">:</span>
+              <span class="text-zinc-300"> [</span>
+              {config.hero.stats.map((stat, index) => (
+                <>
+                  <span class="text-amber-300">"{stat.value}"</span>
+                  {index < config.hero.stats.length - 1 && <span class="text-zinc-500">, </span>}
+                </>
+              ))}
+              <span class="text-zinc-300">]</span>
+              <span class="text-zinc-500">,</span>
+            </div>
+            <div class="ml-4 whitespace-nowrap">
+              <span class="text-zinc-300"> {'}'}</span>
+              <span class="text-zinc-500">,</span>
+            </div>
+            <div class="ml-4 whitespace-nowrap">
+              <span class="text-violet-300">pricing</span>
+              <span class="text-zinc-500">:</span>
+              <span class="text-zinc-300"> {'{'}</span>
+              <span class="text-violet-300"> leasing</span>
+              <span class="text-zinc-500">:</span>
+              <span class="text-amber-300">
+                {' '}
+                "${leasingPlan?.monthly ?? '—'}/{leasingPlan?.currency ?? 'USD'} · mes"
+              </span>
+              <span class="text-zinc-300"> {'}'}</span>
+            </div>
+            <div class="whitespace-nowrap text-zinc-300">{'}'}</div>
+            <div class="mt-3 whitespace-nowrap">
+              <span class="text-zinc-500">export const</span>
+              <span class="font-bold text-white"> demos </span>
+              <span class="text-zinc-500">=</span>
+              <span class="text-zinc-300"> {'{'}</span>
+            </div>
+            <div class="ml-4 whitespace-nowrap">
+              <span class="text-violet-300">temozonia</span>
+              <span class="text-zinc-500">:</span>
+              <span class="text-zinc-300"> {'{'}</span>
+              <span class="text-violet-300"> enabled</span>
+              <span class="text-zinc-500">:</span>
+              <span class="text-emerald-300"> {demos.temozonia.enabled ? 'true' : 'false'}</span>
+              <span class="text-zinc-300"> {'}'}</span>
+            </div>
+            <div class="whitespace-nowrap text-zinc-300">{'}'}</div>
+
+            <div class="mt-4 flex min-w-max items-center gap-2 border-t border-white/[0.06] pt-4 text-[9px] sm:text-[10px]">
+              <span class="text-zinc-500">$</span>
+              <span class="text-white">wrangler deploy</span>
+              <span class="ml-auto text-emerald-400">✓ Cloudflare Workers • static assets</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="absolute -right-3 top-16 hidden items-center gap-2 rounded-full bg-white px-3 py-1.5 text-[10px] font-black text-black shadow-xl sm:flex lg:-right-4">
+          <span class="h-2 w-2 rounded-full bg-emerald-500"></span>
+          EDGE • WORKERS
+        </div>
+        <div class="absolute -left-3 bottom-12 hidden items-center gap-2 rounded-full bg-ark-accent px-3 py-1.5 text-[10px] font-black text-black shadow-xl sm:flex lg:-left-5">
+          ⚡ JS SOLO EN ISLAS
+        </div>
+      </div>
+    </div>
   </Container>
 </section>

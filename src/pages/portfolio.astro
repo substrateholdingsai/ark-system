@@ -3,110 +3,279 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Section from '../components/layout/Section.astro';
 import Container from '../components/layout/Container.astro';
 import Button from '../components/ui/Button.astro';
+import { config } from '@/data/config';
+
+const demos = [
+  {
+    id: 'temozonia',
+    tag: 'DEMO 01 • CARNES AHUMADAS • E-COMMERCE',
+    name: 'Temozonia Carnes Ahumadas',
+    desc: 'Tienda demo de carnes ahumadas con catálogo, carrito y checkout ilustrativo con transferencia, BTCPay, Lightning y pedido por WhatsApp. Productos y datos de pago son de ejemplo.',
+    image:
+      'https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?auto=format&fit=crop&w=1200&q=80',
+    href: '/portfolio/temozonia',
+    realHref: 'https://temozonia.com',
+    stack: ['React', 'Catálogo', 'Carrito', 'Checkout demo'],
+    accent: 'from-[#7E1D0F]/30 via-[#FF8800]/20 to-transparent',
+    badge: 'DEMO INTERACTIVA',
+    available: true,
+  },
+  {
+    id: 'aceptabitcoin',
+    tag: 'SITIO • EDUCACIÓN • DIRECTORIO BITCOIN',
+    name: 'Acepta Bitcoin',
+    desc: 'Directorio y recursos para encontrar comercios que aceptan Bitcoin. El botón abre el sitio publicado de Acepta Bitcoin.',
+    image:
+      'https://images.unsplash.com/photo-1623227413711-25ee4388dae3?auto=format&fit=crop&w=1200&q=80',
+    href: '/portfolio/acepta-bitcoin',
+    realHref: 'https://www.aceptabitcoin.org',
+    stack: ['Directorio', 'Bitcoin', 'Sitio externo'],
+    accent: 'from-orange-500/30 via-amber-500/20 to-transparent',
+    badge: 'CASO DE ESTUDIO',
+    available: true,
+  },
+  {
+    id: 'tomato',
+    tag: 'DEMO 03 • CAMPO A MESA • ₿',
+    name: 'Tomato for Bitcoin',
+    desc: 'Tienda ilustrativa de cosecha con seis productos de ejemplo, carrito y selector de pago (Bitcoin/Lightning, tarjeta/BTCPay, transferencia o efectivo). No confirma pagos ni pedidos reales.',
+    image:
+      'https://images.unsplash.com/photo-1592841200221-a6898f307baa?q=80&w=1200&auto=format&fit=crop',
+    href: '/portfolio/tomato',
+    stack: ['Catálogo demo', 'Carrito', 'Bitcoin/Lightning', 'Checkout demo'],
+    accent: 'from-emerald-500/30 via-lime-500/20 to-transparent',
+    badge: 'DEMO INTERACTIVA',
+    available: true,
+  },
+  {
+    id: 'labianca',
+    tag: 'SITIO • HOSPITALITY • HOTEL BOUTIQUE',
+    name: 'La Bianca Tropical',
+    desc: 'Sitio storefront para La Bianca Tropical. El botón abre el sitio externo; esta galería no integra ni verifica sus reservas o servicios.',
+    image:
+      'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?q=80&w=1200&auto=format&fit=crop',
+    href: 'https://labianca.ark.systems',
+    realHref: 'https://labianca.ark.systems',
+    stack: ['Hotel boutique', 'Storefront', 'Sitio externo'],
+    accent: 'from-cyan-500/30 via-blue-500/20 to-transparent',
+    badge: 'SITIO EXTERNO',
+    available: true,
+  },
+  {
+    id: 'padel',
+    tag: 'PLANTILLA 05 • CONCEPTO • DEPORTE',
+    name: 'Padel Outlet',
+    desc: 'Concepto de tienda outlet de pádel con catálogo y filtros por talla o marca propuestos. Aún no tiene demo interactiva, inventario ni checkout implementados.',
+    image:
+      'https://images.unsplash.com/photo-1554068865-24cecd4e34b8?q=80&w=1200&auto=format&fit=crop',
+    stack: ['Concepto e-commerce', 'Pádel', 'No implementado'],
+    accent: 'from-blue-500/30 via-indigo-500/20 to-transparent',
+    badge: 'PLANTILLA',
+    available: false,
+  },
+  {
+    id: 'velvet',
+    tag: 'DEMO 06 • NIGHTLIFE • BAR',
+    name: 'Velvet Room',
+    desc: 'Concepto ficticio de cocktail bar con seis bebidas de muestra, video y galería de ambiente. La reserva y el pago son secciones ilustrativas; no están disponibles.',
+    image:
+      'https://images.unsplash.com/photo-1470337458703-46ad1756a187?q=80&w=1200&auto=format&fit=crop',
+    href: '/portfolio/velvet',
+    stack: ['Carta demo', 'Galería', 'Video ambiente', 'Sin reservas'],
+    accent: 'from-fuchsia-500/30 via-purple-500/20 to-transparent',
+    badge: 'DEMO INTERACTIVA',
+    available: true,
+  },
+  {
+    id: 'medical',
+    tag: 'DEMO 07 • HEALTH • AGENDA CONCEPTUAL',
+    name: 'Medical Express',
+    desc: 'Prototipo ficticio con selección local de horarios y botones de simulación de Stripe/Lightning. No es un prestador de salud, no agenda citas ni procesa pagos o datos personales.',
+    image:
+      'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=1200&auto=format&fit=crop',
+    href: '/portfolio/medical',
+    stack: ['Agenda demo', 'Pago simulado', 'Sin atención médica'],
+    accent: 'from-teal-500/30 via-emerald-500/20 to-transparent',
+    badge: 'DEMO INTERACTIVA',
+    available: true,
+  },
+  {
+    id: 'arkangel',
+    tag: 'DEMO 08 • FINTECH • SIMULACIÓN',
+    name: 'Arkangel • Cobranza Automatizada',
+    desc: 'Simulación con conductas ilustrativas, casos ficticios y ledger local no persistente. No se conecta a sistemas de cobranza; las referencias no son asesoría legal.',
+    image:
+      'https://images.unsplash.com/photo-1553877522-43269d4ea984?q=80&w=1200&auto=format&fit=crop',
+    href: '/portfolio/arkangel',
+    stack: ['Casos demo', 'Ledger local', 'Referencias ilustrativas'],
+    accent: 'from-zinc-500/30 via-slate-500/20 to-transparent',
+    badge: 'DEMO INTERACTIVA',
+    available: true,
+  },
+  {
+    id: 'talos',
+    tag: 'DEMO 09 • DATA • MINERÍA BITCOIN',
+    name: 'Talos • Colector de Datos',
+    desc: 'Prototipo visual de un colector de datos para minería Bitcoin con spread y tick simulados localmente. No consulta fuentes, pools o mercados ni realiza operaciones financieras.',
+    image:
+      'https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1200&auto=format&fit=crop',
+    href: '/portfolio/talos',
+    stack: ['Datos simulados', 'Minería Bitcoin', 'Sin API activa'],
+    accent: 'from-amber-500/30 via-orange-500/20 to-transparent',
+    badge: 'DEMO INTERACTIVA',
+    available: true,
+  },
+  {
+    id: 'mapa-ley',
+    tag: 'DEMO 10 • CIVIC TECH • ACTIVOS VIRTUALES',
+    name: 'Mapa Crypto • Activos Virtuales',
+    desc: 'Explorador con búsqueda y filtros para 12 temas sobre activos virtuales. Las referencias vienen del material de origen, no están verificadas y no constituyen asesoría legal.',
+    image:
+      'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=1200&auto=format&fit=crop',
+    href: '/portfolio/mapa-crypto',
+    stack: ['12 temas', 'Búsqueda y filtros', 'Referencias sin validar'],
+    accent: 'from-red-500/30 via-orange-500/20 to-transparent',
+    badge: 'DEMO INTERACTIVA',
+    available: true,
+  },
+];
 ---
 
 <BaseLayout title="Portafolio | Ark System">
-  <Section id="portfolio" variant="void" padding="lg">
+  <Section id="portfolio" variant="void" padding="lg" class="bg-void">
     <Container>
-      <div class="mb-16 text-center">
-        <p class="mb-3 font-mono text-sm uppercase tracking-widest text-accent">
-          Tecnología que impulsa negocios reales
-        </p>
-        <h1 class="mb-6 text-4xl font-bold text-white sm:text-5xl">Casos de Éxito</h1>
-        <p class="mx-auto max-w-3xl text-lg leading-relaxed text-zinc-400">
-          Diseñamos experiencias rápidas y confiables con arquitectura edge-native: aplicaciones
-          serverless que escalan con la demanda, entregan contenido cerca de cada cliente y conectan
-          pagos modernos con los canales de venta que las personas ya usan.
+      <div class="mb-10 max-w-[720px] text-left">
+        <div class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3 py-1 text-[11px] font-bold tracking-widest text-zinc-300">
+          <span class="h-2 w-2 animate-pulse rounded-full bg-emerald-400"></span>
+          10 FICHAS • 7 DEMOS INTERACTIVAS • 2 SITIOS EXTERNOS • 1 CONCEPTO
+        </div>
+        <h1 class="font-display mt-6 text-4xl font-black leading-[0.9] tracking-[-0.03em] text-white sm:text-5xl lg:text-[56px]">
+          Demos y sitios del
+          <br />
+          <span class="text-ark-accent">portafolio Ark System</span>
+        </h1>
+        <p class="mt-5 max-w-[52ch] text-base leading-7 text-zinc-400 sm:text-lg">
+          Explora siete demos interactivas, dos sitios externos y un concepto de plantilla aún no
+          implementado. Cada ficha indica qué incluye y cuándo sus datos o integraciones son solo de
+          demostración.
         </p>
       </div>
 
-      <div class="grid gap-8 md:grid-cols-2">
-        <article class="group relative overflow-hidden rounded-2xl border border-border bg-surface transition-all duration-300 hover:border-accent/50 hover:shadow-xl">
-          <div class="aspect-video relative overflow-hidden">
-            <div class="absolute inset-0 bg-gradient-to-br from-accent/20 via-transparent to-transparent group-hover:from-accent/30 transition-all duration-500" />
-            <div class="absolute inset-0 flex items-center justify-center">
-              <span class="font-mono text-6xl font-bold text-accent/10 group-hover:text-accent/20 transition-colors">⚡</span>
+      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {demos.map((demo) => (
+          <article class="group relative flex flex-col overflow-hidden rounded-[20px] border border-border bg-surface transition-all duration-300 hover:border-border-strong hover:shadow-[0_20px_60px_rgba(0,0,0,0.4)]">
+            <div class="relative aspect-[16/10] overflow-hidden bg-zinc-900">
+              <img
+                src={demo.image}
+                alt={demo.name}
+                class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                loading="lazy"
+              />
+              <div
+                class={`absolute inset-0 bg-gradient-to-br ${demo.accent} opacity-80 transition-opacity group-hover:opacity-90`}
+              ></div>
+              <div class="absolute left-3 top-3 flex gap-2">
+                <span class="rounded-full border border-white/10 bg-black/70 px-2.5 py-1 text-[10px] font-black tracking-widest text-white backdrop-blur">
+                  {demo.badge}
+                </span>
+              </div>
+              <div class="absolute right-3 top-3">
+                <span class="rounded-full bg-white px-2.5 py-1 text-[10px] font-bold text-black">
+                  {demo.tag.split('•')[0]}
+                </span>
+              </div>
+              <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-3">
+                <div class="text-[11px] font-bold tracking-widest text-white/70">{demo.tag}</div>
+              </div>
             </div>
-          </div>
-          <div class="p-8">
-            <div class="mb-4 flex items-center justify-between gap-4">
-              <span class="font-mono text-sm text-accent">CLIENTE 02 • E-COMMERCE EDGE</span>
-              <a
-                href="https://temozonia.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="font-mono text-sm text-zinc-500 transition-colors hover:text-white"
-              >
-                Sitio real →
-              </a>
-            </div>
-            <h2 class="mb-4 text-2xl font-bold text-white group-hover:text-accent transition-colors">
-              Temozonia Carnes Ahumadas
-            </h2>
-            <p class="mb-6 text-zinc-400">
-              Tienda D2C con checkout híbrido: Lightning Network + WhatsApp Business.
-              Infraestructura serverless en el edge para picos de tráfico sin servidores dedicados.
-            </p>
-            <div class="mb-6 flex flex-wrap gap-2">
-              <span class="rounded-full border border-border px-3 py-1 text-xs text-zinc-500">Astro 5</span>
-              <span class="rounded-full border border-border px-3 py-1 text-xs text-zinc-500">React 19</span>
-              <span class="rounded-full border border-border px-3 py-1 text-xs text-zinc-500">Lightning</span>
-              <span class="rounded-full border border-border px-3 py-1 text-xs text-zinc-500">Edge</span>
-            </div>
-            <Button variant="secondary" href="/portfolio/temozonia" class="w-full sm:w-auto">
-              Ver demo interactiva
-            </Button>
-          </div>
-        </article>
 
-        <article class="group relative overflow-hidden rounded-2xl border border-border bg-surface transition-all duration-300 hover:border-accent/50 hover:shadow-xl">
-          <div class="aspect-video relative overflow-hidden">
-            <div class="absolute inset-0 bg-gradient-to-br from-orange-500/20 via-transparent to-transparent group-hover:from-orange-500/30 transition-all duration-500" />
-            <div class="absolute inset-0 flex items-center justify-center">
-              <span class="font-mono text-6xl font-bold text-orange-500/10 group-hover:text-orange-500/20 transition-colors">₿</span>
+            <div class="flex flex-1 flex-col p-6">
+              <div class="flex items-start justify-between gap-4">
+                <h2 class="font-display text-[18px] font-bold leading-tight tracking-[-0.01em] text-white transition-colors group-hover:text-ark-accent">
+                  {demo.name}
+                </h2>
+                {demo.realHref && (
+                  <a
+                    href={demo.realHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="shrink-0 font-mono text-[11px] text-zinc-500 transition-colors hover:text-white"
+                  >
+                    Sitio real →
+                  </a>
+                )}
+              </div>
+
+              <p class="mt-3 line-clamp-3 text-[13px] leading-5 text-zinc-400">{demo.desc}</p>
+
+              <div class="mt-4 flex flex-wrap gap-1.5">
+                {demo.stack.map((item) => (
+                  <span class="rounded-full border border-border bg-white/[0.02] px-2.5 py-1 text-[10px] font-medium text-zinc-500">
+                    {item}
+                  </span>
+                ))}
+              </div>
+
+              <div class="mt-6 flex gap-2">
+                {demo.available && demo.href ? (
+                  <Button
+                    variant="secondary"
+                    href={demo.href}
+                    target={demo.href.startsWith('https://') ? '_blank' : undefined}
+                    rel={demo.href.startsWith('https://') ? 'noopener noreferrer' : undefined}
+                    class="h-10 flex-1 justify-center border-white/10 bg-white/[0.06] text-[13px] font-bold text-white hover:bg-white/[0.10]"
+                  >
+                    {['tomato', 'arkangel', 'velvet', 'medical', 'talos', 'mapa-ley'].includes(
+                      demo.id,
+                    )
+                      ? 'Ver demo interactiva'
+                      : 'Ver caso'}
+                  </Button>
+                ) : (
+                  <Button
+                    variant="secondary"
+                    href={config.contact.bookingUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="h-10 flex-1 justify-center border-white/10 bg-white/[0.06] text-[13px] font-bold text-white hover:bg-white/[0.10]"
+                  >
+                    Solicitar plantilla
+                  </Button>
+                )}
+                {demo.id === 'temozonia' && demo.href && (
+                  <Button
+                    variant="primary"
+                    href={demo.href}
+                    class="h-10 px-3 text-[13px] font-black"
+                  >
+                    Interactiva →
+                  </Button>
+                )}
+              </div>
             </div>
-          </div>
-          <div class="p-8">
-            <div class="mb-4 flex items-center justify-between gap-4">
-              <span class="font-mono text-sm text-accent">CLIENTE 01 • EDUCACIÓN & DIRECTORIO</span>
-              <a
-                href="https://www.aceptabitcoin.org"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="font-mono text-sm text-zinc-500 transition-colors hover:text-white"
-              >
-                Sitio real →
-              </a>
-            </div>
-            <h2 class="mb-4 text-2xl font-bold text-white group-hover:text-accent transition-colors">
-              Acepta Bitcoin
-            </h2>
-            <p class="mb-6 text-zinc-400">
-              Portal educativo y directorio de comercios crypto-friendly en LatAm. 500+ comercios
-              listados en 15 países, construido sobre arquitectura estática edge-native.
-            </p>
-            <div class="mb-6 flex flex-wrap gap-2">
-              <span class="rounded-full border border-border px-3 py-1 text-xs text-zinc-500">Astro 5</span>
-              <span class="rounded-full border border-border px-3 py-1 text-xs text-zinc-500">Content Collections</span>
-              <span class="rounded-full border border-border px-3 py-1 text-xs text-zinc-500">SEO técnico</span>
-              <span class="rounded-full border border-border px-3 py-1 text-xs text-zinc-500">Edge</span>
-            </div>
-            <Button variant="secondary" href="/portfolio/acepta-bitcoin" class="w-full sm:w-auto">
-              Ver caso de estudio
-            </Button>
-          </div>
-        </article>
+          </article>
+        ))}
       </div>
 
-      <div class="mt-16 text-center">
-        <p class="mb-4 font-mono text-sm text-zinc-500">
-          ¿Quieres ser el próximo caso de éxito?
-        </p>
+      <div class="mt-16 flex flex-col items-start justify-between gap-6 rounded-[24px] border border-border bg-surface p-8 sm:flex-row sm:items-center sm:p-10">
+        <div>
+          <div class="text-[11px] font-black tracking-widest text-zinc-500">
+            ¿TIENES EL SIGUIENTE?
+          </div>
+          <div class="font-display mt-2 text-2xl font-black tracking-tight text-white">
+            Tu vertical aquí, mismo motor, 2 semanas de ventaja
+          </div>
+          <div class="mt-2 text-sm text-zinc-400">
+            Agendamos 15 min, defines tu CLABE, tu WhatsApp y tu catálogo en config.ts. Deploy en
+            12.4s.
+          </div>
+        </div>
         <Button
           variant="primary"
-          href="https://cal.com/pablo-cortes-wuzivu/15min"
+          href={config.contact.bookingUrl}
           target="_blank"
           rel="noopener noreferrer"
+          class="h-12 shrink-0 px-6 font-black"
         >
           Agendar demo →
         </Button>

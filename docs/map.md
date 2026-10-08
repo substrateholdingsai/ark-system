@@ -1,23 +1,23 @@
 ﻿# Ark System — Project Map
 
-> Current status snapshot for the repo as of 2026-10-07.
+> Current status snapshot for the repo as of 2026-10-08.
 > This document reflects the current implementation in the codebase today, with the active deployment model set to Astro + Cloudflare Workers. It is not the original aspirational roadmap.
 
 ## 1. Executive Summary
 
-Ark System is an edge-native marketing and conversion site built with Astro, Tailwind CSS, TypeScript, React islands, and Cloudflare Workers. The repo contains a functioning site scaffold, a typed config contract with Ark as Client 0, CI/Lighthouse checks, and an interactive Temozonia e-commerce demo on the portfolio route. The production build passes locally.
+Ark System is an edge-native marketing and conversion site built with Astro, Tailwind CSS, TypeScript, React islands, and Cloudflare Workers. The repo contains a functioning site scaffold, a typed config contract with Ark as Client 0, CI/Lighthouse checks, and interactive Temozonia, Tomato for Bitcoin, Arkangel, Velvet Room, Medical Express, Talos, and Mapa Crypto demos in the portfolio. The production build passes locally.
 
 Status at a glance:
 
 - Build status: **green** locally (`npm run build` passes with the current Cloudflare Workers configuration)
 - Core platform: Astro 5 + Tailwind 3 + React 19 + Cloudflare Workers (hybrid SSR + static assets)
 - Content model: typed reusable contract and Ark Client 0 instance in `src/data/config.ts`
-- Route architecture: implemented for 5 content pages (including `/brand`) and 404
+- Route architecture: implemented for the home, pricing, contact, portfolio, brand preview, Temozonia, Tomato, Arkangel, Velvet Room, Medical Express, Talos, and Mapa Crypto demo pages, plus 404
 - Deployment config: Cloudflare adapter with server output, Worker config in `wrangler.jsonc`, and a `SESSION` KV binding for the adapter runtime
-- Portfolio: Temozonia React checkout demo plus Acepta Bitcoin case study; demo payment/contact details remain sample values and require client approval before production use
+- Portfolio: 10 project cards, including interactive Temozonia, Tomato for Bitcoin, Arkangel, Velvet Room, Medical Express, Talos, and Mapa Crypto React demos plus the Acepta Bitcoin case study; demo data is illustrative and not connected to live services
 - Placeholder content: still present, including contact/booking destinations, form endpoint, and sample pricing content
 - Onboarding documentation: available in `docs/client-onboarding.md`
-- Latest portfolio implementation: interactive Temozonia prototype is active in `src/components/portfolio/TemozoniaApp.jsx` and `src/pages/portfolio.astro`
+- Latest portfolio implementation: Temozonia, Tomato for Bitcoin, Arkangel, Velvet Room, Medical Express, Talos, and Mapa Crypto interactive prototypes are active at `/portfolio/temozonia`, `/portfolio/tomato`, `/portfolio/arkangel`, `/portfolio/velvet`, `/portfolio/medical`, `/portfolio/talos`, and `/portfolio/mapa-crypto`
 - CI: workflow is defined in `.github/workflows/ci.yml`; Lighthouse budget exists, but remote CI status is not recorded here
 - **Vector assets**: 10 SVG assets generated via `scripts/generate-assets.py` in `public/assets/vector/`
 
@@ -46,7 +46,7 @@ Current implementation details:
 
 - Astro config uses `output: 'server'` and the Cloudflare adapter in `astro.config.mjs`
 - `wrangler.jsonc` configures the Cloudflare Worker, static asset binding, and session KV binding
-- React is integrated through `@astrojs/react`; the portfolio demo hydrates with `client:visible`
+- React is integrated through `@astrojs/react`; Temozonia, Tomato, Arkangel, Velvet Room, and Medical Express demo pages mount client-only React islands
 - CI performs `npm run build` and runs Lighthouse checks against `./dist`
 - The project has a generated `dist/` directory from the latest local build attempt
 
@@ -106,7 +106,13 @@ ark-system/
 │   │   │   ├── PricingTable.astro
 │   │   │   └── TechStack.astro
 │   │   ├── portfolio/
-│   │   │   └── TemozoniaApp.jsx        Interactive React checkout demo
+│   │   │   ├── TemozoniaApp.jsx        Interactive Temozonia checkout demo
+│   │   │   ├── TomatoApp.jsx           Interactive Tomato for Bitcoin storefront demo
+│   │   │   ├── ArkangelApp.jsx         Interactive compliance-flow simulation
+│   │   │   ├── VelvetApp.jsx           Interactive bar storefront demo
+│   │   │   ├── MedicalApp.jsx          Fictional appointment and payment-flow demo
+│   │   │   ├── TalosApp.jsx            Simulated mining-data collector concept
+│   │   │   └── VirtualAssetsMapApp.jsx Legal-topic filtering demo; references unverified
 │   │   └── ui/
 │   │       ├── Badge.astro
 │   │       ├── Button.astro
@@ -121,6 +127,14 @@ ark-system/
 │   │   ├── contact.astro
 │   │   ├── index.astro
 │   │   ├── portfolio.astro
+│   │   ├── portfolio/
+│   │   │   ├── temozonia.astro
+│   │   │   ├── tomato.astro
+│   │   │   ├── arkangel.astro
+│   │   │   ├── velvet.astro
+│   │   │   ├── medical.astro
+│   │   │   ├── talos.astro
+│   │   │   └── mapa-crypto.astro
 │   │   ├── pricing.astro
 │   │   └── brand.astro
 │   ├── styles/
@@ -153,6 +167,13 @@ The site includes the following implemented pages:
 
 - `/` — home page with hero, tech stack, portfolio preview, pricing
 - `/portfolio` — portfolio gallery page
+- `/portfolio/temozonia` — interactive Temozonia storefront and checkout prototype
+- `/portfolio/tomato` — interactive Tomato for Bitcoin marketplace prototype
+- `/portfolio/arkangel` — interactive Arkangel compliance-flow simulation
+- `/portfolio/velvet` — interactive Velvet Room bar concept with sample menu and gallery
+- `/portfolio/medical` — interactive Medical Express appointment and prepayment concept
+- `/portfolio/talos` — interactive Talos mining-data collector concept with simulated metrics
+- `/portfolio/mapa-crypto` — interactive topic map with filters and unverified legal references
 - `/pricing` — pricing page
 - `/contact` — contact form + Cal.com embed
 - `/404` — branded not-found view
@@ -160,7 +181,7 @@ The site includes the following implemented pages:
 
 The route model is file-based and follows Astro conventions.
 
-The `/portfolio` page includes an edge-native technology introduction and two case studies. Temozonia embeds `src/components/portfolio/TemozoniaApp.jsx` as a React island with `client:visible`; it provides a sample product catalog, local cart state, WhatsApp order link, CLABE copy action, and Lightning payment details. The page loads the island client when it becomes visible. These payment/contact details are demonstration values, not a live payment integration.
+The `/portfolio` page presents 10 project cards, including the interactive Temozonia, Tomato for Bitcoin, Arkangel, Velvet Room, Medical Express, Talos, and Mapa Crypto demos. Each demo has its own page and mounts its React app with `client:only="react"`. Temozonia and Tomato provide sample storefront and checkout interactions; Arkangel presents illustrative conduct categories, mock cases, and a simulated ledger; Velvet Room presents a sample bar menu and atmosphere gallery; Medical Express presents a fictional schedule selector and simulated payment-flow notices; Talos presents fictional mining-data metrics and a local-only simulated spread; Mapa Crypto presents searchable and filterable topic summaries. Velvet Room and Medical Express do not accept reservations or payments. Medical Express is not a healthcare provider and offers no medical care or advice; no patient data is collected. Talos does not connect to data sources, mining pools, exchanges, a treasury, payment APIs, or trading services, and makes no financial recommendations. Mapa Crypto reproduces topics and legal references from user-provided material without validating them; the references may be incomplete, outdated, or inaccurate, and the demo provides no legal interpretation or advice. None of Arkangel's indicators represent a live integration, operational legal controls, verified legal citations, or legal advice. Storefront payment and contact values are sample data and must be confirmed before real transactions or production use.
 
 ## 6. Design / Theme Architecture
 
@@ -200,8 +221,14 @@ This is the main architectural strength of the repo and is the closest thing to 
 - Reusable UI primitives (Button, Card, Badge, Input)
 - Config-driven landing page sections
 - Cloudflare Workers deployment configuration (Astro server output + static asset binding)
-- React integration via `@astrojs/react`, used by the portfolio's Temozonia demo
+- React integration via `@astrojs/react`, used by the Temozonia, Tomato for Bitcoin, Arkangel, Velvet Room, Medical Express, Talos, and Mapa Crypto portfolio demos
 - Temozonia checkout prototype with cart quantity management, WhatsApp order link, CLABE copy action, and Lightning payment details
+- Tomato for Bitcoin marketplace prototype at `/portfolio/tomato`, with six sample products, cart, payment-method selection, WhatsApp order link, and CLABE copy action
+- Arkangel compliance-flow simulation at `/portfolio/arkangel`, with eight illustrative sections, mock cases, and a non-persistent sample ledger
+- Velvet Room bar concept at `/portfolio/velvet`, with a sample cocktail menu, ambient video, and CSS scroll-snap gallery; reservation and payment actions are disabled
+- Medical Express concept at `/portfolio/medical`, with selectable fictional appointment slots and clearly labeled local-only payment-flow simulations; no real healthcare, appointment, or payment service is provided
+- Talos concept at `/portfolio/talos`, with local-only simulated mining-data metrics and spread values; no collector, live API, treasury, or financial operations are connected
+- Mapa Crypto at `/portfolio/mapa-crypto`, with searchable/filterable subject summaries and references explicitly marked as unverified; it gives no legal classification or advice
 - CI workflow and Lighthouse budget configuration
 - **Vector asset generation script (`scripts/generate-assets.py`)**
 - **10 SVG brand assets (logo, favicon, glows, grids, portfolio placeholders)**
@@ -214,14 +241,19 @@ This is the main architectural strength of the repo and is the closest thing to 
 - Contact CTA link uses placeholder `cal.com/your-ark-team/...`
 - Form uses placeholder Formspree endpoint or a non-functional form target
 - Pricing data is a single-tier demo configuration
-- Portfolio data in the site config remains a sample; `/portfolio` has a separate Temozonia interactive demo and Acepta Bitcoin case study
-- Temozonia demo payment identifiers and contact details are hard-coded sample values and need approval before any real use
+- Portfolio metadata and demo catalogs remain sample content; `/portfolio` contains separate Temozonia, Tomato, Arkangel, Velvet Room, Medical Express, Talos, and Mapa Crypto interactive demos alongside other sample projects/case studies
+- Demo payment identifiers and contact details are sample values; Tomato's checkout also embeds a third-party BTCPay URL that must be confirmed and replaced with an approved test/production endpoint before use
 - `public/sitemap.xml` is manually maintained instead of generated by Astro
 - `src/layouts/BaseLayout.astro` still pulls Google Fonts directly and is not fully optimized for performance
 
 ### 8.3 Not yet production-ready
 
-- The Temozonia React demo is an interactive prototype; its payment/contact configuration is embedded sample data and is not evidence of a production payment integration
+- The Temozonia and Tomato React demos are interactive prototypes; their payment/contact configuration is sample data and is not evidence of a production payment integration
+- Arkangel is a UI simulation only; sample case statuses, block counts, hashes, and legal references are not live data, verified legal conclusions, or evidence of deployed compliance controls
+- Velvet Room is a fictional bar concept; its menu, prices, location, hours, and media are illustrative and it has no active reservation, payment, or social links
+- Medical Express is a fictional healthcare scheduling concept, not a medical provider; its clinician, schedule, and prices are not real, its interactions are local-only, and it collects no personal or medical information or accepts appointments or payments
+- Talos is a fictional mining-data collector concept; its metrics and spread are simulated locally, with no connected collector, data sources, treasury, financial products, or active API, and it is not financial or investment advice
+- Mapa Crypto's legal topics and references came from unverified user-provided material; the demo omits penalty amounts and legal conclusions, and is not legal advice
 - Business-specific links, form handling, and demo content still need client-approved production values
 - The Cloudflare Worker deployment requires valid account configuration, including the session KV binding
 - The theming engine is partially implemented; the client onboarding workflow is documented in `docs/client-onboarding.md`
@@ -231,10 +263,10 @@ This is the main architectural strength of the repo and is the closest thing to 
 
 ### Current verification result
 
-A local `npm run build` passes with the current configuration, including the Temozonia React island and the Cloudflare Workers adapter:
+A local `npm run build` passes with the current configuration, including the portfolio React islands and the Cloudflare Workers adapter:
 
 - `astro check`: 0 errors, 0 warnings, 0 hints
-- `astro build`: completed the Cloudflare Worker server build and client build; the Temozonia demo client module was emitted as a separate bundle
+- `astro build`: completed the Cloudflare Worker server build and client build; the Temozonia, Tomato, Arkangel, Velvet Room, Medical Express, Talos, and Mapa Crypto demo client modules were emitted as separate bundles
 - Astro emitted a non-blocking warning that Cloudflare does not support Sharp at runtime
 
 This confirms the source builds locally; it does not verify deployed behavior, third-party form delivery, or remote CI.
@@ -275,12 +307,12 @@ The repo is a structured, config-driven marketing site with reusable routes, com
 
 ### 13.1 What Changed
 
-| File | Before | After |
-|---|---|---|
-| `package.json` | `wrangler: ^3.80.0` | `wrangler: ^4.0.0` |
+| File               | Before                                                                        | After                                                                    |
+| ------------------ | ----------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| `package.json`     | `wrangler: ^3.80.0`                                                           | `wrangler: ^4.0.0`                                                       |
 | `astro.config.mjs` | `output: 'static'`, `build.format: 'directory'`, adapter with `platformProxy` | `output: 'server'`, `build.format: 'file'`, adapter with `platformProxy` |
-| `wrangler.toml` | Pages config (`pages_build_output_dir = "./dist"`) | **Deleted** — replaced by `wrangler.jsonc` |
-| `wrangler.jsonc` | Did not exist | New Worker config (see 13.2) |
+| `wrangler.toml`    | Pages config (`pages_build_output_dir = "./dist"`)                            | **Deleted** — replaced by `wrangler.jsonc`                               |
+| `wrangler.jsonc`   | Did not exist                                                                 | New Worker config (see 13.2)                                             |
 
 ### 13.2 New `wrangler.jsonc`
 
@@ -291,16 +323,16 @@ The repo is a structured, config-driven marketing site with reusable routes, com
   "main": "./dist/_worker.js/index.js",
   "assets": {
     "directory": "./dist",
-    "binding": "ASSETS"
+    "binding": "ASSETS",
   },
   "compatibility_flags": ["nodejs_compat"],
   "kv_namespaces": [
     {
       "binding": "SESSION",
-      "id": "SESSION"
-    }
+      "id": "SESSION",
+    },
   ],
-  "observability": { "enabled": true }
+  "observability": { "enabled": true },
 }
 ```
 
@@ -345,9 +377,9 @@ npm run deploy   # runs: wrangler deploy
 
 ### 13.7 Deployment Troubleshooting Log
 
-| Error | Fix |
-|---|---|
-| `CLOUDFLARE_API_TOKEN` required | Generate token at https://developers.cloudflare.com/api/tokens/ using the "Create API Token" preset |
-| `Uploading a Pages _worker.js directory as an asset` | Add `dist/.assetsignore` containing `_worker.js` |
-| `Invalid _redirects configuration: Only relative URLs are allowed` | Rewrite `public/_redirects` to use relative paths only; host canonicalisation moves to Dashboard Rules |
-| `KV namespace 'SESSION' is not valid` | Create namespace via API (`POST /accounts/<id>/storage/kv/namespaces` with `{"name":"SESSION","title":"SESSION"}`) and store its real `id` in `wrangler.jsonc` |
+| Error                                                              | Fix                                                                                                                                                            |
+| ------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `CLOUDFLARE_API_TOKEN` required                                    | Generate token at https://developers.cloudflare.com/api/tokens/ using the "Create API Token" preset                                                            |
+| `Uploading a Pages _worker.js directory as an asset`               | Add `dist/.assetsignore` containing `_worker.js`                                                                                                               |
+| `Invalid _redirects configuration: Only relative URLs are allowed` | Rewrite `public/_redirects` to use relative paths only; host canonicalisation moves to Dashboard Rules                                                         |
+| `KV namespace 'SESSION' is not valid`                              | Create namespace via API (`POST /accounts/<id>/storage/kv/namespaces` with `{"name":"SESSION","title":"SESSION"}`) and store its real `id` in `wrangler.jsonc` |

@@ -672,7 +672,7 @@ export const demos = {
         badge: 'MÁS VENDIDA',
         stock: 12,
         image:
-          'https://images.unsplash.com/photo-1546964124-0c9a1f7b5a67?q=80&w=800&auto=format&fit=crop',
+          'https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?auto=format&fit=crop&w=800&q=80',
       },
       {
         id: 'costilla',
@@ -683,7 +683,7 @@ export const demos = {
         badge: 'PREMIUM',
         stock: 8,
         image:
-          'https://images.unsplash.com/photo-1558030006-450066393d65?q=80&w=800&auto=format&fit=crop',
+          'https://images.unsplash.com/photo-1679711246825-1f2bd51b16d0?auto=format&fit=crop&w=800&q=80',
       },
       {
         id: 'longaniza',

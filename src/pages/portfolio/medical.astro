@@ -1,0 +1,37 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Section from '../../components/layout/Section.astro';
+import Container from '../../components/layout/Container.astro';
+import MedicalApp from '../../components/portfolio/MedicalApp.jsx';
+---
+
+<BaseLayout title="Medical Express — Demo interactiva | Ark System">
+  <Section id="portfolio-medical" variant="void" padding="lg">
+    <Container>
+      <div class="mb-12 text-center">
+        <a
+          href="/portfolio"
+          class="inline-flex items-center gap-2 font-mono text-sm text-zinc-500 transition-colors hover:text-white"
+        >
+          ← Volver al Portfolio
+        </a>
+        <div class="mt-6">
+          <span class="mb-2 block font-mono text-sm text-accent">
+            TEMPLATE 07 • HEALTH • AGENDA CONCEPTUAL
+          </span>
+          <h1 class="text-4xl font-bold text-white sm:text-5xl">Medical Express</h1>
+        </div>
+        <p class="mx-auto mt-4 max-w-3xl text-lg leading-relaxed text-zinc-400">
+          Prototipo de agenda para consultorios con horarios de muestra y un flujo de prepago
+          ilustrativo.
+        </p>
+        <p class="mx-auto mt-3 max-w-3xl rounded-lg border border-amber-400/30 bg-amber-400/10 p-3 text-sm text-amber-200">
+          Clínica y datos ficticios. No brinda atención médica ni consejo clínico; tampoco acepta
+          reservas o pagos. No introduzcas información personal o médica.
+        </p>
+      </div>
+
+      <MedicalApp client:only="react" />
+    </Container>
+  </Section>
+</BaseLayout>

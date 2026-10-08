@@ -1,0 +1,38 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Section from '../../components/layout/Section.astro';
+import Container from '../../components/layout/Container.astro';
+import ArkangelApp from '../../components/portfolio/ArkangelApp.jsx';
+---
+
+<BaseLayout title="Arkangel — Demo interactiva | Ark System">
+  <Section id="portfolio-arkangel" variant="void" padding="lg">
+    <Container>
+      <div class="mb-12 text-center">
+        <a
+          href="/portfolio"
+          class="inline-flex items-center gap-2 font-mono text-sm text-zinc-500 transition-colors hover:text-white"
+        >
+          ← Volver al Portfolio
+        </a>
+        <div class="mt-6">
+          <span class="mb-2 block font-mono text-sm text-accent">
+            TEMPLATE 08 • FINTECH • LEY COMO CÓDIGO
+          </span>
+          <h1 class="text-4xl font-bold text-white sm:text-5xl">Arkangel</h1>
+        </div>
+        <p class="mx-auto mt-4 max-w-3xl text-lg leading-relaxed text-zinc-400">
+          Explora un concepto de compliance como código: conductas ilustrativas, casos de muestra y
+          un ledger de demostración con interacciones simuladas.
+        </p>
+        <p class="mx-auto mt-3 max-w-3xl rounded-lg border border-amber-400/30 bg-amber-400/10 p-3 text-sm text-amber-200">
+          Simulación únicamente: todos los casos, cifras y registros son ficticios. No está
+          conectada a sistemas de cobranza, D1 ni R2. Las referencias legales son ilustrativas y
+          esta demo no constituye asesoría legal ni promete resultados jurídicos.
+        </p>
+      </div>
+
+      <ArkangelApp client:only="react" />
+    </Container>
+  </Section>
+</BaseLayout>

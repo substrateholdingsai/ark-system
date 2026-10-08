@@ -1,0 +1,32 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Section from '../../components/layout/Section.astro';
+import Container from '../../components/layout/Container.astro';
+import VelvetApp from '../../components/portfolio/VelvetApp.jsx';
+---
+
+<BaseLayout title="Velvet Room — Demo interactiva | Ark System">
+  <Section id="portfolio-velvet" variant="void" padding="lg">
+    <Container>
+      <div class="mb-8 text-center">
+        <a
+          href="/portfolio"
+          class="inline-flex items-center gap-2 font-mono text-sm text-zinc-500 transition-colors hover:text-white"
+        >
+          ← Volver al Portfolio
+        </a>
+        <h1 class="mt-6 text-4xl font-bold text-white sm:text-5xl">Velvet Room</h1>
+        <p class="mx-auto mt-4 max-w-3xl rounded-lg border border-amber-400/30 bg-amber-400/10 p-3 text-sm text-amber-200">
+          Demo de portfolio: local, marca, menú, precios y horarios son ficticios. No se aceptan
+          reservas ni pagos y los enlaces de contacto y checkout están deshabilitados.
+        </p>
+        <p class="mx-auto mt-3 max-w-3xl text-xs text-zinc-400">
+          Concepto para mayores de edad. Las bebidas y precios son contenido ilustrativo, no una
+          oferta de venta.
+        </p>
+      </div>
+
+      <VelvetApp client:only="react" />
+    </Container>
+  </Section>
+</BaseLayout>

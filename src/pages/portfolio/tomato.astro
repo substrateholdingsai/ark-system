@@ -1,0 +1,40 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Section from '../../components/layout/Section.astro';
+import Container from '../../components/layout/Container.astro';
+import TomatoApp from '../../components/portfolio/TomatoApp.jsx';
+---
+
+<BaseLayout title="Tomato for Bitcoin — Portfolio | Ark System">
+  <Section id="portfolio-tomato" variant="void" padding="lg">
+    <Container>
+      <div class="mb-12 text-center">
+        <a
+          href="/portfolio"
+          class="inline-flex items-center gap-2 font-mono text-sm text-zinc-500 transition-colors hover:text-white"
+        >
+          ← Volver al Portfolio
+        </a>
+        <div class="mt-6">
+          <span class="mb-2 block font-mono text-sm text-accent">
+            TEMPLATE 03 • D2C • CAMPO A MESA • ₿
+          </span>
+          <h1 class="text-4xl font-bold text-white sm:text-5xl">Tomato for Bitcoin</h1>
+        </div>
+        <p class="mx-auto mt-4 max-w-3xl text-lg leading-relaxed text-zinc-400">
+          Demo interactiva de un tianguis descentralizado que conecta productores locales con sus
+          clientes. Explora la cosecha, arma una canasta y prueba el flujo de checkout de
+          demostración.
+        </p>
+        <p class="mx-auto mt-3 max-w-3xl text-sm text-amber-300">
+          Entorno de demostración: catálogo, existencias, CLABE y pagos son datos ficticios. No
+          realices transferencias ni pagos.
+        </p>
+      </div>
+
+      <div class="overflow-hidden rounded-xl border border-border shadow-2xl">
+        <TomatoApp client:only="react" />
+      </div>
+    </Container>
+  </Section>
+</BaseLayout>
