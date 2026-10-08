@@ -4,30 +4,26 @@ export default {
   theme: {
     extend: {
       colors: {
-        // The Void (Neutrals)
-        void: 'rgb(var(--color-ark-void) / <alpha-value>)',
-        base: 'rgb(var(--color-ark-base) / <alpha-value>)',
-        surface: 'rgb(var(--color-ark-surface) / <alpha-value>)',
-        'surface-hover': 'rgb(var(--color-ark-surface-hover) / <alpha-value>)',
-
-        // Dynamic Accents (The "Ark Pulse")
-        // Use CSS variables in a format that supports Tailwind opacity modifiers
-        // like bg-ark-accent/30, bg-ark-accent/50, etc.
+        void: 'hsl(var(--void) / <alpha-value>)',
+        base: 'hsl(var(--base) / <alpha-value>)',
+        surface: 'hsl(var(--surface) / <alpha-value>)',
+        'surface-hover': 'hsl(var(--surface-hover) / <alpha-value>)',
+        border: 'hsl(var(--border))',
         ark: {
-          accent: 'rgb(var(--color-ark-accent) / <alpha-value>)',
-          'accent-hover': 'rgb(var(--color-ark-accent-hover) / <alpha-value>)',
-          'accent-glow': 'rgb(var(--color-ark-accent-glow) / <alpha-value>)',
+          accent: 'hsl(var(--ark-accent) / <alpha-value>)',
+          'accent-hover': 'hsl(var(--ark-accent-hover) / <alpha-value>)',
+          'accent-glow': 'hsl(var(--ark-accent) / <alpha-value>)',
+          contrast: 'hsl(var(--ark-accent-contrast) / <alpha-value>)',
         },
 
-        // Semantic
-        success: '#10B981',
-        warning: '#F59E0B',
-        error: '#EF4444',
+        success: 'hsl(var(--success) / <alpha-value>)',
+        warning: 'hsl(var(--warning) / <alpha-value>)',
+        error: 'hsl(var(--error) / <alpha-value>)',
       },
       fontFamily: {
-        display: ['"Plus Jakarta Sans"', 'sans-serif'],
-        body: ['"Inter"', 'sans-serif'],
-        mono: ['"JetBrains Mono"', 'monospace'],
+        display: ['var(--font-display)'],
+        body: ['var(--font-body)'],
+        mono: ['var(--font-mono)'],
       },
       transitionTimingFunction: {
         ark: 'cubic-bezier(0.16, 1, 0.3, 1)',
@@ -48,7 +44,7 @@ export default {
       },
       boxShadow: {
         'ark-card': '0 0 0 1px rgba(255, 255, 255, 0.05), 0 4px 6px -1px rgba(0, 0, 0, 0.1)',
-        'ark-glow': '0 0 40px -10px var(--color-ark-accent-glow)',
+        'ark-glow': '0 0 40px -10px hsl(var(--ark-accent) / 0.55)',
       },
       maxWidth: {
         'ark-container': '1280px', // 7xl
