@@ -2,7 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Section from '../components/layout/Section.astro';
 import Container from '../components/layout/Container.astro';
-import TemozoniaApp from '../components/portfolio/TemozoniaApp.jsx';
+import Button from '../components/ui/Button.astro';
 ---
 
 <BaseLayout title="Portafolio | Ark System">
@@ -20,64 +20,96 @@ import TemozoniaApp from '../components/portfolio/TemozoniaApp.jsx';
         </p>
       </div>
 
-      <div class="grid gap-12">
-        <article class="group relative mb-12 overflow-hidden rounded-2xl border border-border bg-surface">
-          <div class="p-8 md:p-12">
-            <div class="mb-8 flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
-              <div>
-                <span class="mb-2 block font-mono text-sm text-accent">
-                  CLIENTE 02 • E-COMMERCE EDGE
-                </span>
-                <h2 class="text-3xl font-bold text-white">Temozonia Carnes Ahumadas</h2>
-              </div>
+      <div class="grid gap-8 md:grid-cols-2">
+        <article class="group relative overflow-hidden rounded-2xl border border-border bg-surface transition-all duration-300 hover:border-accent/50 hover:shadow-xl">
+          <div class="aspect-video relative overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-br from-accent/20 via-transparent to-transparent group-hover:from-accent/30 transition-all duration-500" />
+            <div class="absolute inset-0 flex items-center justify-center">
+              <span class="font-mono text-6xl font-bold text-accent/10 group-hover:text-accent/20 transition-colors">⚡</span>
+            </div>
+          </div>
+          <div class="p-8">
+            <div class="mb-4 flex items-center justify-between gap-4">
+              <span class="font-mono text-sm text-accent">CLIENTE 02 • E-COMMERCE EDGE</span>
               <a
                 href="https://temozonia.com"
                 target="_blank"
                 rel="noopener noreferrer"
                 class="font-mono text-sm text-zinc-500 transition-colors hover:text-white"
               >
-                VISITAR SITIO REAL →
+                Sitio real →
               </a>
             </div>
-
-            <p class="mb-8 max-w-3xl leading-relaxed text-zinc-400">
-              Una tienda directa al consumidor que combina una experiencia de compra ágil con
-              checkout híbrido: BTCPay Server y Lightning Network para pagos digitales, más
-              WhatsApp Business para cerrar pedidos. Su infraestructura serverless en el edge está
-              preparada para responder a picos de tráfico sin mantener servidores dedicados.
+            <h2 class="mb-4 text-2xl font-bold text-white group-hover:text-accent transition-colors">
+              Temozonia Carnes Ahumadas
+            </h2>
+            <p class="mb-6 text-zinc-400">
+              Tienda D2C con checkout híbrido: Lightning Network + WhatsApp Business.
+              Infraestructura serverless en el edge para picos de tráfico sin servidores dedicados.
             </p>
-
-            <div class="overflow-hidden rounded-xl border border-border shadow-2xl">
-              <TemozoniaApp client:visible />
+            <div class="mb-6 flex flex-wrap gap-2">
+              <span class="rounded-full border border-border px-3 py-1 text-xs text-zinc-500">Astro 5</span>
+              <span class="rounded-full border border-border px-3 py-1 text-xs text-zinc-500">React 19</span>
+              <span class="rounded-full border border-border px-3 py-1 text-xs text-zinc-500">Lightning</span>
+              <span class="rounded-full border border-border px-3 py-1 text-xs text-zinc-500">Edge</span>
             </div>
-
-            <div class="mt-6 flex flex-wrap gap-x-4 gap-y-2 font-mono text-xs text-zinc-500">
-              <span>⚡ Isla React con hidratación visible</span>
-              <span>🛒 Estado del carrito en cliente</span>
-              <span>💳 Checkout multicanal</span>
-            </div>
+            <Button variant="secondary" href="/portfolio/temozonia" class="w-full sm:w-auto">
+              Ver demo interactiva
+            </Button>
           </div>
         </article>
 
-        <article
-          class="rounded-2xl border border-border bg-surface p-8 opacity-70 transition-opacity hover:opacity-100 md:p-12"
-        >
-          <span class="mb-2 block font-mono text-sm text-accent">
-            CLIENTE 01 • EDUCACIÓN
-          </span>
-          <h2 class="mb-4 text-3xl font-bold text-white">Acepta Bitcoin</h2>
-          <p class="mb-6 text-zinc-400">
-            Portal educativo y directorio de comercios crypto-friendly en LatAm.
-          </p>
-          <a
-            href="https://www.aceptabitcoin.org"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="border-b border-white/30 pb-1 text-white transition-colors hover:border-white"
-          >
-            Ver caso de estudio
-          </a>
+        <article class="group relative overflow-hidden rounded-2xl border border-border bg-surface transition-all duration-300 hover:border-accent/50 hover:shadow-xl">
+          <div class="aspect-video relative overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-br from-orange-500/20 via-transparent to-transparent group-hover:from-orange-500/30 transition-all duration-500" />
+            <div class="absolute inset-0 flex items-center justify-center">
+              <span class="font-mono text-6xl font-bold text-orange-500/10 group-hover:text-orange-500/20 transition-colors">₿</span>
+            </div>
+          </div>
+          <div class="p-8">
+            <div class="mb-4 flex items-center justify-between gap-4">
+              <span class="font-mono text-sm text-accent">CLIENTE 01 • EDUCACIÓN & DIRECTORIO</span>
+              <a
+                href="https://www.aceptabitcoin.org"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="font-mono text-sm text-zinc-500 transition-colors hover:text-white"
+              >
+                Sitio real →
+              </a>
+            </div>
+            <h2 class="mb-4 text-2xl font-bold text-white group-hover:text-accent transition-colors">
+              Acepta Bitcoin
+            </h2>
+            <p class="mb-6 text-zinc-400">
+              Portal educativo y directorio de comercios crypto-friendly en LatAm. 500+ comercios
+              listados en 15 países, construido sobre arquitectura estática edge-native.
+            </p>
+            <div class="mb-6 flex flex-wrap gap-2">
+              <span class="rounded-full border border-border px-3 py-1 text-xs text-zinc-500">Astro 5</span>
+              <span class="rounded-full border border-border px-3 py-1 text-xs text-zinc-500">Content Collections</span>
+              <span class="rounded-full border border-border px-3 py-1 text-xs text-zinc-500">SEO técnico</span>
+              <span class="rounded-full border border-border px-3 py-1 text-xs text-zinc-500">Edge</span>
+            </div>
+            <Button variant="secondary" href="/portfolio/acepta-bitcoin" class="w-full sm:w-auto">
+              Ver caso de estudio
+            </Button>
+          </div>
         </article>
+      </div>
+
+      <div class="mt-16 text-center">
+        <p class="mb-4 font-mono text-sm text-zinc-500">
+          ¿Quieres ser el próximo caso de éxito?
+        </p>
+        <Button
+          variant="primary"
+          href="https://cal.com/pablo-cortes-wuzivu/15min"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Agendar demo →
+        </Button>
       </div>
     </Container>
   </Section>

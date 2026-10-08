@@ -1,22 +1,23 @@
 ﻿# Ark System — Project Map
 
-> Current status snapshot for the repo as of 2026-10-05.
-> This document reflects the actual implementation in the codebase today, not the original aspirational roadmap.
+> Current status snapshot for the repo as of 2026-10-07.
+> This document reflects the current implementation in the codebase today, with the active deployment model set to Astro + Cloudflare Workers. It is not the original aspirational roadmap.
 
 ## 1. Executive Summary
 
-Ark System is a static marketing / conversion-site template for an edge-native web infrastructure brand. The project is built with Astro, Tailwind CSS, TypeScript, and Cloudflare Pages. The repo contains a functioning site scaffold, a typed config contract with Ark as Client 0, and CI/Lighthouse checks. The production build passes locally.
+Ark System is an edge-native marketing and conversion site built with Astro, Tailwind CSS, TypeScript, React islands, and Cloudflare Workers. The repo contains a functioning site scaffold, a typed config contract with Ark as Client 0, CI/Lighthouse checks, and an interactive Temozonia e-commerce demo on the portfolio route. The production build passes locally.
 
 Status at a glance:
 
-- Build status: **green** locally (`npm run build` completed successfully on 2026-10-05)
-- Core platform: Astro 5 + Tailwind 3 + Cloudflare Pages
+- Build status: **green** locally (`npm run build` passes with the current Cloudflare Workers configuration)
+- Core platform: Astro 5 + Tailwind 3 + React 19 + Cloudflare Workers (hybrid SSR + static assets)
 - Content model: typed reusable contract and Ark Client 0 instance in `src/data/config.ts`
 - Route architecture: implemented for 5 content pages (including `/brand`) and 404
-- Deployment config: present, but adapter/output strategy is not fully intentional
-- Placeholder content: still present, including contact/booking destinations, form endpoint, and sample pricing/portfolio content
+- Deployment config: Cloudflare adapter with server output, Worker config in `wrangler.jsonc`, and a `SESSION` KV binding for the adapter runtime
+- Portfolio: Temozonia React checkout demo plus Acepta Bitcoin case study; demo payment/contact details remain sample values and require client approval before production use
+- Placeholder content: still present, including contact/booking destinations, form endpoint, and sample pricing content
 - Onboarding documentation: available in `docs/client-onboarding.md`
-- Git baseline: commit `0f591d7` pushed to `origin/main`; working tree has local changes on branch `feat/ark-config-v1`
+- Latest portfolio implementation: interactive Temozonia prototype is active in `src/components/portfolio/TemozoniaApp.jsx` and `src/pages/portfolio.astro`
 - CI: workflow is defined in `.github/workflows/ci.yml`; Lighthouse budget exists, but remote CI status is not recorded here
 - **Vector assets**: 10 SVG assets generated via `scripts/generate-assets.py` in `public/assets/vector/`
 
@@ -29,30 +30,27 @@ The guiding design decisions in code are:
 1. Single source of truth for copy and links via `src/data/config.ts`
 2. Semantic design tokens in `src/styles/global.css` and `tailwind.config.mjs`
 3. File-based route composition with Astro pages and reusable section components
-4. Static-first deployment with a Cloudflare Pages adapter
+4. Server-rendered Astro deployment on Cloudflare Workers, with client-side hydration limited to interactive islands
 
 ## 3. Current Runtime / Deployment Model
 
 ```text
 Browser
-  -> Cloudflare Pages (Astro static output + adapter)
+  -> Cloudflare Worker (Astro server output)
   -> dist/
-     -> /index.html
-     -> /portfolio/index.html
-     -> /pricing/index.html
-     -> /contact/index.html
-     -> /404.html
+     -> Worker entrypoint (`_worker.js/`)
+     -> static assets and client bundles (`_astro/`)
 ```
 
 Current implementation details:
 
-- Astro config uses `output: 'static'`
-- Cloudflare adapter is enabled in `astro.config.mjs`
-- `wrangler.toml` is present and the project is configured for Cloudflare Pages deployment
+- Astro config uses `output: 'server'` and the Cloudflare adapter in `astro.config.mjs`
+- `wrangler.jsonc` configures the Cloudflare Worker, static asset binding, and session KV binding
+- React is integrated through `@astrojs/react`; the portfolio demo hydrates with `client:visible`
 - CI performs `npm run build` and runs Lighthouse checks against `./dist`
 - The project has a generated `dist/` directory from the latest local build attempt
 
-The local build currently passes. The Cloudflare adapter reports a non-blocking Sharp runtime compatibility warning; this does not establish remote CI or production deployment status.
+The local build currently passes. Astro reports a non-blocking warning that Cloudflare does not support Sharp at runtime; this does not establish remote CI or production deployment status.
 
 ## 4. Repository Structure
 
@@ -107,6 +105,8 @@ ark-system/
 │   │   │   ├── PortfolioGrid.astro
 │   │   │   ├── PricingTable.astro
 │   │   │   └── TechStack.astro
+│   │   ├── portfolio/
+│   │   │   └── TemozoniaApp.jsx        Interactive React checkout demo
 │   │   └── ui/
 │   │       ├── Badge.astro
 │   │       ├── Button.astro
@@ -143,8 +143,8 @@ ark-system/
 ├── README.md
 ├── tailwind.config.mjs
 ├── tsconfig.json
-├── wrangler.toml
-└── dist/                              Generated build output from the latest build attempt
+├── wrangler.jsonc                     Cloudflare Worker, assets, and KV configuration
+└── dist/                              Generated Astro Worker and client build output
 ```
 
 ## 5. Route Map
@@ -159,6 +159,8 @@ The site includes the following implemented pages:
 - `/brand` — brand system preview page (internal)
 
 The route model is file-based and follows Astro conventions.
+
+The `/portfolio` page includes an edge-native technology introduction and two case studies. Temozonia embeds `src/components/portfolio/TemozoniaApp.jsx` as a React island with `client:visible`; it provides a sample product catalog, local cart state, WhatsApp order link, CLABE copy action, and Lightning payment details. The page loads the island client when it becomes visible. These payment/contact details are demonstration values, not a live payment integration.
 
 ## 6. Design / Theme Architecture
 
@@ -197,7 +199,9 @@ This is the main architectural strength of the repo and is the closest thing to 
 - Tailwind design tokens and global styles
 - Reusable UI primitives (Button, Card, Badge, Input)
 - Config-driven landing page sections
-- Cloudflare Pages deployment configuration
+- Cloudflare Workers deployment configuration (Astro server output + static asset binding)
+- React integration via `@astrojs/react`, used by the portfolio's Temozonia demo
+- Temozonia checkout prototype with cart quantity management, WhatsApp order link, CLABE copy action, and Lightning payment details
 - CI workflow and Lighthouse budget configuration
 - **Vector asset generation script (`scripts/generate-assets.py`)**
 - **10 SVG brand assets (logo, favicon, glows, grids, portfolio placeholders)**
@@ -210,15 +214,16 @@ This is the main architectural strength of the repo and is the closest thing to 
 - Contact CTA link uses placeholder `cal.com/your-ark-team/...`
 - Form uses placeholder Formspree endpoint or a non-functional form target
 - Pricing data is a single-tier demo configuration
-- Portfolio data is a single-item sample rather than a full client set
+- Portfolio data in the site config remains a sample; `/portfolio` has a separate Temozonia interactive demo and Acepta Bitcoin case study
+- Temozonia demo payment identifiers and contact details are hard-coded sample values and need approval before any real use
 - `public/sitemap.xml` is manually maintained instead of generated by Astro
 - `src/layouts/BaseLayout.astro` still pulls Google Fonts directly and is not fully optimized for performance
 
 ### 8.3 Not yet production-ready
 
-- `npm run build` passes locally; it reported a Cloudflare/Sharp runtime compatibility warning, which did not block the static build
+- The Temozonia React demo is an interactive prototype; its payment/contact configuration is embedded sample data and is not evidence of a production payment integration
 - Business-specific links, form handling, and demo content still need client-approved production values
-- The Cloudflare adapter remains enabled even though the project is static-first; the repo is not clearly committed to a pure-static vs hybrid deployment model
+- The Cloudflare Worker deployment requires valid account configuration, including the session KV binding
 - The theming engine is partially implemented; the client onboarding workflow is documented in `docs/client-onboarding.md`
 - No end-to-end integration or feature tests beyond CI/static checks
 
@@ -226,13 +231,13 @@ This is the main architectural strength of the repo and is the closest thing to 
 
 ### Current verification result
 
-A local `npm run build` completed successfully on 2026-10-05:
+A local `npm run build` passes with the current configuration, including the Temozonia React island and the Cloudflare Workers adapter:
 
 - `astro check`: 0 errors, 0 warnings, 0 hints
-- `astro build`: completed and prerendered the site's routes
-- Astro emitted a warning that Cloudflare does not support Sharp at runtime; this did not fail the build. The adapter notes that `imageService: "compile"` can be used for build-time optimization of prerendered images.
+- `astro build`: completed the Cloudflare Worker server build and client build; the Temozonia demo client module was emitted as a separate bundle
+- Astro emitted a non-blocking warning that Cloudflare does not support Sharp at runtime
 
-This confirms the current source builds locally; it does not verify deployed behavior, third-party form delivery, or remote CI.
+This confirms the source builds locally; it does not verify deployed behavior, third-party form delivery, or remote CI.
 
 ### Existing quality scaffolding
 
@@ -243,8 +248,8 @@ This confirms the current source builds locally; it does not verify deployed beh
 ## 10. High-Level Risks And Gaps
 
 1. Client-facing placeholders remain and must be replaced before launch.
-2. Static content is content-rich but not yet client-ready for real production use.
-3. Deployment strategy is configured but not cleanly aligned with the project's actual static architecture.
+2. Portfolio and payment-demo details are not yet client-approved for production use.
+3. Cloudflare Worker deployment configuration and account bindings must remain valid for deployment.
 4. The design system is partially tokenized; hardcoded text/border colors and the logo/header integration may require client-specific changes.
 
 ## 11. Recommended Next Priorities
@@ -252,21 +257,21 @@ This confirms the current source builds locally; it does not verify deployed beh
 1. Replace placeholder CTA, booking, and form destinations with client-approved production values.
 2. Replace demo copy, pricing, statistics, and portfolio entries with approved client content.
 3. **COMPLETED: Brand assets generated and integrated (logo, favicon, backgrounds, placeholders)**
-4. Confirm the Cloudflare Pages project, domain, sitemap, robots, and deployment strategy for the target site.
-5. Decide whether to retain the Cloudflare adapter and whether to generate the currently hand-maintained sitemap.
+4. Confirm the Cloudflare Worker project, domain, sitemap, robots, and deployment configuration for the target site.
+5. Review whether to generate the currently hand-maintained sitemap.
 6. Extend design tokens where needed and add integration/end-to-end coverage if the template's scope requires it.
 
 ## 12. Bottom Line
 
-The repo is a structured, config-driven marketing-site template with reusable routes, components, and documented client-onboarding steps. Its local production build is green and a baseline commit is published on `main`. It is not yet production-ready for a particular client: placeholders, assets, external integrations, and deployment details still need to be supplied and verified.
+The repo is a structured, config-driven marketing site with reusable routes, components, documented client-onboarding steps, and an interactive React checkout prototype on `/portfolio`. Its local production build is green. It is not yet production-ready for a particular client: placeholders, payment/contact demo values, external integrations, and deployment details still need to be supplied and verified.
 
-**NEW (2026-10-05)**: Vector asset pipeline is operational. The brand visual system now has 10 production-ready SVGs generated programmatically, integrated into Hero (glow/grid backgrounds), Portfolio (geometric placeholders), and Layout (favicon/logo). This eliminates the previous dependency on manual asset creation.
+**Current status (2026-10-07)**: Vector asset pipeline is operational. The brand visual system now has 10 production-ready SVGs generated programmatically, integrated into Hero (glow/grid backgrounds), Portfolio (geometric placeholders), and Layout (favicon/logo). This eliminates the previous dependency on manual asset creation.
 
 ---
 
-## 13. Hybrid Deployment Migration (2026-10-06)
+## 13. Current Deployment Model (2026-10-07)
 
-> This section documents the switch from Cloudflare Pages (static-only) to a **Cloudflare Workers hybrid model** that serves the Astro SSR build through a Worker with static asset bindings.
+> This section reflects the active deployment model in the repo today: a **Cloudflare Workers hybrid setup** that serves the Astro SSR build through a Worker with static asset bindings.
 
 ### 13.1 What Changed
 
@@ -306,7 +311,7 @@ The repo is a structured, config-driven marketing-site template with reusable ro
 
 ### 13.3 Build Verification
 
-`npm run build` (2026-10-06) passes with **0 errors, 0 warnings**. The output directory now contains:
+The latest local `npm run build` passes on the current branch. `astro check` reports **0 errors, 0 warnings, and 0 hints**; the Cloudflare adapter still emits a non-blocking Sharp runtime compatibility warning during the build. The output directory contains:
 
 ```
 dist/
@@ -329,13 +334,14 @@ npm run build
 npm run deploy   # runs: wrangler deploy
 ```
 
-### 13.6 Live Status (2026-10-06)
+### 13.6 Live Status (2026-10-07)
 
 - **URL**: https://ark-system.substrateholdingsai.workers.dev
 - **Version ID**: `06349b85-3fe6-422e-a8da-eec7918862a3`
 - **Bindings**: `SESSION` KV namespace (`316c37d5fe864e4bab912a0dbbe6b00a`), `ASSETS`
 - **Worker startup time**: 29 ms
 - **Assets uploaded**: 18 files (886.46 KiB)
+- **Active model**: Cloudflare Workers hybrid deployment using Astro server output and static assets
 
 ### 13.7 Deployment Troubleshooting Log
 

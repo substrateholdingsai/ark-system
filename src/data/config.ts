@@ -642,4 +642,84 @@ export const config: SiteConfig = {
   },
 } as const;
 
+export const demos = {
+  temozonia: {
+    enabled: true,
+    demoMode: true,
+    brand: {
+      name: 'Temozonia Carnes Ahumadas',
+      colors: { primary: '#7E1D0F', bg: '#FFF9F3', accent: '#FF8800' },
+    },
+    payments: {
+      clabe: {
+        number: '123456789012345678',
+        bank: 'BBVA',
+        holder: 'Temozonia Carnes Ahumadas',
+      },
+      btcpayUrl: 'https://btcpay.temozonia.com',
+      whatsapp: '529994918221',
+      whatsappDisplay: '+52 999 491 8221',
+      lightningAddress: 'temozonia@blink.sv',
+      satsRate: 2.5,
+    },
+    products: [
+      {
+        id: 'carne',
+        name: 'Carne Ahumada',
+        weight: '1kg',
+        price: 380,
+        desc: 'Brisquet ahumado 8h con mezquite. Jugosa, en lonchas.',
+        badge: 'MÁS VENDIDA',
+        stock: 12,
+        image:
+          'https://images.unsplash.com/photo-1546964124-0c9a1f7b5a67?q=80&w=800&auto=format&fit=crop',
+      },
+      {
+        id: 'costilla',
+        name: 'Costilla Ahumada',
+        weight: '1kg',
+        price: 420,
+        desc: 'Costillar St. Louis con rub de la casa, ahumado bajo y lento.',
+        badge: 'PREMIUM',
+        stock: 8,
+        image:
+          'https://images.unsplash.com/photo-1558030006-450066393d65?q=80&w=800&auto=format&fit=crop',
+      },
+      {
+        id: 'longaniza',
+        name: 'Longaniza Ahumada',
+        weight: '1kg',
+        price: 320,
+        desc: 'Artesanal, tripa natural, ahumada con encino. Ideal para tacos.',
+        badge: 'TOP',
+        stock: 15,
+        image:
+          'https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?q=80&w=800&auto=format&fit=crop',
+      },
+      {
+        id: 'chamorro',
+        name: 'Chamorro Ahumado',
+        weight: 'pieza 1.2kg',
+        price: 280,
+        desc: 'Chamorro curado y ahumado, gelatinoso y tierno. Listo para calentar.',
+        badge: 'NUEVO',
+        stock: 9,
+        image:
+          'https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=800&auto=format&fit=crop',
+      },
+      {
+        id: 'pack',
+        name: 'Pack Parrillero',
+        weight: '2kg mixto',
+        price: 650,
+        desc: 'Mix bestseller: 1kg carne + 500g costilla + 500g longaniza. Ahorra $70',
+        badge: 'AHORRO',
+        stock: 6,
+        image:
+          'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=800&auto=format&fit=crop',
+      },
+    ],
+  },
+} as const;
+
 export const pageTitle = `${config.brand.name} — ${config.brand.tagline}`;
