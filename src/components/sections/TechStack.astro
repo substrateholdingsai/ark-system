@@ -18,8 +18,8 @@ import { config } from '@/data/config';
     <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {config.stack.map((item) => (
         <div class="ark-card group flex items-center gap-4 p-6 transition-all duration-300 ease-ark hover:border-white/[0.15]">
-          <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-ark-accent/10 text-lg font-bold text-ark-accent transition-transform duration-300 ease-ark group-hover:scale-110">
-            {item.name[0]}
+          <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-ark-accent/10 text-xs font-black tracking-wider text-ark-accent transition-transform duration-300 ease-ark group-hover:scale-110">
+            {item.name.slice(0, 3).toUpperCase()}
           </div>
           <div class="flex-1 min-w-0">
             <h3 class="text-[15px] font-semibold text-white truncate">{item.name}</h3>

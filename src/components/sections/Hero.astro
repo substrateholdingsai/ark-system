@@ -168,10 +168,11 @@ const leasingPlan = config.pricing.plans.find((plan) => plan.id === 'leasing');
               <span class="text-zinc-300"> {'{'}</span>
               <span class="text-violet-300"> leasing</span>
               <span class="text-zinc-500">:</span>
-              <span class="text-amber-300">
-                {' '}
-                "${leasingPlan?.monthly ?? '—'}/{leasingPlan?.currency ?? 'USD'} · mes"
-              </span>
+              <span class="text-amber-300"> "${leasingPlan?.monthly ?? '—'}/mes (Todo incluido)"</span>
+              <span class="text-zinc-500">,</span>
+              <span class="text-violet-300"> oneTime</span>
+              <span class="text-zinc-500">:</span>
+              <span class="text-amber-300"> "Compra directa"</span>
               <span class="text-zinc-300"> {'}'}</span>
             </div>
             <div class="whitespace-nowrap text-zinc-300">{'}'}</div>
@@ -202,10 +203,10 @@ const leasingPlan = config.pricing.plans.find((plan) => plan.id === 'leasing');
 
         <div class="absolute -right-3 top-16 hidden items-center gap-2 rounded-full bg-white px-3 py-1.5 text-[10px] font-black text-black shadow-xl sm:flex lg:-right-4">
           <span class="h-2 w-2 rounded-full bg-emerald-500"></span>
-          EDGE • WORKERS
+          EDGE • CLOUDFLARE
         </div>
         <div class="absolute -left-3 bottom-12 hidden items-center gap-2 rounded-full bg-ark-accent px-3 py-1.5 text-[10px] font-black text-black shadow-xl sm:flex lg:-left-5">
-          ⚡ JS SOLO EN ISLAS
+          ⚡ CARGA EN MENOS DE 400MS
         </div>
       </div>
     </div>

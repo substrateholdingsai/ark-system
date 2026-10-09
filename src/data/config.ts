@@ -243,7 +243,7 @@ export interface SiteConfig {
 export const config: SiteConfig = {
   brand: {
     name: 'ARK SYSTEMS',
-    displayName: 'ARK SYSTEMS_',
+    displayName: 'ARK SYSTEMS',
     legalName: 'Substrate Holdings LLC',
     tagline: '0 servidores. 0 humo.',
     domain: 'arksystems.dev',
@@ -268,27 +268,25 @@ export const config: SiteConfig = {
   ],
 
   hero: {
-    headline: 'Las webs de museo murieron.',
+    headline: 'Sitios web ultra rápidos en arrendamiento o compra',
     subheadline:
-      'WordPress te cobra por respirar. Wix te encierra en su juguete. Ark Systems es infraestructura real: 1 config, 0 servidores, deploy en 2 comandos.',
+      'Construimos e-commerces, catálogos y plataformas de alto rendimiento desplegadas en el Edge global de Cloudflare. Elige entre suscripción mensual sin costo inicial o compra única.',
     stats: [
-      { value: '95+', label: 'LIGHTHOUSE' },
-      { value: '$0', label: 'SSL AUTOMÁTICO' },
-      { value: '2', label: 'COMANDOS DEPLOY' },
+      { value: '100/100', label: 'LIGHTHOUSE SCORE' },
+      { value: '<0.4s', label: 'TIEMPO DE CARGA' },
+      { value: '300+', label: 'CIUDADES EN EDGE' },
     ],
     primaryCta: {
-      label: 'AGENDAR DEMO',
-      href: 'https://cal.com/pablo-cortes-wuzivu/15min',
-      external: true,
+      label: 'Ver Demos y Portafolio',
+      href: '/portfolio',
       variant: 'primary',
     },
     secondaryCta: {
-      label: 'VER PRICING',
+      label: 'Planes de Arrendamiento',
       href: '#pricing',
-      external: false,
-      variant: 'secondary',
+      variant: 'ghost',
     },
-    microcopy: 'Sin humo. Sin lock-in. Sin museos digitales.',
+    microcopy: 'Publicado en el Edge en < 15 segundos • Carga instantánea • 100/100 Lighthouse',
   },
 
   portfolio: [
@@ -374,18 +372,37 @@ export const config: SiteConfig = {
   },
 
   stackSection: {
-    label: 'STACK EDGE-NATIVE',
-    headline: 'La infraestructura detrás de la promesa.',
+    label: 'INFRAESTRUCTURA & TECNOLOGÍA',
+    headline: 'Desarrollo Edge-Native con arquitectura moderna',
     subheadline:
-      'Cada pieza tiene una función clara: servir rápido, mantener el control y evitar dependencias innecesarias.',
+      'Construimos e-commerces y plataformas digitales sobre el stack técnico más rápido del mundo, bajo un modelo de leasing fiscalmente optimizado para PYMEs y profesionales.',
   },
 
   stack: [
-    { name: 'Cloudflare Pages', desc: 'Edge global, 300+ pops, deploys atómicos.' },
-    { name: 'Astro 5', desc: 'Static first, islands opcionales, 0 JS default.' },
-    { name: 'Tailwind', desc: 'Tokens semánticos, sin componente con color hardcodeado.' },
-    { name: 'TypeScript strict', desc: 'config.ts tipada, no any, no sustos.' },
-    { name: 'Wrangler', desc: 'wrangler pages deploy • 12s • una línea.' },
+    {
+      name: 'Astro 5 + TypeScript',
+      desc: 'Arquitectura de islas tipo-segura para velocidad extrema y score 100/100 en Lighthouse.',
+    },
+    {
+      name: 'Cloudflare Edge / Workers',
+      desc: 'Ejecución serverless en +300 ciudades con latencia <40ms y cero cold starts.',
+    },
+    {
+      name: 'Python & Engine IA',
+      desc: 'Scripts de automatización, procesamiento de datos y microservicios de IA integrados.',
+    },
+    {
+      name: 'Bases de Datos Edge (D1 & Vector)',
+      desc: 'Almacenamiento SQL y búsqueda vectorial para agentes inteligentes sin servidores tradicionales.',
+    },
+    {
+      name: 'Pasarelas Multi-Moneda',
+      desc: 'Integración nativa de cobros con Tarjeta (Stripe), SPEI o Bitcoin / Lightning Network.',
+    },
+    {
+      name: 'Seguridad WAF & Zero Trust',
+      desc: 'Protección anti-DDoS, certificados SSL automáticos y cifrado de grado empresarial.',
+    },
   ],
 
   useCases: {
@@ -444,165 +461,151 @@ export const config: SiteConfig = {
   },
 
   pricing: {
-    label: 'PRICING • SIN TRUCOS',
-    headline: 'Elige tu forma de no quedarte obsoleto.',
+    label: 'MODELO DE INFRAESTRUCTURA',
+    headline: 'Elige cómo desplegar tu presencia digital',
     subheadline:
-      'Compra única si quieres código y control inmediato. Leasing si quieres web siempre actual, deducible y sin golpe fuerte al flujo.',
+      'Sin sorpresas de mantenimiento ni servidores obsoletos. Escoge entre un arrendamiento mensual todo incluido o la adquisición de tu código fuente.',
 
     plans: [
       {
-        id: 'museum',
-        kind: 'anti-plan',
-        label: 'PLAN MUSEO',
-        name: 'WordPress Museo',
-        price: 20000,
-        currency: 'MXN',
-        billing: 'one_time',
-        monthlyEquivalent: 500,
-        available: false,
-        badge: 'NO RECOMENDADO • MUSEO DIGITAL',
-        summary:
-          'Setup + plantilla premium. Tú pagas hosting, SSL y dominio aparte. Se ve bien 6 meses. Luego museo.',
-        bullets: [
-          'Hosting $1,200 MXN/año, y sube cada año',
-          'SSL $1,000 MXN/año',
-          'Dominio $400 MXN/año',
-          'Mantenimiento WordPress/plugins $3,600 MXN/año o te hackean',
-          'Actualización de diseño $8,000 MXN cada 3 años, que nunca pagas',
-          'Velocidad 2.8s–4s: pierdes clientes',
-          'Obsolescencia garantizada a los 2 años',
-          'Fiscal: se capitaliza, amortizas en 3 años, contador sufre',
-          'Código: te entregan un zip que nadie puede mantener',
-        ],
-        total: '~$45,000 MXN en 3 años + web vieja',
-        cta: undefined, // Anti-plan no tiene CTA
-      },
-      {
-        id: 'purchase',
-        kind: 'offer',
-        label: 'PARA TECHIES',
-        name: 'Ark Compra Única',
-        price: 999,
-        currency: 'USD',
-        billing: 'one_time',
-        subprice: '+ $0/mes. Repo tuyo desde día 1.',
-        summary:
-          'Para quien quiere código, control y fork. Tú hosteas. Nosotros guiamos. Sin updates incluidos.',
-        includes: [
-          'Código completo Astro 5',
-          'config.ts + brand + tokens + contenido inicial',
-          'Guía de deploy en Cloudflare Pages',
-          'Repo privado GitHub entregado',
-          'Dominio configurado por tu cuenta',
-          'SSL gestionado por plataforma',
-        ],
-        excludes: [
-          'Updates anuales incluidos',
-          'Cambios mensuales incluidos',
-          'Hosting administrado',
-          'Soporte infinito',
-        ],
-        cta: {
-          label: 'VER REPO →',
-          href: 'https://github.com/your-org/ark-system', // PENDIENTE: URL real
-          external: true,
-          variant: 'secondary',
-        },
-        microcopy: 'Ideal si quieres el código y sabes mantenerlo.',
-        available: true,
-      },
-      {
         id: 'leasing',
         kind: 'offer',
-        label: '★ RECOMENDADO • LEASING',
-        name: 'Ark Leasing',
+        label: 'OPEX • MÁS POPULAR',
+        name: 'Arrendamiento Core',
+        monthly: 3890,
+        currency: 'MXN',
         setup: 0,
-        monthly: 249,
-        currency: 'USD',
-        contractMonths: 12,
-        residual: 499,
-        subprice:
-          'Residual $499 USD al final, o renueva y te la dejamos como nueva con última tecnología.',
-        summary: 'TODO incluido por $249 USD/mes — renta fija, no sorpresas.',
+        subprice: 'Renta 100% deducible de ISR e IVA acreditable',
+        available: true,
+        badge: 'RECOMENDADO',
+        summary:
+          'Ideal para pymes, restaurantes, e-commerce y firmas profesionales que buscan lanzar sin gasto inicial alto.',
         includes: [
-          'Hosting Edge Global Cloudflare',
-          'SSL infinito auto-renovable',
-          'Dominio según plan, pendiente definir inclusión exacta',
-          'Updates de infraestructura base',
-          '1 hora de cambios/mes incluidos',
-          'Rediseño anual si renuevas',
-          '100% deducible + CFDI mensual, sujeto a criterio contable',
-          'Lighthouse 95+ como estándar bajo presupuesto definido',
-          'Repo privado GitHub durante el contrato',
-          'Opción de pagar residual $499 USD y quedarte con repo completo',
+          'Desarrollo e infraestructura Edge completa (Astro + Cloudflare)',
+          'Hosting global serverless + SSL + WAF anti-DDoS',
+          'Carga ultra rápida (< 400ms en Edge global)',
+          'Soporte y actualización de contenidos incluida',
+          'Mantenimiento continuo y monitoreo 24/7',
         ],
-        total36Months: '$8,964 USD en 36 meses, 100% deducible según estructura fiscal acordada.',
         cta: {
-          label: 'Empezar Leasing →',
+          label: 'Comenzar en Leasing',
           href: 'https://cal.com/pablo-cortes-wuzivu/15min',
           external: true,
           variant: 'primary',
         },
-        ctaBadge: 'sin setup',
-        microcopy: 'Sin permanencia forzada • Cancela cuando quieras • CFDI mensual',
+        microcopy: 'Cancelación flexible • Sin activos desactualizados',
+      },
+      {
+        id: 'leasing-pro',
+        kind: 'offer',
+        label: 'OPEX • ENTERPRISE',
+        name: 'Arrendamiento Pro + IA / Apps',
+        monthly: 6890,
+        currency: 'MXN',
+        setup: 0,
+        subprice: 'Deducción de ISR efectiva (~$2,410 MXN costo real)',
+        summary:
+          'Para negocios que requieren pasarelas de pago avanzadas, agentes de IA o integraciones de catálogo/agenda.',
+        includes: [
+          'Todo lo del Plan Core',
+          'Agente de IA nativo para atención al cliente 24/7',
+          'Pasarelas de pago múltiples (Tarjetas, SPEI o Crypto/Lightning)',
+          'Integración de agenda en vivo o checkout automatizado',
+          'Infraestructura dedicada (Workers + Vector DB)',
+        ],
+        cta: {
+          label: 'Agendar Demo Pro',
+          href: 'https://cal.com/pablo-cortes-wuzivu/15min',
+          external: true,
+          variant: 'primary',
+        },
+        available: true,
+      },
+      {
+        id: 'buyout',
+        kind: 'offer',
+        label: 'CAPEX • ADQUISICIÓN',
+        name: 'Licencia / Compra Única',
+        price: 55000,
+        currency: 'MXN',
+        billing: 'one_time',
+        subprice: 'Activo intangible amortizable',
+        summary:
+          'Para empresas con equipo técnico propio que desean ser dueñas absolutas del código fuente y repositorio.',
+        includes: [
+          'Entrega total del repositorio de código (GitHub)',
+          'Despliegue inicial en tu propia cuenta de Cloudflare',
+          'Ownership y licencias completas del software',
+          '30 días de garantía y transferencia técnica',
+        ],
+        cta: {
+          label: 'Cotizar Compra Única',
+          href: 'https://cal.com/pablo-cortes-wuzivu/15min',
+          external: true,
+          variant: 'secondary',
+        },
         available: true,
       },
     ],
 
     fiscal: {
-      badge: '100% DEDUCIBLE • TU CONTADOR VA A QUERER SER NUESTRO SOCIO',
-      headline: 'No es un gasto. Es infraestructura deducible mes a mes.',
-      body: 'Compra única = activo intangible que se amortiza en 36 meses. Tu contador hace malabares, tu flujo sufre. Leasing Ark = gasto operativo mensual 100% deducible de ISR. Facturamos desde Substrate Holdings LLC (US) / Substrate México S.A. CFDI mensual incluido. Ideal para personas morales y físicas con actividad empresarial.',
-      badges: ['Incluye CFDI mensual', 'ISR 100% deducible', 'Sin activo en balance'],
+      badge: 'ESTRATEGIA FINANCIERA Y FISCAL',
+      headline: '¿Por qué conviene el Arrendamiento Operativo (OPEX)?',
+      body: 'Desarrollar software propio implica un gasto de capital (CAPEX) difícil de amortizar y que pierde valor rápidamente. Nuestro esquema de Arrendamiento Tecnológico convierte el desarrollo web en un gasto operativo puro.',
+      badges: [
+        '100% Deducible ISR',
+        'IVA Acreditable',
+        'Flujo de Cero Sorpresas',
+        'Siempre Actualizado',
+      ],
       comparison: [
         {
-          model: 'Compra $20k',
-          effect: 'Amortizas $555/mes x 36m',
-          cashflow: 'No deduces hoy',
+          model: 'Desarrollo Tradicional (CAPEX)',
+          effect:
+            'Inversión inicial fuerte ($60k - $120k+ MXN) + costos mensuales de servidor, parches y cambios.',
+          cashflow: 'Impacta tu flujo de efectivo inmediato y deprecia como activo a varios años.',
         },
         {
-          model: 'Leasing $249/mes',
-          effect: 'Deduces $4,200 MXN aprox. hoy',
-          cashflow: 'Flujo intacto',
+          model: 'Arrendamiento Ark-System (OPEX)',
+          effect:
+            'Cuota fija mensual 100% deducible. Incluye código, cambios, hosting en Cloudflare y soporte.',
+          cashflow:
+            'Optimiza tu estrategia fiscal desde el mes 1 y mantiene tu sitio en la tecnología más moderna.',
         },
       ],
       disclaimer:
-        '* La deducibilidad depende del régimen fiscal, criterio contable y estructura contractual de cada cliente. Esto no es asesoría fiscal.',
+        '* El impacto fiscal exacto depende del régimen tributario de tu empresa (RESICO, Persona Moral Ley General, etc.). Consulta con tu área contable.',
     },
 
     paymentMethods: [
       {
         code: 'MXN',
-        title: 'Pesos Mexicanos',
-        method: 'SPEI / Transferencia interbancaria',
-        badge: 'Más usado',
-        detail: 'CLABE • Referencia automática • CFDI en MXN',
+        title: 'Transferencia SPEI',
+        method: 'Factura fiscal B2B',
+        detail: 'Inmediato con CFDI 4.0',
       },
       {
-        code: 'USD',
-        title: 'Dólares',
-        method: 'ACH / Wire / USD-MXN sin comisión',
-        badge: 'Para US LLC',
-        detail: 'Mercury / Relay • Tipo de cambio FIX sin spread',
+        code: 'STRIPE',
+        title: 'Tarjetas de Crédito/Débito',
+        method: 'Cargo automático mensual',
+        detail: 'Suscripción sin fricción',
       },
       {
-        code: 'USDT',
-        title: 'Stablecoins',
-        method: 'TRC20, ERC20, Polygon, Arbitrum',
-        badge: 'USDT • USDC • DAI',
-        detail: 'Confirmación <2 min • Sin volatilidad',
+        code: 'BTC / SATS',
+        title: 'Bitcoin / Lightning Network',
+        method: 'Soberanía digital',
+        detail: 'Sin intermediarios vía BTCPay/Blink',
       },
       {
-        code: 'BTC',
-        title: 'Bitcoin',
-        method: 'On-chain + Lightning Network',
-        badge: '0% comisión',
-        detail: 'BTCPay Server self-hosted • No custodial',
+        code: 'STABLECOINS',
+        title: 'USDT / USDC',
+        method: 'Redes Polygon / Solana / Tron',
+        detail: 'Pagos internacionales instantáneos',
       },
     ],
 
     btcCopy:
-      'Si aceptas Bitcoin en tu negocio, ¿por qué tu agencia no? BTCPay Server • Sin intermediarios • Tú controlas tus llaves.',
+      'Soportamos pagos en activos digitales tanto en capa base como en capas de segunda generación (Lightning/Solana) con facturación equivalente.',
   },
 
   finalCta: {
