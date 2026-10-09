@@ -6,37 +6,22 @@ import { defineMiddleware } from 'astro:middleware';
  * Esto permite que las API Routes accedan a AI, DB, KV, etc. sin pasar `env` manualmente.
  */
 
-interface CloudflareEnv {
-  AI: any;
-  DB: any;
-  SESSION: any;
-}
-
-interface ExtendedContext {
-  env: CloudflareEnv;
-  locals: {
-    ai: CloudflareEnv['AI'];
-    db: CloudflareEnv['DB'];
-    session: CloudflareEnv['SESSION'];
-  };
-}
-
 export const onRequest = defineMiddleware(async (context, next) => {
-  // Type assertion for Cloudflare bindings (via unknown to satisfy strict checks)
-  const ctx = context as unknown as ExtendedContext;
+  // Obtener bindings del runtime de Cloudflare (inyectado por el adapter en locals.runtime)
+  const runtime = (context.locals as any).runtime?.env;
 
-  // Inyectar bindings de Cloudflare en locals
-  // Nota: Estos bindings deben existir en wrangler.jsonc
-  ctx.locals.ai = ctx.env.AI;
-  ctx.locals.db = ctx.env.DB;
-  ctx.locals.session = ctx.env.SESSION;
+  if (runtime) {
+    context.locals.ai = runtime.AI;
+    context.locals.db = runtime.DB;
+    context.locals.session = runtime.SESSION;
+  }
 
   // Opcional: Log de depuración en desarrollo
   if (import.meta.env.DEV) {
     console.log('[middleware] Bindings inyectados:', {
-      ai: !!ctx.env.AI,
-      db: !!ctx.env.DB,
-      session: !!ctx.env.SESSION,
+      ai: !!context.locals.ai,
+      db: !!context.locals.db,
+      session: !!context.locals.session,
     });
   }
 

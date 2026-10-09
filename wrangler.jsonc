@@ -1,6 +1,7 @@
 {
   "name": "ark-system",
   "compatibility_date": "2026-10-09",
+  "account_id": "ccab12c2e99a74d45eda626cb81c5c0c",
   "main": "./dist/_worker.js/index.js",
   "assets": {
     "directory": "./dist",
