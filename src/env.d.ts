@@ -29,3 +29,12 @@ interface ImportMetaEnv {
 interface ImportMeta {
   readonly env: ImportMetaEnv;
 }
+
+// Extender App.Locals para incluir bindings de Cloudflare Workers
+declare namespace App {
+  interface Locals {
+    ai: any; // Cloudflare Workers AI binding
+    db: any; // Cloudflare D1 Database binding (opcional, para RAG)
+    session: any; // Cloudflare KV Namespace binding
+  }
+}

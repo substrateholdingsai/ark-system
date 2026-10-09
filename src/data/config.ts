@@ -208,7 +208,6 @@ export interface SiteConfig {
   nav: NavLink[];
   hero: HeroSection;
   portfolio: PortfolioItem[];
-  problems: ProblemCard[];
   how: HowSection;
   stackSection: StackSectionCopy;
   stack: StackItem[];
@@ -305,50 +304,6 @@ export const config: SiteConfig = {
       image: '/assets/portfolio/labianca.jpg',
       description: 'Edge-hosted storefront with instant global delivery.',
       tags: ['Storefront'],
-    },
-  ],
-
-  problems: [
-    {
-      id: 'wordpress',
-      label: '01 / WORDPRESS MUSEO',
-      title: 'El stack que huele a humedad',
-      bullets: [
-        'hosting barato que se cae cuando más vendes',
-        'SSL que pagas aparte como si fuera lujo',
-        'plugins que se rompen entre sí',
-        '3s de carga y una experiencia que asusta',
-      ],
-      cost: '✕ $185/año + $300 de mantenimiento escondido',
-      highlight: false,
-    },
-    {
-      id: 'wix',
-      label: '02 / WIX / CONSTRUCTORES',
-      title: 'Juguete caro con candado',
-      bullets: [
-        'tu web vive dentro de su jaula',
-        'no exportas, no controlas, no te vas fácil',
-        'pagas por funciones que deberían ser básicas',
-        'el editor se siente como navegar con arena en los ojos',
-      ],
-      cost: '✕ lock-in total. soporte copy/paste que odia su trabajo (yo fui).',
-      highlight: false,
-    },
-    {
-      id: 'ark',
-      label: '03 / ARK SYSTEMS • PARADIGMA NUEVO',
-      title: '0 servidores. 0 humo.',
-      bullets: [
-        'Cloudflare Pages edge global • 300+ pops',
-        'SSL $0, automático y para siempre',
-        'config.ts como única fuente de verdad',
-        '0 JS por defecto, interactividad opcional',
-        'Lighthouse 95+ o devolvemos el setup, según términos',
-      ],
-      cost: '✓ $15/año total. el resto es arquitectura.',
-      badge: 'RECOMENDADO',
-      highlight: true,
     },
   ],
 
@@ -715,7 +670,7 @@ export const config: SiteConfig = {
     email: 'pavel@arksystems.site',
     whatsapp: '+525657062511',
     facebook: 'https://www.facebook.com/profile.php?id=61595271624798',
-    x: 'https://x.com/arksystems',
+    x: 'https://x.com/substrateholdns',
     formEndpoint: '/api/contact',
     bookingUrl: 'https://cal.com/pablo-cortes-wuzivu/15min',
   },

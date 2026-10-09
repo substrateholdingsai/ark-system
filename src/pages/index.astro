@@ -7,11 +7,13 @@ import PricingTable from '../components/sections/PricingTable.astro';
 import Section from '../components/layout/Section.astro';
 import Container from '../components/layout/Container.astro';
 import Button from '../components/ui/Button.astro';
+import BobChatWidget from '../components/BobChatWidget.tsx';
 import { config } from '@/data/config';
 ---
 
 <BaseLayout>
   <Hero />
+  <BobChatWidget client:visible mode="hero" />
   <ConfiguredContent />
   <TechStack />
   <PricingTable />

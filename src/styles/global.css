@@ -187,6 +187,14 @@
     @apply inline-flex items-center gap-1.5 rounded-full border border-ark-accent/20 bg-ark-accent/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-widest text-ark-accent;
   }
 
+  .ark-border {
+    border-color: hsl(var(--border));
+  }
+
+  .ark-border-strong {
+    border-color: hsl(var(--border-strong));
+  }
+
   .ark-grid {
     @apply grid gap-6;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -252,6 +260,30 @@
     .ark-grid-2 {
       grid-template-columns: 1fr;
     }
+  }
+
+  .custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--border-strong)) hsl(var(--base));
+  }
+
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: hsl(var(--base));
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: hsl(var(--border-strong));
+    border-radius: 3px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--border-strong));
+    opacity: 0.8;
   }
 }
 

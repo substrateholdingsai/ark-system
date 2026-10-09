@@ -80,7 +80,7 @@ import Button from '../components/ui/Button.astro';
         } else {
           throw new Error(data.error || 'Error al enviar');
         }
-      } catch (error) {
+      } catch (_error) {
         statusDiv.innerText = 'Hubo un error. Por favor intenta de nuevo.';
         statusDiv.className = 'text-center mt-4 text-red-500 font-medium';
       } finally {

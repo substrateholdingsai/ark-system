@@ -18,7 +18,7 @@ export const onRequestPost: PagesFunction = async ({ request }) => {
       status: 200,
       headers: { 'Content-Type': 'application/json' }
     });
-  } catch (error) {
+  } catch (_error) {
     return new Response(JSON.stringify({ error: 'Error interno del servidor' }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' }

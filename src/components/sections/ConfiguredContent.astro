@@ -6,37 +6,6 @@ import Badge from '../ui/Badge.astro';
 import { config } from '@/data/config';
 ---
 
-<Section variant="default" padding="lg" id="problema">
-  <Container>
-    <div class="grid gap-6 md:grid-cols-3">
-      {config.problems.map((problem) => (
-        <Card
-          class={`flex flex-col p-6 ${problem.highlight ? 'border-ark-accent/30 shadow-ark-glow' : ''}`}
-        >
-          <div class="flex items-center justify-between gap-3">
-            <p class="text-xs font-semibold uppercase tracking-wider text-zinc-400">
-              {problem.label}
-            </p>
-            {problem.badge && <Badge>{problem.badge}</Badge>}
-          </div>
-          <h2 class="mt-4 text-xl font-semibold text-white">{problem.title}</h2>
-          <ul class="mt-5 flex-1 space-y-3">
-            {problem.bullets.map((bullet) => (
-              <li class="flex gap-2 text-sm text-zinc-300">
-                <span aria-hidden="true" class="text-ark-accent">
-                  •
-                </span>
-                <span>{bullet}</span>
-              </li>
-            ))}
-          </ul>
-          <p class="mt-6 border-t border-white/10 pt-4 text-sm text-zinc-400">{problem.cost}</p>
-        </Card>
-      ))}
-    </div>
-  </Container>
-</Section>
-
 <Section variant="surface" padding="lg" id="como">
   <Container>
     <div class="mx-auto max-w-3xl text-center">
