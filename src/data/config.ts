@@ -68,6 +68,7 @@ export interface HowStep {
   title: string;
   desc: string;
   meta: string; // Tag pequeña, ej: "single source of truth"
+  badge?: string;
 }
 
 export interface HowSection {
@@ -90,26 +91,31 @@ export interface StackSectionCopy {
 }
 
 export interface UseCase {
-  tag: string; // "RESTAURANTES"
-  before: string; // Estado actual doloroso
-  after: string; // Solución Ark
+  id: string;
+  vertical: string;
+  traditional: string;
+  arkSolution: string;
+  badge: string;
 }
 
 export interface CostRow {
   concept: string;
-  wpWix: string;
-  ark: string;
+  traditional: string;
+  arkEdge: string;
+  highlight: boolean;
 }
 
 export interface CostsSection {
-  badge: string;
+  label: string;
   headline: string;
-  disclaimer: string;
-  rows: CostRow[];
-  total: {
-    wpWix: string;
-    ark: string;
+  subheadline: string;
+  headers: {
+    concept: string;
+    traditional: string;
+    arkEdge: string;
   };
+  rows: CostRow[];
+  summaryNote: string;
 }
 
 // --- PRICING TYPES ---
@@ -207,7 +213,9 @@ export interface SiteConfig {
   stackSection: StackSectionCopy;
   stack: StackItem[];
   useCases: {
-    intro: string;
+    label: string;
+    headline: string;
+    subheadline: string;
     items: UseCase[];
   };
   costs: CostsSection;
@@ -228,6 +236,7 @@ export interface SiteConfig {
     email: string;
     whatsapp?: string;
     facebook?: string;
+    x?: string;
     formEndpoint: string; // URL real o placeholder marcado
     bookingUrl: string; // Cal.com real o placeholder
   };
@@ -246,7 +255,7 @@ export const config: SiteConfig = {
     displayName: 'ARK SYSTEMS',
     legalName: 'Substrate Holdings LLC',
     tagline: '0 servidores. 0 humo.',
-    domain: 'arksystems.dev',
+    domain: 'arksystems.site',
     logoSrc: '/assets/vector/logo-mark.svg',
     faviconSrc: '/assets/vector/favicon.svg',
     ogImageSrc: '/assets/og-default.png',
@@ -344,31 +353,34 @@ export const config: SiteConfig = {
   ],
 
   how: {
-    label: 'CÓMO LO HACE',
-    headline: 'Una fuente de verdad. El resto es ruido.',
+    label: 'CÓMO LO HACEMOS',
+    headline: 'Arquitectura moderna. Sin la complejidad tradicional.',
     subheadline:
-      'Ningún componente decide colores. Ningún texto vive escondido en la UI. Todo el contenido, brand, precios y links viven en un solo lugar.',
+      'Eliminamos los servidores lentos, el mantenimiento costoso y las dependencias técnicas. Un proceso directo diseñado para que tu negocio opere en el Edge.',
     steps: [
       {
         n: '01',
-        title: 'src/data/config.ts',
-        desc: 'Copy, precios, links, brand y contenido. Editas texto sin tocar componentes.',
-        meta: 'single source of truth',
+        title: 'Centralización total de contenido',
+        meta: 'Single Source of Truth',
+        desc: 'Tu marca, precios y catálogo viven en un solo punto central. Actualizamos o personalizamos tu sitio en minutos sin tocar la infraestructura.',
+        badge: 'Cambios en minutos',
       },
       {
         n: '02',
-        title: 'Astro 5 + Tailwind',
-        desc: 'Build estático, tokens semánticos, zero JS por defecto. CSS variables, no colores inline.',
-        meta: '16 líneas JS total',
+        title: 'Rendimiento extremo sin sobreprecio',
+        meta: 'Astro 5 + Zero JS por defecto',
+        desc: 'Páginas ultraligeras que cargan en menos de 400ms. Sin plugins pesados de WordPress ni bases de datos vulnerables que ralenticen tu sitio.',
+        badge: '100/100 Lighthouse',
       },
       {
         n: '03',
-        title: 'wrangler pages deploy',
-        desc: 'Edge global en 12s. Sin servidores, sin Docker, sin cPanel, sin lágrimas.',
-        meta: '12s deploy • 300 pops',
+        title: 'Despliegue global en el Edge',
+        meta: 'Cloudflare Edge Network',
+        desc: 'Tu sitio se replica en +300 ciudades simultáneamente. Máxima disponibilidad, protección anti-DDoS e infraestructura de nivel empresarial incluida.',
+        badge: '300+ PoPs globales',
       },
     ],
-    rule: 'No component owns a color. Colores = variables CSS. Espaciado = tokens. JS = islas explícitas. 2 scripts de 16 líneas: menú + modal. El resto es HTML que vuela.',
+    rule: 'Cero mantenimiento complejo. Tu sitio corre directamente en la red global de Cloudflare: ultrarrápido, seguro y 100% deducible de impuestos.',
   },
 
   stackSection: {
@@ -406,58 +418,123 @@ export const config: SiteConfig = {
   ],
 
   useCases: {
-    intro:
-      'No es para blogs con 400 plugins. Es para negocios que necesitan una web que cargue, que no se rompa y que no cobre renta por SSL.',
+    label: 'CASOS DE USO Y VERTICALES',
+    headline: 'Diseñado para negocios que no pueden permitirse una web lenta',
+    subheadline:
+      'Reemplazamos sitios pesados, plataformas con comisiones ocultas y hosting tradicional por infraestructura Edge de alto rendimiento.',
     items: [
       {
-        tag: 'RESTAURANTES',
-        before: 'WP + Elementor 4.1s • menú PDF',
-        after: 'Ark edge 0.4s • menú real • reservas directas',
+        id: 'restaurantes',
+        vertical: 'RESTAURANTES Y GASTRONOMÍA',
+        traditional: 'Sitios lentos que obligan a descargar un PDF pesado para ver el menú.',
+        arkSolution:
+          'Menú interactivo instantáneo (<0.4s), pedidos a WhatsApp y reservas sin comisiones.',
+        badge: 'Carga en < 0.4s',
       },
       {
-        tag: 'DESPACHOS',
-        before: 'Template ThemeForest + 9 plugins',
-        after: 'Config tipada • marca sobria • SEO técnico limpio',
+        id: 'despachos',
+        vertical: 'DESPACHOS Y CONSULTORES',
+        traditional:
+          'Plantillas genéricas con plugins pesados que transmiten una imagen desactualizada.',
+        arkSolution:
+          'Presencia sobria, rápida y profesional con estrategia SEO limpia para captar clientes B2B.',
+        badge: 'Imagen B2B Premium',
       },
       {
-        tag: 'CLÍNICAS',
-        before: 'Wix booking que cobra comisión',
-        after: 'Cal.com embebido • sin comisión • edge',
+        id: 'clinicas',
+        vertical: 'CLÍNICAS Y SALUD',
+        traditional:
+          'Sistemas de citas de terceros que cobran comisiones por paciente o rentas altas.',
+        arkSolution:
+          'Agendamiento en vivo integrado directamente en tu sitio web sin comisiones por cita.',
+        badge: 'Cero comisiones por cita',
       },
       {
-        tag: 'REAL ESTATE',
-        before: 'WP IDX lento • imágenes 6MB',
-        after: 'Astro Image • imágenes optimizadas • mapas edge',
+        id: 'realestate',
+        vertical: 'REAL ESTATE Y PROPIEDADES',
+        traditional:
+          'Galerías con renders de alta resolución que tardan segundos en cargar.',
+        arkSolution:
+          'Catálogo de propiedades con imágenes optimizadas al instante en cualquier celular.',
+        badge: 'Imágenes de carga rápida',
       },
       {
-        tag: 'SAAS EARLY',
-        before: 'Next.js en Vercel $200/mes',
-        after: 'Astro static + edge • $0 hosting para marketing site',
+        id: 'saas',
+        vertical: 'STARTUPS Y SAAS',
+        traditional:
+          'Costos de hosting inflados en servidores en la nube solo para la landing comercial.',
+        arkSolution:
+          'Infraestructura Edge con $0 costo de hosting para la web comercial y capacidad ilimitada.',
+        badge: 'Infraestructura $0 MXN',
       },
       {
-        tag: 'PORTFOLIOS',
-        before: 'Squarespace lock-in • export no',
-        after: 'Código tuyo • deploy tuyo • dominio tuyo',
+        id: 'ecommerce',
+        vertical: 'E-COMMERCE Y CATÁLOGOS',
+        traditional:
+          'Plataformas lentas que pierden el 40% de las ventas en el carrito de compra.',
+        arkSolution:
+          'Experiencia de compra fluida con cobro por Stripe, SPEI o activos digitales.',
+        badge: 'Alta conversión de checkout',
       },
     ],
   },
 
   costs: {
-    badge: 'TABLA REAL, NO MARKETING',
-    headline: '¿Cuánto te roban al año sin Ark?',
-    disclaimer:
-      '* Costos típicos de un setup pequeño/medio con hosting compartido, SSL externo y mantenimiento básico. Tu caso puede variar.',
-    rows: [
-      { concept: 'Hosting', wpWix: '$120/año', ark: '$0 incluido en Pages' },
-      { concept: 'SSL', wpWix: '$50/año', ark: '$0 auto' },
-      { concept: 'Dominio', wpWix: '$15/año', ark: '$15/año — solo esto pagas' },
-      { concept: 'Mantenimiento', wpWix: '$300/año plugins + sustos', ark: '$0' },
-      { concept: 'Tiempo de carga', wpWix: '2.8s', ark: '0.4s' },
-    ],
-    total: {
-      wpWix: '$485/año + ansiedad',
-      ark: '$15/año. Fin.',
+    label: 'COMPARATIVA FINANCIERA Y OPERATIVA',
+    headline: 'Modelo Tradicional vs. Infraestructura Ark Systems',
+    subheadline:
+      'Descubre cómo el arrendamiento tecnológico elimina el gasto inicial, evita cobros ocultos de hosting y optimiza la estrategia fiscal de tu empresa.',
+    headers: {
+      concept: 'Concepto / Renglón',
+      traditional: 'Desarrollo Tradicional (WordPress/Wix)',
+      arkEdge: 'Ark Systems (Leasing Edge)',
     },
+    rows: [
+      {
+        concept: 'Inversión Inicial (CAPEX)',
+        traditional: '$40,000 - $100,000 MXN (Pago único elevado)',
+        arkEdge: '$0 MXN (Sin desembolso inicial)',
+        highlight: true,
+      },
+      {
+        concept: 'Modelo Fiscal',
+        traditional: 'Activo Intangible (Depreciación lenta)',
+        arkEdge: 'Gasto Operativo (100% Deducible ISR + IVA)',
+        highlight: true,
+      },
+      {
+        concept: 'Hosting y Servidores',
+        traditional: '$1,500 - $5,000 MXN/año + aumentos en renovación',
+        arkEdge: 'Incluido en tu renta (Cloudflare Edge Network)',
+        highlight: false,
+      },
+      {
+        concept: 'Mantenimiento y Parches',
+        traditional: 'A cargo del cliente (o cobro por hora de dev)',
+        arkEdge: 'Monitoreo 24/7 y parches continuos incluidos',
+        highlight: false,
+      },
+      {
+        concept: 'Certificados SSL y Ciberseguridad',
+        traditional: 'Costo extra anual o plugins frágiles',
+        arkEdge: 'Protección WAF y SSL Enterprise automático',
+        highlight: false,
+      },
+      {
+        concept: 'Rendimiento (Velocidad de Carga)',
+        traditional: '3.5s - 6.0s (Pierde el 40% de visitas)',
+        arkEdge: '< 0.4s en la red Edge de Cloudflare',
+        highlight: true,
+      },
+      {
+        concept: 'Riesgo de Obsolescencia',
+        traditional: 'Alto (El sitio queda obsoleto en 2 años)',
+        arkEdge: 'Cero (Arquitectura siempre actualizada)',
+        highlight: false,
+      },
+    ],
+    summaryNote:
+      'Resultado: En lugar de congelar $60k+ en un sitio que se devalúa, pagas una cuota mensual accesible y totalmente deducible que mantiene tu web operando como el primer día.',
   },
 
   pricing: {
@@ -629,14 +706,16 @@ export const config: SiteConfig = {
 
   footer: {
     copyright: '© 2026 Substrate Holdings LLC • ARK SYSTEMS',
-    tagline: 'Hecho por alguien que sufrió Wix y no quiere que tú sufras.',
-    tech: 'Astro 5 • Cloudflare Edge • 0.4s',
+    tagline:
+      'Agencia de desarrollo web edge-native que vende infraestructura moderna con modelo de leasing fiscalmente optimizado para PYMEs y profesionales en México/Latam.',
+    tech: 'Astro 5 • Cloudflare Edge • <0.4s de carga',
   },
 
   contact: {
-    email: 'substrateholdingsai@gmail.com',
+    email: 'pavel@arksystems.site',
     whatsapp: '+525657062511',
     facebook: 'https://www.facebook.com/profile.php?id=61595271624798',
+    x: 'https://x.com/arksystems',
     formEndpoint: '/api/contact',
     bookingUrl: 'https://cal.com/pablo-cortes-wuzivu/15min',
   },

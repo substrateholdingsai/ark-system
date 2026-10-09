@@ -1,31 +1,116 @@
 ---
 import Container from './Container.astro';
 import { config } from '@/data/config';
+
+const currentYear = new Date().getFullYear();
+const copyright = config.footer.copyright.replace(/© \d{4}/, `© ${currentYear}`);
+const whatsappNumber = config.contact.whatsapp?.replace(/\D/g, '');
+const whatsappMessage = encodeURIComponent(
+  'Hola Pavel, me interesa conocer más sobre los servicios de Ark Systems',
+);
 ---
 
-<footer class="border-t border-white/[0.08] bg-void py-12">
+<footer class="border-t border-white/[0.06] bg-void py-12 text-zinc-400 sm:py-16">
   <Container>
-    <div class="flex flex-col items-center justify-between gap-6 sm:flex-row">
-      <!-- Brand & Copyright -->
-      <div class="text-center sm:text-left">
-        <p class="text-sm font-semibold text-white">{config.brand.displayName}</p>
-        <p class="mt-1 text-xs text-zinc-500">{config.footer.copyright}</p>
-        <p class="mt-1 text-xs text-zinc-500">{config.footer.tagline}</p>
-        <p class="mt-1 text-xs text-zinc-600">{config.footer.tech}</p>
+    <div class="grid gap-10 lg:grid-cols-12 lg:gap-8">
+      <div class="space-y-4 lg:col-span-5">
+        <a
+          href="/"
+          class="inline-flex items-center gap-2 text-base font-black tracking-wider text-white"
+        >
+          <img src={config.brand.logoSrc} alt="" class="h-6 w-6" />
+          <span>{config.brand.displayName}</span>
+        </a>
+
+        <p class="max-w-sm text-xs leading-relaxed text-zinc-400">{config.footer.tagline}</p>
+
+        <p class="text-[11px] text-zinc-600">
+          {copyright}. Todos los derechos reservados.
+        </p>
       </div>
 
-      <!-- Links -->
-      <div class="flex flex-wrap gap-6">
-        {config.nav.map((link) => (
-          <a
-            href={link.href}
-            target={link.external ? '_blank' : undefined}
-            rel={link.external ? 'noopener noreferrer' : undefined}
-            class="text-sm text-zinc-400 transition-colors hover:text-white"
-          >
-            {link.label}
-          </a>
-        ))}
+      <div class="space-y-3 lg:col-span-3">
+        <p class="text-xs font-bold uppercase tracking-widest text-white">Navegación</p>
+        <ul class="space-y-2 text-xs">
+          {config.nav
+            .filter((link) =>
+              ['/#que-es', '/#como', '/#pricing', '/portfolio'].includes(link.href),
+            )
+            .map((link) => (
+              <li>
+                <a href={link.href} class="transition-colors hover:text-white">
+                  {link.href === '/#pricing'
+                    ? 'Modelos de Leasing'
+                    : link.href === '/portfolio'
+                      ? 'Portafolio & Demos'
+                      : link.href === '/#como'
+                        ? 'Cómo funciona'
+                        : 'Qué es'}
+                </a>
+              </li>
+            ))}
+        </ul>
+      </div>
+
+      <div class="space-y-3 lg:col-span-4">
+        <p class="text-xs font-bold uppercase tracking-widest text-white">Contacto & Canales</p>
+
+        <ul class="space-y-2.5 text-xs">
+          <li>
+            <a
+              href={`https://${config.brand.domain}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-2 text-zinc-300 transition-colors hover:text-ark-accent"
+            >
+              <span class="text-zinc-500" aria-hidden="true">🌐</span>
+              {config.brand.domain}
+            </a>
+          </li>
+          <li>
+            <a
+              href={`mailto:${config.contact.email}`}
+              class="inline-flex items-center gap-2 text-zinc-300 transition-colors hover:text-ark-accent"
+            >
+              <span class="text-zinc-500" aria-hidden="true">✉️</span>
+              {config.contact.email}
+            </a>
+          </li>
+          {whatsappNumber && config.contact.whatsapp && (
+            <li>
+              <a
+                href={`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-2 text-zinc-300 transition-colors hover:text-emerald-400"
+              >
+                <span class="text-emerald-500" aria-hidden="true">💬</span>
+                WhatsApp: +52 56 5706 2511
+              </a>
+            </li>
+          )}
+          {config.contact.x && (
+            <li>
+              <a
+                href={config.contact.x}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-2 text-zinc-300 transition-colors hover:text-white"
+              >
+                <span class="text-zinc-500" aria-hidden="true">𝕏</span>
+                @arksystems
+              </a>
+            </li>
+          )}
+        </ul>
+      </div>
+    </div>
+
+    <div class="mt-12 flex flex-col items-center justify-between gap-4 border-t border-white/[0.06] pt-6 text-[10px] text-zinc-500 sm:flex-row">
+      <p>Hecho para negocios que no quieren sufrir con hosting tradicional o sitios lentos.</p>
+      <div class="flex items-center gap-2 font-mono text-zinc-400">
+        <span class="h-2 w-2 animate-pulse rounded-full bg-emerald-400"></span>
+        <span>{config.footer.tech}</span>
       </div>
     </div>
   </Container>

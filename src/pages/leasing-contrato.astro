@@ -1,0 +1,246 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Section from '../components/layout/Section.astro';
+import Container from '../components/layout/Container.astro';
+import { config } from '@/data/config';
+
+const whatsappNumber = config.contact.whatsapp?.replace(/\D/g, '');
+---
+
+<BaseLayout
+  title="Contrato Marco de Leasing Web | Ark Systems"
+  description="Modelo de referencia del contrato de arrendamiento de infraestructura y servicios digitales de Ark Systems."
+>
+  <Section variant="void" padding="lg" id="leasing-contrato">
+    <Container>
+      <div class="mx-auto max-w-4xl">
+        <a
+          href="/#pricing"
+          class="inline-flex items-center gap-2 font-mono text-sm text-zinc-500 transition-colors hover:text-white"
+        >
+          ← Volver a planes
+        </a>
+
+        <header class="mt-8 border-b border-white/10 pb-8">
+          <p class="font-mono text-xs font-bold tracking-[0.2em] text-ark-accent">
+            ARK SYSTEMS • SUBSTRATE HOLDINGS LLC
+          </p>
+          <h1 class="mt-4 text-3xl font-black leading-tight tracking-tight text-white sm:text-5xl">
+            Contrato Marco de Arrendamiento de Infraestructura y Servicios Digitales
+          </h1>
+          <p class="mt-3 text-lg text-zinc-300">(Leasing Web)</p>
+          <p class="mt-5 text-sm text-zinc-500">Última actualización: Octubre 2026</p>
+        </header>
+
+        <aside
+          class="mt-8 rounded-xl border border-amber-400/30 bg-amber-400/[0.08] p-5 text-sm leading-6 text-amber-100"
+          aria-label="Aviso sobre el modelo de contrato"
+        >
+          <strong class="font-semibold">Modelo informativo:</strong> este documento es una muestra
+          general y no constituye asesoría legal ni fiscal. Los términos, obligaciones, garantías
+          y afirmaciones fiscales deben revisarse y adecuarse al caso concreto por profesionales
+          antes de utilizarlo o firmarlo.
+        </aside>
+
+        <div class="mt-10 space-y-10 text-sm leading-7 text-zinc-300 sm:text-base">
+          <section>
+            <h2 class="text-xl font-bold text-white sm:text-2xl">1. Objeto del contrato</h2>
+            <p class="mt-3">
+              El presente contrato establece los términos y condiciones bajo los cuales ARK SYSTEMS
+              (en adelante, “El Proveedor”) concede el derecho de uso, acceso y explotación de una
+              Plataforma e Infraestructura Web Edge-Native a favor del cliente (en adelante, “El
+              Arrendatario”), a cambio del pago de una cuota mensual de arrendamiento (OPEX).
+            </p>
+          </section>
+
+          <section>
+            <h2 class="text-xl font-bold text-white sm:text-2xl">
+              2. Alcance del servicio de leasing
+            </h2>
+            <p class="mt-3">
+              La renta mensual cubierta por El Arrendatario incluye de manera integral y sin costos
+              ocultos:
+            </p>
+
+            <h3 class="mt-6 font-semibold text-white">Infraestructura y Red Edge (Cloudflare Network)</h3>
+            <ul class="mt-3 list-disc space-y-2 pl-6">
+              <li>Despliegue global en la red de borde de Cloudflare (Workers / Pages).</li>
+              <li>Certificados de seguridad SSL/TLS dedicados y administrados.</li>
+              <li>
+                Ciberseguridad activa: Cortafuegos de aplicaciones web (WAF) y protección contra
+                ataques de denegación de servicio (Anti-DDoS).
+              </li>
+              <li>Red de distribución de contenido (CDN) global con tiempos de respuesta en milisegundos.</li>
+            </ul>
+
+            <h3 class="mt-6 font-semibold text-white">Diseño, Desarrollo y Código Fuente</h3>
+            <ul class="mt-3 list-disc space-y-2 pl-6">
+              <li>Uso de la arquitectura web desarrollada en Astro 5 / TypeScript.</li>
+              <li>
+                Optimización continua para rendimiento de nivel empresarial (Core Web Vitals /
+                Google Lighthouse).
+              </li>
+            </ul>
+
+            <h3 class="mt-6 font-semibold text-white">Mantenimiento Técnico Operativo</h3>
+            <ul class="mt-3 list-disc space-y-2 pl-6">
+              <li>Monitoreo de disponibilidad 24/7/365.</li>
+              <li>
+                Actualizaciones de seguridad, dependencias y parches de infraestructura sin costo
+                adicional.
+              </li>
+              <li>
+                Soporte para modificaciones menores de contenido (actualización de precios, textos,
+                imágenes o datos de contacto) incluidas dentro del periodo mensual.
+              </li>
+            </ul>
+          </section>
+
+          <section>
+            <h2 class="text-xl font-bold text-white sm:text-2xl">
+              3. Modelo fiscal y facturación (OPEX)
+            </h2>
+            <ul class="mt-3 space-y-3">
+              <li>
+                <strong class="text-white">Naturaleza del Gasto:</strong> El servicio se factura
+                bajo el concepto de Arrendamiento de Infraestructura y Servicios Digitales
+                Continuos, constituyendo un Gasto Operativo (OPEX).
+              </li>
+              <li>
+                <strong class="text-white">Deducibilidad:</strong> La factura emitida (CFDI 4.0 /
+                Invoice internacional) podrá tener el tratamiento fiscal que corresponda conforme
+                a la legislación vigente y a las circunstancias del Arrendatario. La deducibilidad
+                y acreditamiento deben confirmarse con su asesor fiscal.
+              </li>
+              <li>
+                <strong class="text-white">Periodo de Pago:</strong> La cuota de arrendamiento se
+                cubrirá de forma mensual anticipada mediante transferencia bancaria (SPEI), tarjeta
+                de crédito/débito o activos digitales autorizados.
+              </li>
+            </ul>
+          </section>
+
+          <section>
+            <h2 class="text-xl font-bold text-white sm:text-2xl">
+              4. Propiedad intelectual y derechos de uso
+            </h2>
+            <ul class="mt-3 space-y-3">
+              <li>
+                <strong class="text-white">Propiedad del Código Base:</strong> El Proveedor mantiene
+                la titularidad de los derechos de propiedad intelectual de la arquitectura,
+                componentes, plantillas y código base subyacente de la plataforma (Core Engine).
+              </li>
+              <li>
+                <strong class="text-white">Propiedad de los Datos del Cliente:</strong> El
+                Arrendatario es el único y exclusivo propietario de sus marcas, logotipos, imágenes,
+                catálogo de productos, bases de datos de clientes y cualquier contenido propio
+                proporcionado para el sitio web.
+              </li>
+              <li>
+                <strong class="text-white">Derecho de Adquisición (Buyout Option):</strong> En caso
+                de que El Arrendatario desee adquirir la propiedad total del código fuente para
+                migrarlo a sus propios servidores, podrá ejercer la opción de compra del software
+                mediante la liquidación de la tarifa de compra única vigente.
+              </li>
+            </ul>
+          </section>
+
+          <section>
+            <h2 class="text-xl font-bold text-white sm:text-2xl">5. Vigencia y cancelación</h2>
+            <ul class="mt-3 space-y-3">
+              <li>
+                <strong class="text-white">Sin Contratos Forzosos:</strong> El esquema de
+                arrendamiento opera mes a mes, a menos que se haya pactado por escrito un periodo
+                mínimo específico dentro de un plan personalizado.
+              </li>
+              <li>
+                <strong class="text-white">Proceso de Cancelación:</strong> El Arrendatario podrá
+                dar de baja el servicio en cualquier momento notificando con al menos 15 días de
+                anticipación al siguiente periodo de corte.
+              </li>
+              <li>
+                <strong class="text-white">Efectos de la Cancelación:</strong> Al dar de baja el
+                arrendamiento, se suspenderá la distribución del sitio web en la red Edge. El
+                Proveedor entregará al cliente un respaldo comprimido de todos sus activos de
+                contenido y datos propios.
+              </li>
+            </ul>
+          </section>
+
+          <section>
+            <h2 class="text-xl font-bold text-white sm:text-2xl">
+              6. Niveles de servicio (SLA) y garantía
+            </h2>
+            <ul class="mt-3 space-y-3">
+              <li>
+                <strong class="text-white">Disponibilidad:</strong> El Proveedor propone un tiempo de
+                actividad (Uptime) de la infraestructura Edge del 99.9% anual, sujeto a las
+                condiciones del servicio, exclusiones y dependencias de terceros que se establezcan
+                en el acuerdo firmado.
+              </li>
+              <li>
+                <strong class="text-white">Tiempos de Respuesta:</strong> Las solicitudes de soporte
+                técnico o ajustes menores de contenido se atenderán en un plazo objetivo de 24 a 48
+                horas hábiles, conforme al plan contratado.
+              </li>
+            </ul>
+          </section>
+
+          <section>
+            <h2 class="text-xl font-bold text-white sm:text-2xl">7. Contacto y jurisdicción</h2>
+            <p class="mt-3">
+              Para cualquier duda, aclaración o gestión relacionada con este modelo de contrato de
+              leasing, puedes contactar a ARK SYSTEMS:
+            </p>
+            <ul class="mt-4 space-y-2">
+              <li>
+                Sitio Web Oficial:
+                <a
+                  href={`https://${config.brand.domain}`}
+                  class="text-ark-accent underline underline-offset-4"
+                >
+                  {config.brand.domain}
+                </a>
+              </li>
+              <li>
+                Correo de Atención:
+                <a
+                  href={`mailto:${config.contact.email}`}
+                  class="text-ark-accent underline underline-offset-4"
+                >
+                  {config.contact.email}
+                </a>
+              </li>
+              {whatsappNumber && config.contact.whatsapp && (
+                <li>
+                  WhatsApp de Soporte:
+                  <a
+                    href={`https://wa.me/${whatsappNumber}`}
+                    class="text-ark-accent underline underline-offset-4"
+                  >
+                    +52 56 5706 2511
+                  </a>
+                </li>
+              )}
+            </ul>
+          </section>
+        </div>
+
+        <div class="mt-12 flex flex-wrap gap-3 border-t border-white/10 pt-8">
+          <a
+            href="/#pricing"
+            class="inline-flex min-h-11 items-center justify-center rounded-lg bg-ark-accent px-5 py-2 text-sm font-bold text-black transition-opacity hover:opacity-90"
+          >
+            Ver planes de leasing
+          </a>
+          <a
+            href={`mailto:${config.contact.email}`}
+            class="inline-flex min-h-11 items-center justify-center rounded-lg border border-white/15 px-5 py-2 text-sm font-semibold text-white transition-colors hover:bg-white/[0.06]"
+          >
+            Consultar sobre el contrato
+          </a>
+        </div>
+      </div>
+    </Container>
+  </Section>
+</BaseLayout>

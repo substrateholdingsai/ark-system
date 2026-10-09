@@ -138,6 +138,19 @@ const demos = [
     badge: 'DEMO INTERACTIVA',
     available: true,
   },
+  {
+    id: 'sbc-2026',
+    tag: 'DEMO 11 • FINTECH • NÓMINA',
+    name: 'SBC 2026 • Calculadora Interactiva',
+    desc: 'Calculadora demostrativa del Salario Base de Cotización que actualiza sus resultados en el navegador. No envía datos; sus valores son referencias educativas y no constituyen asesoría fiscal o legal.',
+    image:
+      'https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=1200&auto=format&fit=crop',
+    href: '/portfolio/sbc-2026-calculadora.html',
+    stack: ['Calculadora SBC', 'Cálculo local', 'Sin backend'],
+    accent: 'from-green-500/30 via-emerald-500/20 to-transparent',
+    badge: 'DEMO INTERACTIVA',
+    available: true,
+  },
 ];
 ---
 
@@ -147,7 +160,7 @@ const demos = [
       <div class="mb-10 max-w-[720px] text-left">
         <div class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3 py-1 text-[11px] font-bold tracking-widest text-zinc-300">
           <span class="h-2 w-2 animate-pulse rounded-full bg-emerald-400"></span>
-          10 FICHAS • 7 DEMOS INTERACTIVAS • 2 SITIOS EXTERNOS • 1 CONCEPTO
+          11 FICHAS • 8 DEMOS INTERACTIVAS • 2 SITIOS EXTERNOS • 1 CONCEPTO
         </div>
         <h1 class="font-display mt-6 text-4xl font-black leading-[0.9] tracking-[-0.03em] text-white sm:text-5xl lg:text-[56px]">
           Demos y sitios del
@@ -155,7 +168,7 @@ const demos = [
           <span class="text-ark-accent">portafolio Ark System</span>
         </h1>
         <p class="mt-5 max-w-[52ch] text-base leading-7 text-zinc-400 sm:text-lg">
-          Explora siete demos interactivas, dos sitios externos y un concepto de plantilla aún no
+          Explora ocho demos interactivas, dos sitios externos y un concepto de plantilla aún no
           implementado. Cada ficha indica qué incluye y cuándo sus datos o integraciones son solo de
           demostración.
         </p>
@@ -225,9 +238,15 @@ const demos = [
                     rel={demo.href.startsWith('https://') ? 'noopener noreferrer' : undefined}
                     class="h-10 flex-1 justify-center border-white/10 bg-white/[0.06] text-[13px] font-bold text-white hover:bg-white/[0.10]"
                   >
-                    {['tomato', 'arkangel', 'velvet', 'medical', 'talos', 'mapa-ley'].includes(
-                      demo.id,
-                    )
+                    {[
+                      'tomato',
+                      'arkangel',
+                      'velvet',
+                      'medical',
+                      'talos',
+                      'mapa-ley',
+                      'sbc-2026',
+                    ].includes(demo.id)
                       ? 'Ver demo interactiva'
                       : 'Ver caso'}
                   </Button>
