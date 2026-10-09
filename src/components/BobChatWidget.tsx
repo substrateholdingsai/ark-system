@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { X, Send, Loader2, MessageSquare, Scale, ShieldCheck, Coins, FileCheck, Headphones } from 'lucide-react';
 
 export interface BobChatWidgetProps {
@@ -124,8 +124,6 @@ export default function BobChatWidget({
   };
 
   const ActiveIcon = CONTEXTS.find((c) => c.key === context)?.icon || Scale;
-
-  if (!isMounted) return null;
 
   if (mode === 'floating') {
     return (

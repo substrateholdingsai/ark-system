@@ -8,12 +8,12 @@ interface Props {
 const { size = 'container', class: className = '' } = Astro.props;
 
 const sizeClasses = {
-  prose: 'max-w-ark-prose',
-  container: 'max-w-ark-container',
+  prose: 'w-full sm:max-w-ark-prose',
+  container: 'w-full sm:max-w-ark-container',
   full: 'w-full',
 };
 
-const paddingClass = size === 'full' ? '' : 'px-6 sm:px-8';
+const paddingClass = size === 'full' ? '' : 'px-4 sm:px-6 lg:px-8';
 ---
 
 <div class={`mx-auto ${sizeClasses[size]} ${paddingClass} ${className}`}>
