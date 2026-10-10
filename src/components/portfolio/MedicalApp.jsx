@@ -81,7 +81,7 @@ export default function MedicalApp() {
               demostración no ofrece consultas, atención clínica ni recomendaciones médicas.
             </p>
 
-            <div className="mt-7 grid grid-cols-3 gap-3">
+            <div className="mt-7 grid grid-cols-1 sm:grid-cols-3 gap-3">
               {[
                 ['01', 'flujo conceptual'],
                 ['0', 'integraciones activas'],

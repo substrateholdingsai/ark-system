@@ -739,17 +739,18 @@ export default function ArkangelApp() {
 
       {/* HEADER */}
       <header className="sticky top-0 z-40 backdrop-blur-xl bg-[#0A0A0F]/90 border-b border-white/10">
-        <div className="max-w-[1600px] mx-auto px-6 h-[64px] flex items-center justify-between">
-          <div className="flex items-center gap-3">
+        <div className="max-w-[1600px] mx-auto px-4 sm:px-6 min-h-[64px] flex flex-wrap items-center justify-between gap-x-4 gap-y-2 py-2">
+          <div className="flex min-w-0 flex-wrap items-center gap-2 sm:gap-3">
             <div className="w-9 h-9 rounded-[10px] bg-white text-black grid place-items-center font-black text-[18px]">
               A
             </div>
-            <span className="font-black text-[18px] tracking-tight">ARKANGEL</span>
-            <span className="mono text-[10px] px-2 py-0.5 rounded-full bg-white/10 border border-white/15 tracking-widest">
+            <span className="font-black text-[16px] sm:text-[18px] tracking-tight">ARKANGEL</span>
+            <span className="hidden sm:inline-flex mono text-[10px] px-2 py-0.5 rounded-full bg-white/10 border border-white/15 tracking-widest">
               LEY COMO CÓDIGO • v2.0
             </span>
             <span className="mono text-[10px] px-2.5 py-1 rounded-full bg-[#F59E0B] text-black font-bold">
-              SIMULACIÓN • SIN D1/R2 EN VIVO
+              <span className="sm:hidden">SIMULACIÓN</span>
+              <span className="hidden sm:inline">SIMULACIÓN • SIN D1/R2 EN VIVO</span>
             </span>
           </div>
           <div className="flex items-center gap-4">
@@ -772,7 +773,7 @@ export default function ArkangelApp() {
         </div>
       </header>
 
-      <main className="max-w-[1600px] mx-auto px-6 py-8 flex flex-col gap-10">
+      <main className="max-w-[1600px] mx-auto px-4 sm:px-6 py-8 flex flex-col gap-10">
         {/* STATUS */}
         <section>
           <div className="mb-4 rounded-[12px] border border-[#F59E0B]/40 bg-[#F59E0B]/10 px-4 py-3 font-mono text-[11px] leading-relaxed text-[#FCD34D]">
@@ -780,8 +781,10 @@ export default function ArkangelApp() {
             cobranza, D1 ni R2. Las referencias legales son ilustrativas y no constituyen asesoría
             legal.
           </div>
-          <div className="flex items-baseline gap-3 mb-4">
-            <h2 className="font-black text-[22px] tracking-tight">01 — ESTADO DE LA SIMULACIÓN</h2>
+          <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 mb-4">
+            <h2 className="min-w-0 break-words font-black text-[18px] tracking-tight sm:text-[22px]">
+              01 — ESTADO DE LA SIMULACIÓN
+            </h2>
             <span className="mono text-[10px] text-white/40">DATOS LOCALES • {clock}</span>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
@@ -866,7 +869,7 @@ export default function ArkangelApp() {
                 <div className="h-[2px] w-full rounded-full bg-gradient-to-r from-[#12B76A] to-[#EF4444] relative">
                   <div className="absolute -top-1 left-[78%] w-2 h-2 rounded-full bg-[#12B76A] pulse-green" />
                 </div>
-                <div className="grid grid-cols-3 gap-2 mt-3">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 mt-3">
                   <div className="rounded-[10px] bg-white/[0.04] border border-white/10 p-2.5">
                     <div className="mono text-[9px] text-white/40">SHA256</div>
                     <div className="mono text-[11px] font-bold mt-1">DEMO</div>
@@ -887,8 +890,8 @@ export default function ArkangelApp() {
 
         {/* MAPA */}
         <section>
-          <div className="flex items-baseline gap-3 mb-1">
-            <h2 className="font-black text-[28px] tracking-tight">
+          <div className="flex flex-wrap items-baseline gap-x-3 gap-y-2 mb-1">
+            <h2 className="min-w-0 break-words font-black text-[20px] tracking-tight sm:text-[28px]">
               02 — MAPA DE CONDUCTAS • SEMÁFORO LEGAL
             </h2>
             <span className="mono text-[12px] px-2.5 py-1 rounded-full bg-[#FFF7ED] text-black font-bold">

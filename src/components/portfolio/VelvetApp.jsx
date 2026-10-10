@@ -94,7 +94,7 @@ export default function BarApp() {
 
       {/* HEADER */}
       <header className="sticky top-0 z-40 backdrop-blur-xl bg-[#0A0A0A]/80 border-b border-white/[0.06]">
-        <div className="mx-auto max-w-[1280px] px-6 md:px-10 h-[56px] flex items-center justify-between">
+        <div className="mx-auto max-w-[1280px] px-4 sm:px-6 md:px-10 h-[56px] flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-7 h-7 rounded-full bg-[#D4AF37] grid place-items-center font-anton text-black text-[14px]">
               A
@@ -187,7 +187,7 @@ export default function BarApp() {
                 </button>
               </div>
             </div>
-            <div className="mt-10 md:mt-14 grid grid-cols-3 gap-6 border-t border-white/[0.08] pt-6 max-w-[520px]">
+            <div className="mt-10 md:mt-14 grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 border-t border-white/[0.08] pt-6 max-w-[520px]">
               <div>
                 <div className="font-space text-[11px] tracking-[0.2em] uppercase text-white/40">
                   Horario

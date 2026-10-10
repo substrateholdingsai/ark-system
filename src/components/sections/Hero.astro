@@ -29,19 +29,19 @@ const leasingPlan = config.pricing.plans.find((plan) => plan.id === 'leasing');
   </div>
 
   <Container>
-    <div class="grid items-center gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:gap-10">
+    <div class="grid min-w-0 grid-cols-[minmax(0,1fr)] items-center gap-12 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:gap-10">
       <div class="text-left">
-        <div class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3 py-1 text-[11px] font-bold tracking-widest text-zinc-300 backdrop-blur">
+        <div class="inline-flex max-w-full flex-wrap items-center gap-x-2 gap-y-1 rounded-full border border-white/10 bg-white/[0.03] px-3 py-1 text-[11px] font-bold tracking-widest text-zinc-300 backdrop-blur">
           <span class="h-2 w-2 animate-pulse rounded-full bg-emerald-400"></span>
           {config.brand.displayName} <span class="text-zinc-600">•</span> EDGE LIVE
           <span class="text-zinc-600">•</span> {config.hero.stats[0]?.value ?? '95+'} LIGHTHOUSE
         </div>
 
-        <h1 class="mt-6 max-w-3xl text-[36px] font-black leading-[0.98] tracking-[-0.035em] text-white sm:text-[52px] lg:text-[64px]">
+        <h1 class="mt-6 max-w-full break-words text-[36px] font-black leading-[0.98] tracking-[-0.035em] text-white sm:text-[52px] lg:text-[64px]">
           {headlineLead} <span class="text-ark-accent">{headlineAccent}</span>
         </h1>
 
-        <p class="mt-5 max-w-[52ch] text-base leading-7 text-zinc-400 sm:text-lg">
+        <p class="mt-5 max-w-full text-base leading-7 text-zinc-400 sm:max-w-[52ch] sm:text-lg">
           {config.hero.subheadline}
         </p>
 
@@ -75,7 +75,7 @@ const leasingPlan = config.pricing.plans.find((plan) => plan.id === 'leasing');
         </div>
 
         {config.hero.microcopy && (
-          <p class="mt-4 inline-flex items-center gap-2 text-xs text-zinc-500">
+          <p class="mt-4 inline-flex max-w-full items-start gap-2 text-xs text-zinc-500">
             <span
               class="grid h-3.5 w-3.5 place-items-center rounded-full border border-zinc-700 text-[9px] text-ark-accent"
               aria-hidden="true"
@@ -86,13 +86,13 @@ const leasingPlan = config.pricing.plans.find((plan) => plan.id === 'leasing');
           </p>
         )}
 
-        <dl class="mt-10 grid max-w-[440px] grid-cols-3 gap-4 border-t border-white/[0.06] pt-6 sm:gap-6">
+        <dl class="mt-10 grid w-full max-w-[440px] grid-cols-3 gap-3 border-t border-white/[0.06] pt-6 sm:gap-6">
           {config.hero.stats.map((stat) => (
             <div>
-              <dd class="text-2xl font-black tracking-tight text-white sm:text-[28px]">
+              <dd class="break-words text-2xl font-black tracking-tight text-white sm:text-[28px]">
                 {stat.value}
               </dd>
-              <dt class="mt-1 text-[9px] font-bold uppercase tracking-[0.14em] text-zinc-500 sm:text-[10px] sm:tracking-widest">
+              <dt class="mt-1 break-words text-[9px] font-bold uppercase tracking-[0.08em] text-zinc-500 sm:text-[10px] sm:tracking-widest">
                 {stat.label}
               </dt>
             </div>
@@ -100,7 +100,7 @@ const leasingPlan = config.pricing.plans.find((plan) => plan.id === 'leasing');
         </dl>
       </div>
 
-      <div class="relative mx-auto w-full max-w-xl lg:mx-0 lg:max-w-none">
+      <div class="relative mx-auto w-full min-w-0 max-w-xl lg:mx-0 lg:max-w-none">
         <div class="overflow-hidden rounded-[20px] border border-white/[0.08] bg-[#0A0A0B] shadow-[0_20px_60px_rgba(0,0,0,0.5),inset_0_1px_0_0_rgba(255,255,255,0.06)]">
           <div class="flex h-12 items-center justify-between gap-3 border-b border-white/[0.06] bg-white/[0.02] px-4 sm:px-5">
             <div class="flex shrink-0 items-center gap-2" aria-hidden="true">
