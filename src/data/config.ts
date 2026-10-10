@@ -257,7 +257,7 @@ export const config: SiteConfig = {
     domain: 'arksystems.site',
     logoSrc: '/assets/vector/logo-mark.svg',
     faviconSrc: '/assets/vector/favicon.svg',
-    ogImageSrc: '/assets/og-default.png',
+    ogImageSrc: '/assets/og-default.svg',
   },
 
   locale: 'es_MX',

@@ -25,6 +25,10 @@ COLORS = {
     "gray_light": "#A1A1AA", # Textos secundarios
 }
 
+# OG Image dimensions (standard for social sharing)
+OG_WIDTH = 1200
+OG_HEIGHT = 630
+
 def get_root() -> Path:
     """Crea la carpeta de assets si no existe."""
     root = Path(__file__).resolve().parents[1] / "public" / "assets" / "vector"
@@ -251,6 +255,159 @@ def generate_portfolio_placeholder(path: Path, index: int, color_key: str):
     dwg.save()
     print(f"[OK] Generado: {path.name} (Portfolio Placeholder {index+1})")
 
+
+def generate_og_image(path: Path):
+    """
+    Genera una imagen Open Graph (1200x630) para compartir en redes sociales.
+    Incluye: Logo mark, nombre de marca, tagline y gradiente de fondo.
+    """
+    width, height = OG_WIDTH, OG_HEIGHT
+    dwg = svgwrite.Drawing(str(path), size=(f'{width}px', f'{height}px'), viewBox=f'0 0 {width} {height}')
+    
+    # Fondo con gradiente radial sutil (dark theme)
+    defs = dwg.defs
+    
+    # Gradiente de fondo principal (void -> surface con hint de accent)
+    bg_grad = dwg.linearGradient(id='og-bg', x1='0%', y1='0%', x2='100%', y2='100%')
+    bg_grad.add_stop_color('0%', COLORS['void'])
+    bg_grad.add_stop_color('50%', COLORS['surface'])
+    bg_grad.add_stop_color('100%', COLORS['void'])
+    defs.add(bg_grad)
+    
+    # Gradiente de acento para elementos decorativos
+    accent_grad = dwg.linearGradient(id='og-accent', x1='0%', y1='0%', x2='100%', y2='0%')
+    accent_grad.add_stop_color('0%', COLORS['accent'])
+    accent_grad.add_stop_color('100%', COLORS['gold'])
+    defs.add(accent_grad)
+    
+    # Fondo
+    dwg.add(dwg.rect(insert=(0, 0), size=(width, height), fill='url(#og-bg)'))
+    
+    # Patrón de grid sutil (tech aesthetic)
+    grid_group = dwg.g(stroke=COLORS['accent'], stroke_width=0.5, opacity=0.06)
+    cell_size = 60
+    for x in range(0, width, cell_size):
+        grid_group.add(dwg.line(start=(x, 0), end=(x, height)))
+    for y in range(0, height, cell_size):
+        grid_group.add(dwg.line(start=(0, y), end=(width, y)))
+    dwg.add(grid_group)
+    
+    # Orbs de glow decorativos (esquinas)
+    # Orb superior izquierdo
+    orb1_grad = dwg.radialGradient(id='orb1', cx=150, cy=150, r=200, fx=150, fy=150)
+    orb1_grad.add_stop_color('0%', COLORS['accent'], 0.15)
+    orb1_grad.add_stop_color('100%', COLORS['accent'], 0)
+    defs.add(orb1_grad)
+    dwg.add(dwg.circle(center=(150, 150), r=200, fill='url(#orb1)'))
+    
+    # Orb inferior derecho
+    orb2_grad = dwg.radialGradient(id='orb2', cx=width-150, cy=height-150, r=250, fx=width-150, fy=height-150)
+    orb2_grad.add_stop_color('0%', COLORS['gold'], 0.1)
+    orb2_grad.add_stop_color('100%', COLORS['gold'], 0)
+    defs.add(orb2_grad)
+    dwg.add(dwg.circle(center=(width-150, height-150), r=250, fill='url(#orb2)'))
+    
+    # Línea divisoria decorativa con gradiente
+    line_y = height // 2 + 20
+    dwg.add(dwg.line(
+        start=(width * 0.15, line_y), 
+        end=(width * 0.85, line_y), 
+        stroke='url(#og-accent)', 
+        stroke_width=2, 
+        opacity=0.6
+    ))
+    
+    # Logo Mark (centrado, más grande)
+    logo_size = 140
+    logo_x = width // 2 - logo_size // 2
+    logo_y = height // 2 - logo_size // 2 - 40
+    
+    # Triángulo 'A' estilo logo-mark.svg pero escalado
+    stroke_w = 8
+    accent = COLORS['accent']
+    
+    # Línea izquierda
+    dwg.add(dwg.line(
+        start=(logo_x + 20, logo_y + logo_size - 20), 
+        end=(logo_x + logo_size // 2, logo_y + 20), 
+        stroke=accent, stroke_width=stroke_w, stroke_linecap='round'
+    ))
+    # Línea derecha
+    dwg.add(dwg.line(
+        start=(logo_x + logo_size // 2, logo_y + 20), 
+        end=(logo_x + logo_size - 20, logo_y + logo_size - 20), 
+        stroke=accent, stroke_width=stroke_w, stroke_linecap='round'
+    ))
+    # Barra transversal
+    bar_y = logo_y + int(logo_size * 0.6)
+    dwg.add(dwg.line(
+        start=(logo_x + 35, bar_y), 
+        end=(logo_x + logo_size // 2 - 10, bar_y), 
+        stroke=COLORS['white'], stroke_width=int(stroke_w * 0.6), stroke_linecap='round'
+    ))
+    dwg.add(dwg.line(
+        start=(logo_x + logo_size // 2 + 10, bar_y), 
+        end=(logo_x + logo_size - 35, bar_y), 
+        stroke=COLORS['white'], stroke_width=int(stroke_w * 0.6), stroke_linecap='round'
+    ))
+    # Nodo central
+    center_x, center_y = logo_x + logo_size // 2, bar_y
+    dwg.add(dwg.circle(center=(center_x, center_y), r=8, fill=COLORS['white']))
+    dwg.add(dwg.circle(center=(center_x, center_y), r=16, fill=accent, opacity=0.2))
+    
+    # Nombre de marca
+    brand_y = height // 2 + 70
+    brand_text = dwg.text(
+        "ARK SYSTEMS", 
+        insert=(width // 2, brand_y),
+        font_family="'Plus Jakarta Sans', 'Helvetica Neue', Arial, sans-serif",
+        font_size="48px",
+        font_weight="800",
+        fill=COLORS['white'],
+        text_anchor="middle",
+        letter_spacing="-0.02em"
+    )
+    dwg.add(brand_text)
+    
+    # Tagline
+    tagline_y = brand_y + 55
+    tagline_text = dwg.text(
+        "0 servidores. 0 humo.", 
+        insert=(width // 2, tagline_y),
+        font_family="'Inter', 'Helvetica Neue', Arial, sans-serif",
+        font_size="22px",
+        font_weight="500",
+        fill=COLORS['gray_light'],
+        text_anchor="middle",
+        letter_spacing="0.01em"
+    )
+    dwg.add(tagline_text)
+    
+    # Dominio / URL
+    domain_y = height - 60
+    domain_text = dwg.text(
+        "arksystems.site", 
+        insert=(width // 2, domain_y),
+        font_family="'JetBrains Mono', 'Fira Code', monospace",
+        font_size="16px",
+        font_weight="500",
+        fill=COLORS['accent'],
+        text_anchor="middle"
+    )
+    dwg.add(domain_text)
+    
+    # Línea acento bajo el dominio
+    dwg.add(dwg.line(
+        start=(width // 2 - 80, domain_y + 10), 
+        end=(width // 2 + 80, domain_y + 10), 
+        stroke='url(#og-accent)', 
+        stroke_width=2
+    ))
+    
+    dwg.save()
+    print(f"[OK] Generado: {path.name} (OG Image {width}x{height})")
+
+
 # ==========================================
 # EJECUCIÓN PRINCIPAL
 # ==========================================
@@ -269,16 +426,19 @@ if __name__ == "__main__":
     generate_logo_mark_ark(root / "logo-mark.svg")
     generate_favicon_base(root / "favicon.svg")
     
-    # 2. Patterns & Backgrounds
+    # 2. OG Image para redes sociales
+    generate_og_image(root.parent / "og-default.svg")
+    
+    # 3. Patterns & Backgrounds
     generate_grid_pattern(root / "grid-accent.svg", color_key="accent")
     generate_grid_pattern(root / "grid-gold.svg", color_key="gold")
     
-    # 3. Effects / Orbs (Lightweight Gradients)
+    # 4. Effects / Orbs (Lightweight Gradients)
     generate_neon_glow_orb_svg(root / "glow-accent.svg", color_key="accent")
     generate_neon_glow_orb_svg(root / "glow-gold.svg", color_key="gold")
     generate_neon_glow_orb_svg(root / "glow-success.svg", color_key="success", radius=150)
     
-    # 4. Portfolio Placeholders
+    # 5. Portfolio Placeholders
     colors_cycle = ["accent", "gold", "success"]
     for i in range(3):
         path = root / f"portfolio-placeholder-{i+1}.svg"
