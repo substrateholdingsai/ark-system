@@ -21,8 +21,8 @@ export interface BrandConfig {
   legalName: string; // Ej: "Substrate Holdings LLC"
   tagline: string;
   domain: string; // Dominio principal sin protocolo
-  logoSrc: string; // Ruta relativa o absoluta al SVG/PNG
-  faviconSrc: string;
+  logoSrc: string; // Logo cuadrado (PNG) para el JSON-LD: Exige dimensiones declaradas
+  faviconSrc: string; // SVG generado por scripts/generate-assets.py
   ogImageSrc: string;
 }
 
@@ -321,7 +321,9 @@ export const config: SiteConfig = {
     legalName: 'Substrate Holdings LLC',
     tagline: '0 servidores. 0 humo.',
     domain: 'arksystems.site',
-    logoSrc: '/assets/vector/logo-mark.svg',
+    // El header/footer usan el sello inline (components/brand/ArkMark.astro).
+    // Este PNG es el logo machine-readable del JSON-LD (Organization.logo).
+    logoSrc: '/assets/vector/logo-512.png',
     faviconSrc: '/assets/vector/favicon.svg',
     ogImageSrc: '/assets/og-default.svg',
   },
