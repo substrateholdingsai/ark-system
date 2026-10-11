@@ -1,24 +1,72 @@
 ---
+type CardVariant = 'default' | 'glass' | 'elevated';
+type CardPadding = 'none' | 'sm' | 'md' | 'lg';
+
 interface Props {
   href?: string;
   target?: string;
   rel?: string;
+  as?: 'div' | 'article' | 'li' | 'section';
+  variant?: CardVariant;
+  padding?: CardPadding;
+  line?: 'legal' | 'commerce' | 'lab';
+  interactive?: boolean;
   class?: string;
-  as?: 'div' | 'article' | 'li';
   [key: string]: unknown;
 }
 
-const { href, target, rel, class: className = '', as: Tag = 'div', ...restProps } = Astro.props;
+const {
+  href,
+  target,
+  rel,
+  as: Tag = 'div',
+  variant = 'default',
+  padding = 'md',
+  line,
+  interactive = false,
+  class: className = '',
+  ...restProps
+} = Astro.props;
 
-const base = 'ark-card';
+const base = 'ark-card relative rounded-2xl border transition-all duration-300 ease-ark';
+
+const variantClasses: Record<CardVariant, string> = {
+  default: 'border-white/[0.06] bg-surface/60 backdrop-blur-md',
+  glass: 'border-white/[0.08] bg-surface/40 backdrop-blur-lg',
+  elevated:
+    'border-white/[0.08] bg-surface/80 backdrop-blur-lg shadow-[0_20px_60px_rgba(0,0,0,0.4)]',
+};
+
+const paddingClasses: Record<CardPadding, string> = {
+  none: 'p-0',
+  sm: 'p-4',
+  md: 'p-6',
+  lg: 'p-8',
+};
+
+const interactionClasses = interactive
+  ? 'cursor-pointer hover:border-ark-accent/30 hover:-translate-y-1 hover:shadow-[0_20px_60px_rgba(0,0,0,0.4)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ark-accent/50 focus-visible:ring-offset-2 focus-visible:ring-offset-base'
+  : 'hover:border-ark-accent/20';
+
+const isLink = Boolean(href);
+const Element = isLink ? 'a' : Tag;
+const linkProps = isLink
+  ? {
+      href,
+      target,
+      rel: rel ?? (target === '_blank' ? 'noopener noreferrer' : undefined),
+    }
+  : {};
+
+const classes = [
+  base,
+  variantClasses[variant],
+  paddingClasses[padding],
+  interactionClasses,
+  className,
+];
 ---
 
-{href ? (
-  <a href={href} target={target} rel={rel} class:list={[base, className]} {...restProps}>
-    <slot />
-  </a>
-) : (
-  <Tag class:list={[base, className]} {...restProps}>
-    <slot />
-  </Tag>
-)}
+<Element class:list={classes} data-theme={line} {...linkProps} {...restProps}>
+  <slot />
+</Element>

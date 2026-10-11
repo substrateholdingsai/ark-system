@@ -2,20 +2,22 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/sections/Hero.astro';
 import TechStack from '../components/sections/TechStack.astro';
+import PortfolioGrid from '../components/sections/PortfolioGrid.astro';
 import ConfiguredContent from '../components/sections/ConfiguredContent.astro';
 import PricingTable from '../components/sections/PricingTable.astro';
 import Section from '../components/layout/Section.astro';
 import Container from '../components/layout/Container.astro';
 import Button from '../components/ui/Button.astro';
-import BobChatWidget from '../components/BobChatWidget.tsx';
+import NoahChatWidget from '../components/NoahChatWidget.tsx';
 import { config } from '@/data/config';
 ---
 
 <BaseLayout>
   <Hero />
-  <BobChatWidget client:visible mode="hero" />
+  <NoahChatWidget client:visible mode="hero" assistant={config.assistant} />
   <ConfiguredContent />
   <TechStack />
+  <PortfolioGrid />
   <PricingTable />
   <Section variant="void" padding="lg">
     <Container class="text-center">
@@ -48,10 +50,7 @@ import { config } from '@/data/config';
             {config.finalCta.secondary.label}
           </Button>
         )}
-        <Button
-          variant="secondary"
-          href="/portfolio"
-        >
+        <Button variant="secondary" href="/portfolio">
           Ver Portfolio →
         </Button>
       </div>

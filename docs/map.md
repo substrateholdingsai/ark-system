@@ -19,8 +19,8 @@ Status at a glance:
 - Onboarding documentation: available in `docs/client-onboarding.md`
 - Latest portfolio update: project cards now describe the implemented demo behavior and mark sample data, mock integrations, external destinations, and the unimplemented Padel Outlet concept. The latest portfolio changes are committed to `main`; a corresponding production deployment has not been confirmed here.
 - CI: workflow is defined in `.github/workflows/ci.yml`; Lighthouse budget exists in `lighthouserc.json`; remote CI status is not recorded here
-- **Vector assets**: 10 SVG assets generated via `scripts/generate-assets.py` in `public/assets/vector/`
-- **New integrations**: AI binding for Cloudflare Workers AI, D1 database binding for fiscal/legal data, BobChatWidget for conversational UI
+- **Vector asset generator**: produces 33 theme-aware SVGs in `public/assets/vector/` and four Open Graph SVGs; preserves the site's legacy asset filenames. Existing assets are not replaced until the script is run.
+- **New integrations**: AI binding for Cloudflare Workers AI, D1 database binding for fiscal/legal data, NoahChatWidget for conversational UI
 - **Intelligent chat endpoint**: `/api/chat` uses Cloudflare Clef for structured classification (PLD alert, topic category) + D1 lookup for pre-approved answers with legal references
 - **Knowledge base**: `schema.sql` defines `knowledge_base` table (topic, question, answer, legal_reference); seeded with PLD and fiscal samples; executed on local D1
 
@@ -198,7 +198,7 @@ The site includes the following implemented pages:
 
 The route model is file-based and follows Astro conventions.
 
-The `/portfolio` page presents 11 cards: eight interactive demos, two external sites, and one concept without an interactive demo. Each interactive demo has its own page and mounts its React app with `client:only="react"`. The Acepta Bitcoin case study has a local detail page whose production link opens the external site; La Bianca Tropical links directly to its external storefront. The SBC 2026 calculator is an interactive demo with local-only calculations.
+The `/portfolio` page presents 11 config-driven cards grouped into Ark Legal, Ark Commerce, and Ark Lab: eight interactive demos, two external sites, and one concept without an interactive demo. Portfolio metadata, line assignments, tags, and disclaimers live in the typed `config.portfolio` collection in `src/data/config.ts`. Each interactive demo has its own page and mounts its React app with `client:only="react"`. The Acepta Bitcoin case study has a local detail page whose portfolio link opens the external site; La Bianca Tropical links directly to its external storefront. The SBC 2026 calculator is an interactive demo with local-only calculations.
 
 The demos are: Temozonia, a sample storefront with catalog, cart, and illustrative checkout; Tomato for Bitcoin, a sample produce storefront with six products, cart, and payment-method selection; Arkangel, a UI simulation with illustrative conduct categories, mock cases, and a non-persistent ledger; Velvet Room, a fictional bar menu and atmosphere gallery; Medical Express, a fictional schedule selector with local-only payment-flow simulations; Talos, simulated mining-data metrics and spread; Mapa Crypto, searchable and filterable topic summaries with unverified references; and SBC 2026 Calculadora, a demonstrative calculator for Salario Base de Cotización that updates results in the browser with no backend. Velvet Room and Medical Express do not accept reservations or payments. Medical Express is not a healthcare provider and offers no medical care or advice; no patient data is collected. Talos does not connect to data sources, mining pools, exchanges, a treasury, payment APIs, or trading services, and makes no financial recommendations. Mapa Crypto reproduces topics and legal references from user-provided material without validating them; the references may be incomplete, outdated, or inaccurate, and the demo provides no legal interpretation or advice. None of Arkangel's indicators represent a live integration, operational legal controls, verified legal citations, or legal advice. Temozonia's data is explicitly demo data; storefront payment and contact values generally must be confirmed before real transactions or production use. Padel Outlet is a concept card only, with no inventory, interactive experience, or checkout. SBC 2026 calculator values are educational references only and do not constitute fiscal or legal advice.
 
@@ -268,10 +268,10 @@ The `config.ts` has been significantly expanded:
 - **Leasing contract page** at `/leasing-contrato`, template for client contracts
 - **Brand preview page** at `/brand`, internal design system showcase
 - **AI chat endpoint** at `/api/chat`, using Cloudflare Workers AI binding
-- **BobChatWidget** component for conversational UI
+- **NoahChatWidget** component for conversational UI, with line-specific contexts and response fingerprints
 - CI workflow and Lighthouse budget configuration
-- **Vector asset generation script** (`scripts/generate-assets.py`)
-- **10 SVG brand assets** (logo, favicon, glows, grids, portfolio placeholders)
+- **Vector asset generation script** (`scripts/generate-assets.py`) supports Legal, Commerce, and Lab themes plus legacy site paths
+- **10 currently available SVG brand assets** (logo, favicon, glows, grids, portfolio placeholders)
 - **Hero section** uses vector glow/grid backgrounds
 - **Portfolio grid** uses vector placeholders with hover animations
 - **BaseLayout** uses proper SVG favicon with type attribute
@@ -354,10 +354,10 @@ User Message → Clef (Classification) → D1 Lookup → Structured Response
 
 ### Current Knowledge Base (Seeded)
 
-| Topic | Sample Question | Legal Reference |
-|-------|----------------|-----------------|
-| `pld` | ¿Umbral para reportar operaciones en efectivo? | Artículo 13, fracción II, LFPIORPI |
-| `fiscal` | ¿Cómo declarar ganancias por enajenación de criptoactivos? | Artículo 14, fracción XIV, LISR |
+| Topic    | Sample Question                                            | Legal Reference                    |
+| -------- | ---------------------------------------------------------- | ---------------------------------- |
+| `pld`    | ¿Umbral para reportar operaciones en efectivo?             | Artículo 13, fracción II, LFPIORPI |
+| `fiscal` | ¿Cómo declarar ganancias por enajenación de criptoactivos? | Artículo 14, fracción XIV, LISR    |
 
 ### Why This Pattern
 
@@ -408,7 +408,7 @@ This confirms the source builds locally; it does not verify deployed behavior, t
 
 The repo is a structured, config-driven marketing site with reusable routes, components, documented client-onboarding steps, and a portfolio of eight interactive React demos, two external sites, and one concept card. Its local production build is green. It is not yet production-ready for a particular client: placeholders, demo payment/contact values, external integrations, and deployment details still need to be supplied and verified.
 
-**Current status (2026-10-10)**: The vector asset pipeline is operational, and the portfolio descriptions have been aligned with the actual demos and destinations. The Ark theme system includes dark defaults plus Temozonia, amber, and fire variants. Temozonia's demo configuration and product catalog are centralized in `src/data/config.ts`. New additions: SBC 2026 calculator, leasing contract page, brand preview page, AI chat endpoint with Clef+D1 architecture, BobChatWidget, D1 database binding for fiscal data, knowledge_base schema. The latest code is committed to `main`; this document does not claim that the latest portfolio update has been deployed.
+**Current status (2026-10-10)**: The vector asset pipeline is operational, and the portfolio descriptions have been aligned with the actual demos and destinations. The Ark theme system includes dark defaults plus Temozonia, amber, and fire variants. Temozonia's demo configuration and product catalog are centralized in `src/data/config.ts`. New additions: SBC 2026 calculator, leasing contract page, brand preview page, AI chat endpoint with Clef+D1 architecture, NoahChatWidget, D1 database binding for fiscal data, knowledge_base schema. The latest code is committed to `main`; this document does not claim that the latest portfolio update has been deployed.
 
 ---
 
@@ -435,27 +435,27 @@ The repo is a structured, config-driven marketing site with reusable routes, com
   "main": "./dist/_worker.js/index.js",
   "assets": {
     "directory": "./dist",
-    "binding": "ASSETS"
+    "binding": "ASSETS",
   },
   "compatibility_flags": ["nodejs_compat"],
   "ai": {
-    "binding": "AI"
+    "binding": "AI",
   },
   "d1_databases": [
     {
       "binding": "DB",
       "database_name": "ark-fiscal-db",
-      "database_id": "9f7f2e3c-030c-47b0-974f-d4d70fd44296"
-    }
+      "database_id": "9f7f2e3c-030c-47b0-974f-d4d70fd44296",
+    },
   ],
   "kv_namespaces": [
     {
       "binding": "SESSION",
       "id": "316c37d5fe864e4bab912a0dbbe6b00a",
-      "preview_id": "b93b8db2fc3e4cfeabc0e494db14ee2e"
-    }
+      "preview_id": "b93b8db2fc3e4cfeabc0e494db14ee2e",
+    },
   ],
-  "observability": { "enabled": true }
+  "observability": { "enabled": true },
 }
 ```
 

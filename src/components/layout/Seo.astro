@@ -5,28 +5,113 @@ interface Props {
   title: string;
   description: string;
   image?: string;
+  type?: 'website' | 'article' | 'product';
+  line?: 'legal' | 'commerce' | 'lab';
+  keywords?: string[];
+  noindex?: boolean;
 }
 
+const {
+  title,
+  description,
+  image,
+  type = 'website',
+  line,
+  keywords = [],
+  noindex = false,
+} = Astro.props;
+
+const resolvedLine = line ?? config.theme.default;
 const siteUrl = `https://${config.brand.domain}`;
-const { title, description, image = config.brand.ogImageSrc } = Astro.props;
 const canonical = new URL(Astro.url.pathname, siteUrl).toString();
-const ogImage = new URL(image, siteUrl).toString();
+const ogImage = new URL(image ?? config.brand.ogImageSrc, siteUrl).toString();
+const fullTitle = title === config.brand.name ? title : `${title} · ${config.brand.name}`;
+
+const themeColors: Record<NonNullable<Props['line']>, string> = {
+  legal: '#4F46E5',
+  commerce: '#D97706',
+  lab: '#0891B2',
+};
+const themeColor = themeColors[resolvedLine];
+
+const baseKeywords = [
+  'Ark Systems',
+  'infraestructura digital',
+  'Cloudflare Edge',
+  'despachos profesionales',
+];
+const lineKeywords: Record<NonNullable<Props['line']>, string[]> = {
+  legal: ['cumplimiento documental', 'expediente digital', 'Arkangel', 'Mapa Crypto', 'SBC 2026'],
+  commerce: ['e-commerce', 'tienda online', 'storefront', 'Bitcoin', 'Lightning'],
+  lab: ['Bitcoin', 'minería Bitcoin', 'colector de datos'],
+};
+const allKeywords = [...baseKeywords, ...lineKeywords[resolvedLine], ...keywords];
+
+const organizationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: config.brand.name,
+  legalName: config.brand.legalName,
+  url: siteUrl,
+  logo: new URL(config.brand.logoSrc, siteUrl).toString(),
+  description: config.brand.tagline,
+  email: config.contact.email,
+  sameAs: [config.contact.x, config.contact.facebook].filter((url): url is string => Boolean(url)),
+};
+
+const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: config.brand.name,
+  url: siteUrl,
+  inLanguage: 'es-MX',
+};
+
+const schemas = [organizationSchema, websiteSchema];
+const serializedSchemas = schemas.map((schema) => JSON.stringify(schema).replace(/</g, '\\u003c'));
 ---
 
-<title>{title}</title>
+<title>{fullTitle}</title>
 <meta name="description" content={description} />
-<link rel="canonical" href={canonical} />
+<meta name="keywords" content={allKeywords.join(', ')} />
+<meta name="author" content={config.brand.legalName} />
 <meta name="generator" content={Astro.generator} />
+<link rel="canonical" href={canonical} />
 
-<meta property="og:type" content="website" />
+{noindex ? (
+  <meta name="robots" content="noindex, nofollow" />
+) : (
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+)}
+
+<meta name="theme-color" content={themeColor} />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content={config.brand.name} />
+
+<meta property="og:type" content={type} />
 <meta property="og:site_name" content={config.brand.name} />
-<meta property="og:title" content={title} />
+<meta property="og:title" content={fullTitle} />
 <meta property="og:description" content={description} />
 <meta property="og:url" content={canonical} />
 <meta property="og:image" content={ogImage} />
-<meta property="og:locale" content={config.locale} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content={`${config.brand.name} — ${config.brand.tagline}`} />
+<meta property="og:locale" content={config.locale.replace('_', '-')} />
 
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content={title} />
+<meta name="twitter:site" content="@substrateholdns" />
+<meta name="twitter:creator" content="@substrateholdns" />
+<meta name="twitter:title" content={fullTitle} />
 <meta name="twitter:description" content={description} />
 <meta name="twitter:image" content={ogImage} />
+<meta name="twitter:image:alt" content={`${config.brand.name} — ${config.brand.tagline}`} />
+
+{serializedSchemas.map((schema) => (
+  <script type="application/ld+json" set:html={schema} />
+))}
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="dns-prefetch" href="https://cloudflare.com" />

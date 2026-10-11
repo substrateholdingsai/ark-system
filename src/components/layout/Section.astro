@@ -1,18 +1,34 @@
 ---
 import Container from './Container.astro';
+import { config } from '@/data/config';
 
 interface Props {
-  /** 'default' = bg-base, 'surface' = bg-surface + border-y, 'void' = bg-void */
+  /**
+   * 'default' = bg-base (fondo principal)
+   * 'surface' = bg-surface + border-y
+   * 'void' = bg-void (fondo absoluto)
+   */
   variant?: 'default' | 'surface' | 'void';
 
-  /** 'sm' = py-16 sm:py-20, 'md' = py-20 sm:py-24 (default), 'lg' = py-24 sm:py-32, 'xl' = py-32 sm:py-40 */
+  /**
+   * 'sm' = py-16 sm:py-20
+   * 'md' = py-20 sm:py-24 (default)
+   * 'lg' = py-24 sm:py-32
+   * 'xl' = py-32 sm:py-40
+   */
   padding?: 'sm' | 'md' | 'lg' | 'xl';
 
   /** 'full' opts out of the inner Container for full-bleed backgrounds */
   width?: 'contained' | 'full';
 
+  /** Business line theme; defaults to the configured site theme. */
+  line?: 'legal' | 'commerce' | 'lab';
+
   /** Anchor target, e.g. id="pricing" */
   id?: string;
+
+  /** Heading ID used to label this section with aria-labelledby. */
+  labelledBy?: string;
 
   class?: string;
 }
@@ -21,9 +37,13 @@ const {
   variant = 'default',
   padding = 'md',
   width = 'contained',
+  line,
   id,
+  labelledBy,
   class: className = '',
 } = Astro.props;
+
+const theme = line ?? config.theme.default ?? 'legal';
 
 const variantClasses = {
   default: 'bg-base',
@@ -39,9 +59,16 @@ const paddingClasses = {
 };
 
 const containerSize = width === 'full' ? 'full' : 'container';
+const ariaProps = labelledBy ? { 'aria-labelledby': labelledBy } : {};
 ---
 
-<section {id} class={`${variantClasses[variant]} ${paddingClasses[padding]} ${className}`}>
+<section
+  {id}
+  data-theme={theme}
+  data-section
+  class:list={[variantClasses[variant], paddingClasses[padding], 'relative', className]}
+  {...ariaProps}
+>
   <Container size={containerSize}>
     <slot />
   </Container>

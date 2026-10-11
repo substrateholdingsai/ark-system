@@ -92,6 +92,7 @@ export interface StackSectionCopy {
 
 export interface UseCase {
   id: string;
+  line?: 'legal' | 'commerce' | 'lab';
   vertical: string;
   traditional: string;
   arkSolution: string;
@@ -188,29 +189,93 @@ export interface PricingSection {
   btcCopy?: string;
 }
 
+export interface PricingPageFaq {
+  q: string;
+  a: string;
+}
+
+export interface PricingPageConfig {
+  hero: {
+    badge: string;
+    headline: string;
+    subheadline: string;
+  };
+  comparison: {
+    badge: string;
+    headline: string;
+    subheadline: string;
+    items: Array<{
+      name: string;
+      tone: 'negative' | 'positive';
+      bullets: string[];
+    }>;
+  };
+  faqs: {
+    badge: string;
+    headline: string;
+    items: PricingPageFaq[];
+  };
+  finalCta: {
+    headline: string;
+    subheadline: string;
+    primary: CTAButton;
+    secondary: CTAButton;
+    microcopy: string;
+  };
+}
+
 export interface PortfolioItem {
+  line: 'legal' | 'commerce' | 'lab';
   name: string;
-  url: string;
+  url?: string;
   image: string;
   description: string;
   tags: string[];
+  available?: boolean;
+  realUrl?: string;
+  seals?: { label: string; value: string }[];
+  disclaimer?: string;
+}
+
+export interface BusinessLine {
+  id: 'legal' | 'commerce' | 'lab';
+  name: string;
+  tagline: string;
+}
+
+export interface AssistantContextConfig {
+  key: string;
+  label: string;
+  iconName: 'scale' | 'shield' | 'coins' | 'file' | 'headphones';
+}
+
+export interface AssistantConfig {
+  name: string;
+  tagline: string;
+  line: 'legal' | 'commerce' | 'lab';
+  disclaimer: string;
+  defaultContext?: string;
+  contexts?: AssistantContextConfig[];
 }
 
 // --- GLOBAL CONFIG TYPE ---
 
 export interface SiteConfig {
   brand: BrandConfig;
+  assistant: AssistantConfig;
   locale: string;
   theme: {
-    default: string;
+    default: 'legal' | 'commerce' | 'lab';
     accentHex?: string; // Opcional override
   };
+  lines: BusinessLine[];
   nav: NavLink[];
   hero: HeroSection;
   portfolio: PortfolioItem[];
   how: HowSection;
   stackSection: StackSectionCopy;
   stack: StackItem[];
+  pricingPage: PricingPageConfig;
   useCases: {
     label: string;
     headline: string;
@@ -230,6 +295,7 @@ export interface SiteConfig {
     copyright: string;
     tagline: string;
     tech: string;
+    foundation: string;
   };
   contact: {
     email: string;
@@ -260,11 +326,46 @@ export const config: SiteConfig = {
     ogImageSrc: '/assets/og-default.svg',
   },
 
+  assistant: {
+    name: 'Noah',
+    tagline: 'El guardián de tu expediente',
+    line: 'legal',
+    disclaimer:
+      'Respuesta generada por IA. No constituye asesoría legal. Valida con tu abogado o contador.',
+    defaultContext: 'fiscal',
+    contexts: [
+      { key: 'cumplimiento', label: 'Cumplimiento', iconName: 'shield' },
+      { key: 'fiscal', label: 'Fiscal', iconName: 'scale' },
+      { key: 'pld', label: 'PLD / Lavado', iconName: 'shield' },
+      { key: 'cripto', label: 'Criptoactivos', iconName: 'coins' },
+      { key: 'expediente', label: 'Expediente', iconName: 'file' },
+      { key: 'soporte', label: 'Soporte', iconName: 'headphones' },
+    ],
+  },
+
   locale: 'es_MX',
 
   theme: {
-    default: 'fire', // Ark usa el tema fire (#FF6B1A)
+    default: 'legal', // Ark Systems usa el tema legal por defecto
   },
+
+  lines: [
+    {
+      id: 'legal',
+      name: 'Ark Legal',
+      tagline: 'Cumplimiento documental y análisis jurídico.',
+    },
+    {
+      id: 'commerce',
+      name: 'Ark Commerce',
+      tagline: 'Sitios de alto rendimiento para negocios.',
+    },
+    {
+      id: 'lab',
+      name: 'Ark Lab',
+      tagline: 'Datos, Bitcoin y agentes inteligentes.',
+    },
+  ],
 
   nav: [
     { label: 'QUÉ ES', href: '/#que-es' },
@@ -299,11 +400,119 @@ export const config: SiteConfig = {
 
   portfolio: [
     {
+      line: 'commerce',
+      name: 'Temozonia Carnes Ahumadas',
+      url: '/portfolio/temozonia',
+      image:
+        'https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?auto=format&fit=crop&w=1200&q=80',
+      description:
+        'Tienda demo de carnes ahumadas con catálogo, carrito y checkout ilustrativo con transferencia, BTCPay, Lightning y pedido por WhatsApp. Productos y datos de pago son de ejemplo.',
+      tags: ['DEMO INTERACTIVA', 'React', 'Catálogo', 'Carrito', 'Checkout demo'],
+      realUrl: 'https://temozonia.com',
+    },
+    {
+      line: 'lab',
+      name: 'Acepta Bitcoin',
+      url: 'https://www.aceptabitcoin.org',
+      image:
+        'https://images.unsplash.com/photo-1623227413711-25ee4388dae3?auto=format&fit=crop&w=1200&q=80',
+      description:
+        'Directorio y recursos para encontrar comercios que aceptan Bitcoin. El botón abre el sitio publicado de Acepta Bitcoin.',
+      tags: ['CASO DE ESTUDIO', 'Directorio', 'Bitcoin', 'Sitio externo'],
+    },
+    {
+      line: 'commerce',
+      name: 'Tomato for Bitcoin',
+      url: '/portfolio/tomato',
+      image:
+        'https://images.unsplash.com/photo-1592841200221-a6898f307baa?q=80&w=1200&auto=format&fit=crop',
+      description:
+        'Tienda ilustrativa de cosecha con seis productos de ejemplo, carrito y selector de pago (Bitcoin/Lightning, tarjeta/BTCPay, transferencia o efectivo). No confirma pagos ni pedidos reales.',
+      tags: ['DEMO INTERACTIVA', 'Catálogo demo', 'Carrito', 'Bitcoin/Lightning', 'Checkout demo'],
+    },
+    {
+      line: 'commerce',
       name: 'La Bianca Tropical',
-      url: 'https://labianca.ark.systems',
-      image: '/assets/portfolio/labianca.jpg',
-      description: 'Edge-hosted storefront with instant global delivery.',
-      tags: ['Storefront'],
+      url: 'https://labianca.aceptabitcoin.org/',
+      image:
+        'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?q=80&w=1200&auto=format&fit=crop',
+      description:
+        'Sitio storefront para La Bianca Tropical. El botón abre el sitio externo; esta galería no integra ni verifica sus reservas o servicios.',
+      tags: ['SITIO EXTERNO', 'Hotel boutique', 'Storefront'],
+    },
+    {
+      line: 'commerce',
+      name: 'Padel Outlet',
+      image:
+        'https://images.unsplash.com/photo-1554068865-24cecd4e34b8?q=80&w=1200&auto=format&fit=crop',
+      description:
+        'Concepto de tienda outlet de pádel con catálogo y filtros por talla o marca propuestos. Aún no tiene demo interactiva, inventario ni checkout implementados.',
+      tags: ['PLANTILLA', 'Concepto e-commerce', 'Pádel', 'No implementado'],
+      available: false,
+    },
+    {
+      line: 'commerce',
+      name: 'Velvet Room',
+      url: '/portfolio/velvet',
+      image:
+        'https://images.unsplash.com/photo-1470337458703-46ad1756a187?auto=format&fit=crop&w=1200&q=80',
+      description:
+        'Concepto ficticio de cocktail bar con seis bebidas de muestra, video y galería de ambiente. La reserva y el pago son secciones ilustrativas; no están disponibles.',
+      tags: ['DEMO INTERACTIVA', 'Carta demo', 'Galería', 'Video ambiente', 'Sin reservas'],
+    },
+    {
+      line: 'commerce',
+      name: 'Medical Express',
+      url: '/portfolio/medical',
+      image:
+        'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1200&q=80',
+      description:
+        'Prototipo ficticio con selección local de horarios y botones de simulación de Stripe/Lightning. No es un prestador de salud, no agenda citas ni procesa pagos o datos personales.',
+      tags: ['DEMO INTERACTIVA', 'Agenda demo', 'Pago simulado', 'Sin atención médica'],
+    },
+    {
+      line: 'legal',
+      name: 'Arkangel • Cobranza Automatizada',
+      url: '/portfolio/arkangel',
+      image:
+        'https://images.unsplash.com/photo-1553877522-43269d4ea984?auto=format&fit=crop&w=1200&q=80',
+      description:
+        'Simulación con conductas ilustrativas, casos ficticios y ledger local no persistente. No se conecta a sistemas de cobranza; las referencias no son asesoría legal.',
+      tags: ['DEMO INTERACTIVA', 'Casos demo', 'Ledger local', 'Referencias ilustrativas'],
+      disclaimer: 'Simulación educativa; las referencias mostradas no constituyen asesoría legal.',
+    },
+    {
+      line: 'lab',
+      name: 'Talos • Colector de Datos',
+      url: '/portfolio/talos',
+      image:
+        'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80',
+      description:
+        'Prototipo visual de un colector de datos para minería Bitcoin con spread y tick simulados localmente. No consulta fuentes, pools o mercados ni realiza operaciones financieras.',
+      tags: ['DEMO INTERACTIVA', 'Datos simulados', 'Minería Bitcoin', 'Sin API activa'],
+    },
+    {
+      line: 'legal',
+      name: 'Mapa Crypto • Activos Virtuales',
+      url: '/portfolio/mapa-crypto',
+      image:
+        'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1200&q=80',
+      description:
+        'Explorador con búsqueda y filtros para 12 temas sobre activos virtuales. Las referencias vienen del material de origen, no están verificadas y no constituyen asesoría legal.',
+      tags: ['DEMO INTERACTIVA', '12 temas', 'Búsqueda y filtros', 'Referencias sin validar'],
+      disclaimer:
+        'Las referencias no están verificadas y el contenido no constituye asesoría legal.',
+    },
+    {
+      line: 'legal',
+      name: 'SBC 2026 • Calculadora Interactiva',
+      url: '/portfolio/sbc-2026-calculadora.html',
+      image:
+        'https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=1200&q=80',
+      description:
+        'Calculadora demostrativa del Salario Base de Cotización que actualiza sus resultados en el navegador. No envía datos; sus valores son referencias educativas y no constituyen asesoría fiscal o legal.',
+      tags: ['DEMO INTERACTIVA', 'Calculadora SBC', 'Cálculo local', 'Sin backend'],
+      disclaimer: 'Referencias educativas; los resultados no constituyen asesoría fiscal o legal.',
     },
   ],
 
@@ -380,6 +589,7 @@ export const config: SiteConfig = {
     items: [
       {
         id: 'restaurantes',
+        line: 'commerce',
         vertical: 'RESTAURANTES Y GASTRONOMÍA',
         traditional: 'Sitios lentos que obligan a descargar un PDF pesado para ver el menú.',
         arkSolution:
@@ -388,6 +598,7 @@ export const config: SiteConfig = {
       },
       {
         id: 'despachos',
+        line: 'legal',
         vertical: 'DESPACHOS Y CONSULTORES',
         traditional:
           'Plantillas genéricas con plugins pesados que transmiten una imagen desactualizada.',
@@ -397,6 +608,7 @@ export const config: SiteConfig = {
       },
       {
         id: 'clinicas',
+        line: 'commerce',
         vertical: 'CLÍNICAS Y SALUD',
         traditional:
           'Sistemas de citas de terceros que cobran comisiones por paciente o rentas altas.',
@@ -406,15 +618,16 @@ export const config: SiteConfig = {
       },
       {
         id: 'realestate',
+        line: 'commerce',
         vertical: 'REAL ESTATE Y PROPIEDADES',
-        traditional:
-          'Galerías con renders de alta resolución que tardan segundos en cargar.',
+        traditional: 'Galerías con renders de alta resolución que tardan segundos en cargar.',
         arkSolution:
           'Catálogo de propiedades con imágenes optimizadas al instante en cualquier celular.',
         badge: 'Imágenes de carga rápida',
       },
       {
         id: 'saas',
+        line: 'commerce',
         vertical: 'STARTUPS Y SAAS',
         traditional:
           'Costos de hosting inflados en servidores en la nube solo para la landing comercial.',
@@ -424,11 +637,10 @@ export const config: SiteConfig = {
       },
       {
         id: 'ecommerce',
+        line: 'commerce',
         vertical: 'E-COMMERCE Y CATÁLOGOS',
-        traditional:
-          'Plataformas lentas que pierden el 40% de las ventas en el carrito de compra.',
-        arkSolution:
-          'Experiencia de compra fluida con cobro por Stripe, SPEI o activos digitales.',
+        traditional: 'Plataformas lentas que pierden el 40% de las ventas en el carrito de compra.',
+        arkSolution: 'Experiencia de compra fluida con cobro por Stripe, SPEI o activos digitales.',
         badge: 'Alta conversión de checkout',
       },
     ],
@@ -640,6 +852,109 @@ export const config: SiteConfig = {
       'Soportamos pagos en activos digitales tanto en capa base como en capas de segunda generación (Lightning/Solana) con facturación equivalente.',
   },
 
+  pricingPage: {
+    hero: {
+      badge: 'PRECIOS TRANSPARENTES',
+      headline: 'Sin sorpresas. Sin letra chica.',
+      subheadline:
+        'Elige entre arrendamiento mensual o adquisición del código fuente. El alcance, los costos y las condiciones se definen en el plan y contrato correspondiente.',
+    },
+    comparison: {
+      badge: 'COMPARATIVA',
+      headline: 'Una infraestructura pensada para tu operación.',
+      subheadline: 'Compara modelos de trabajo, costos y responsabilidades antes de elegir.',
+      items: [
+        {
+          name: 'Carpetas + WhatsApp + Drive',
+          tone: 'negative',
+          bullets: [
+            'Documentos repartidos entre distintas herramientas',
+            'Seguimiento manual de expedientes y pendientes',
+            'Difícil reconstruir quién hizo cada cambio',
+            'Dependencia de respaldos y dispositivos individuales',
+            'Búsqueda manual de información',
+          ],
+        },
+        {
+          name: 'Software legal tradicional',
+          tone: 'negative',
+          bullets: [
+            'Inversión inicial que puede ser elevada',
+            'Costos de soporte o actualización según proveedor',
+            'Dependencia de infraestructura local o de terceros',
+            'Alcance y personalización variables',
+            'La arquitectura puede no estar diseñada para Edge',
+          ],
+        },
+        {
+          name: 'Ark Systems',
+          tone: 'positive',
+          bullets: [
+            'Flujos documentales definidos según el alcance del proyecto',
+            'Herramientas configurables para apoyar controles internos',
+            'Integridad y trazabilidad sujetas a las funciones contratadas',
+            'Arquitectura desplegada sobre Cloudflare Edge',
+            'Opciones de arrendamiento o adquisición de código',
+          ],
+        },
+      ],
+    },
+    faqs: {
+      badge: 'PREGUNTAS FRECUENTES',
+      headline: 'Lo que conviene saber antes de contratar.',
+      items: [
+        {
+          q: '¿Necesito saber de tecnología?',
+          a: 'No necesitas programar. El equipo acompaña la configuración y el despliegue; el contenido, las integraciones y la migración se acuerdan según el alcance del proyecto.',
+        },
+        {
+          q: '¿Qué pasa después del despliegue?',
+          a: 'El sitio o aplicación queda publicado en la infraestructura acordada. El monitoreo, mantenimiento, soporte y actualizaciones dependen del plan y de las condiciones del contrato.',
+        },
+        {
+          q: '¿Puedo editar el contenido yo mismo?',
+          a: 'Las opciones de edición dependen del producto y del alcance contratado. Antes de iniciar, definimos si los cambios se harán desde una interfaz o mediante el equipo de Ark.',
+        },
+        {
+          q: '¿Cumple con LFPIORPI y CFF?',
+          a: 'Ark puede configurarse para apoyar flujos documentales relacionados con obligaciones de cumplimiento. No certifica el cumplimiento ni sustituye la asesoría profesional; las obligaciones, plazos y controles deben validarse con tu equipo legal o contable.',
+        },
+        {
+          q: '¿Qué pasa si necesito agregar más expedientes después?',
+          a: 'El alcance puede ampliarse conforme a las capacidades del producto y la infraestructura contratada. Revisamos volumen, permisos, almacenamiento e integraciones antes de estimar el cambio.',
+        },
+        {
+          q: '¿Ofrecen soporte continuo?',
+          a: 'Los planes indican el soporte y las actualizaciones incluidos. También es posible cotizar soporte extendido; los tiempos de respuesta y el alcance quedan definidos por contrato.',
+        },
+        {
+          q: '¿Puedo comprar el código fuente?',
+          a: 'Sí. La opción de Compra Única aparece en los planes e incluye la entrega y transferencia técnica indicadas ahí. Los derechos, licencias y condiciones de despliegue se especifican en el contrato.',
+        },
+        {
+          q: '¿Qué pasa si quiero cancelar?',
+          a: 'Las condiciones de cancelación, entrega de información y cierre del servicio se detallan en el contrato aplicable. Revísalas antes de firmar para confirmar que se ajustan a tus necesidades.',
+        },
+      ],
+    },
+    finalCta: {
+      headline: '¿Listo para elegir el modelo adecuado?',
+      subheadline:
+        'Conversemos sobre el alcance, las funciones necesarias y las condiciones antes de iniciar.',
+      primary: {
+        label: 'Solicitar demo 3 min',
+        href: '/contact',
+        variant: 'primary',
+      },
+      secondary: {
+        label: 'Ver contrato tipo leasing',
+        href: '/leasing-contrato',
+        variant: 'secondary',
+      },
+      microcopy: 'Alcance claro · Condiciones por escrito · Sin compromisos antes de revisar',
+    },
+  },
+
   finalCta: {
     headline: '¿Tu web sigue igual desde 2012?',
     subheadline:
@@ -664,6 +979,7 @@ export const config: SiteConfig = {
     tagline:
       'Agencia de desarrollo web edge-native que vende infraestructura moderna con modelo de leasing fiscalmente optimizado para PYMEs y profesionales en México/Latam.',
     tech: 'Astro 5 • Cloudflare Edge • <0.4s de carga',
+    foundation: 'Cimiento: Cloudflare Edge',
   },
 
   contact: {

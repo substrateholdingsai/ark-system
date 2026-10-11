@@ -1,150 +1,343 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Container from '../components/layout/Container.astro';
+import Section from '../components/layout/Section.astro';
+import Badge from '../components/ui/Badge.astro';
+import Button from '../components/ui/Button.astro';
+import Card from '../components/ui/Card.astro';
+import { config } from '@/data/config';
+
+const themes = [
+  {
+    id: 'legal',
+    name: 'Ark Legal',
+    tagline: 'Cumplimiento documental y análisis jurídico.',
+    accent: '#4F46E5',
+    description: 'Índigo profundo. Autoridad, permanencia, confianza institucional.',
+  },
+  {
+    id: 'commerce',
+    name: 'Ark Commerce',
+    tagline: 'Sitios de alto rendimiento para negocios.',
+    accent: '#D97706',
+    description: 'Ámbar sobrio. Calidez, exclusividad, retail premium.',
+  },
+  {
+    id: 'lab',
+    name: 'Ark Lab',
+    tagline: 'I+D en datos, Bitcoin y agentes inteligentes.',
+    accent: '#0891B2',
+    description: 'Cyan contenido. Laboratorio, experimentación, datos.',
+  },
+] as const;
 ---
 
-<BaseLayout title="Brand preview">
-  <main class="mx-auto max-w-6xl space-y-12 px-4 py-12 sm:px-6 lg:px-8">
+<BaseLayout
+  title="Brand Preview | Ark Systems"
+  description="Banco de pruebas del sistema de diseño v2.0. Los 3 temas, la tríada base y los sellos de Ark Systems."
+>
+  <main class="mx-auto max-w-7xl space-y-16 px-4 py-12 sm:px-6 lg:px-8">
+    <!-- ========================================
+         HEADER
+         ======================================== -->
     <header class="space-y-4 text-center">
-      <p class="text-sm font-semibold uppercase tracking-[0.2em] text-ark-accent">Brand system</p>
-      <h1 class="text-4xl font-bold tracking-tight text-white sm:text-5xl">Theme preview</h1>
+      <Badge variant="line" dot>
+        Brand System v2.0
+      </Badge>
+      <h1 class="text-4xl font-bold tracking-tight text-white sm:text-5xl">Banco de pruebas</h1>
       <p class="mx-auto max-w-2xl text-base text-zinc-300 sm:text-lg">
-        Validation of the multi-tenant theming model by forcing both the neon and amber palettes in
-        the same view without any JavaScript toggle.
+        Validación del sistema multi-línea: <strong class="text-white">legal</strong>,
+        <strong class="text-white">commerce</strong> y <strong class="text-white">lab</strong>,
+        aplicados sobre los mismos componentes sin JavaScript.
       </p>
     </header>
 
+    <!-- ========================================
+         TOKENS GLOBALES
+         ======================================== -->
     <section class="space-y-6">
       <div class="flex items-center gap-3">
-        <span class="h-3.5 w-3.5 rounded-full bg-cyan-400"></span>
-        <h2 class="text-2xl font-semibold text-white">Neon theme</h2>
+        <span class="h-3.5 w-3.5 rounded-full bg-white"></span>
+        <h2 class="text-2xl font-semibold text-white">Tokens globales</h2>
       </div>
 
-      <div
-        data-theme="neon"
-        class="space-y-8 rounded-3xl border border-white/[0.08] bg-surface/50 p-6 shadow-ark-card sm:p-8"
-      >
-        <div>
-          <p class="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-zinc-400">Palette</p>
-          <div class="flex flex-wrap gap-4">
-            <div class="flex h-20 w-20 items-end rounded-2xl bg-ark-accent p-2 text-xs font-bold text-black shadow-lg shadow-ark-accent/20">
-              accent
+      <div class="grid gap-6 lg:grid-cols-3">
+        <!-- Colores base -->
+        <Card>
+          <p class="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-zinc-400">
+            Colores base
+          </p>
+          <div class="flex flex-wrap gap-3">
+            <div class="flex h-16 w-16 items-end rounded-lg bg-void p-1.5 text-[10px] text-zinc-400">
+              void
             </div>
-            <div class="flex h-20 w-20 items-end rounded-2xl border border-white/[0.08] bg-base p-2 text-xs font-medium text-white">
+            <div class="flex h-16 w-16 items-end rounded-lg bg-base p-1.5 text-[10px] text-zinc-400">
               base
             </div>
-            <div class="flex h-20 w-20 items-end rounded-2xl bg-white p-2 text-xs font-bold text-black">
-              text
+            <div class="flex h-16 w-16 items-end rounded-lg bg-surface p-1.5 text-[10px] text-zinc-400">
+              surface
             </div>
           </div>
-        </div>
+        </Card>
 
-        <div class="space-y-4">
-          <p class="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-400">Typography</p>
-          <h3 class="text-4xl font-bold tracking-tight text-white">Heading 1</h3>
-          <h4 class="text-2xl font-semibold text-white">Heading 2</h4>
-          <p class="max-w-2xl text-base leading-relaxed text-zinc-300">
-            This paragraph checks readability and contrast on the default dark card surface. The
-            goal is a clean, premium tone that still reads comfortably at body copy size.
+        <!-- Semánticos -->
+        <Card>
+          <p class="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-zinc-400">
+            Semánticos
           </p>
-        </div>
-
-        <div class="space-y-4">
-          <p class="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-400">Buttons</p>
-          <div class="flex flex-wrap gap-4">
-            <button class="inline-flex h-11 items-center justify-center rounded-full bg-ark-accent px-6 text-sm font-semibold text-black transition hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-ark-accent/60">
-              Primary
-            </button>
-            <button class="inline-flex h-11 items-center justify-center rounded-full border border-ark-accent/40 bg-white/[0.02] px-6 text-sm font-medium text-ark-accent transition hover:bg-ark-accent/10 focus:outline-none focus:ring-2 focus:ring-ark-accent/60">
-              Secondary
-            </button>
-            <button class="inline-flex h-11 items-center justify-center rounded-full px-6 text-sm font-medium text-zinc-300 transition hover:bg-white/[0.04] hover:text-white focus:outline-none focus:ring-2 focus:ring-ark-accent/60">
-              Ghost
-            </button>
+          <div class="flex flex-wrap gap-3">
+            <div class="flex h-16 w-16 items-end rounded-lg bg-emerald-500 p-1.5 text-[10px] font-bold text-black">
+              success
+            </div>
+            <div class="flex h-16 w-16 items-end rounded-lg bg-amber-500 p-1.5 text-[10px] font-bold text-black">
+              warning
+            </div>
+            <div class="flex h-16 w-16 items-end rounded-lg bg-red-500 p-1.5 text-[10px] font-bold text-white">
+              error
+            </div>
           </div>
-        </div>
+        </Card>
 
-        <div class="max-w-md space-y-3">
-          <p class="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-400">
-            Form controls
+        <!-- Cimiento -->
+        <Card>
+          <p class="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-zinc-400">
+            Cimiento
           </p>
-          <label class="block text-sm font-medium text-zinc-200" for="neon-email">
-            Email
-          </label>
-          <input
-            id="neon-email"
-            type="email"
-            placeholder="hello@brand.dev"
-            class="w-full rounded-xl border border-white/[0.08] bg-white/[0.03] px-4 py-3 text-sm text-white placeholder:text-zinc-500 focus:border-ark-accent focus:outline-none focus:ring-2 focus:ring-ark-accent/30"
-          />
-        </div>
+          <div class="flex flex-wrap gap-3">
+            <div class="flex h-16 w-16 items-end rounded-lg bg-[#F38020] p-1.5 text-[10px] font-bold text-black">
+              CF
+            </div>
+            <div class="flex items-center">
+              <Badge variant="foundation" dot>
+                Cloudflare Edge
+              </Badge>
+            </div>
+          </div>
+        </Card>
       </div>
     </section>
 
+    <!-- ========================================
+         LOS 3 TEMAS
+         ======================================== -->
+    {themes.map((theme) => (
+      <Section
+        data-theme={theme.id}
+        line={theme.id}
+        padding="lg"
+        class="rounded-3xl border border-white/[0.06] bg-surface/30"
+      >
+        <Container>
+          <!-- Header del tema -->
+          <div class="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <div class="flex items-start gap-3">
+              <span
+                class="mt-1.5 h-3.5 w-3.5 shrink-0 rounded-full"
+                style={`background: ${theme.accent}`}
+                aria-hidden="true"
+              ></span>
+              <div>
+                <div class="flex items-center gap-2">
+                  <h2 class="text-2xl font-semibold text-white">{theme.name}</h2>
+                  <Badge variant="line" dot>
+                    {theme.id}
+                  </Badge>
+                </div>
+                <p class="mt-1 text-sm text-zinc-400">{theme.tagline}</p>
+                <p class="mt-1 text-xs text-zinc-500">{theme.description}</p>
+              </div>
+            </div>
+            <span class="inline-flex items-center rounded-lg border border-white/[0.06] bg-white/[0.02] px-3 py-1.5 font-mono text-[11px] text-zinc-400">
+              data-theme="{theme.id}"
+            </span>
+          </div>
+
+          <div class="grid gap-8 lg:grid-cols-2">
+            <!-- ========================================
+                 COLUMNA IZQUIERDA
+                 ======================================== -->
+            <div class="space-y-8">
+              <!-- Botones -->
+              <div class="space-y-4">
+                <p class="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-400">Button</p>
+                <div class="flex flex-wrap gap-3">
+                  <Button>Solicitar demo</Button>
+                  <Button variant="secondary">Ver Ark Legal</Button>
+                  <Button variant="ghost">Portafolio</Button>
+                  <Button loading>Enviando...</Button>
+                  <Button disabled>Deshabilitado</Button>
+                </div>
+                <div class="flex flex-wrap gap-3">
+                  <Button size="sm">Small</Button>
+                  <Button size="md">Medium</Button>
+                  <Button size="lg">Large</Button>
+                </div>
+              </div>
+
+              <!-- Badges -->
+              <div class="space-y-4">
+                <p class="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-400">Badge</p>
+                <div class="flex flex-wrap gap-3">
+                  <Badge>default</Badge>
+                  <Badge variant="success">success</Badge>
+                  <Badge variant="warning">warning</Badge>
+                  <Badge variant="error">error</Badge>
+                  <Badge variant="line" dot>
+                    line
+                  </Badge>
+                  <Badge variant="foundation" dot>
+                    foundation
+                  </Badge>
+                </div>
+              </div>
+
+              <!-- Sellos -->
+              <div class="space-y-4">
+                <p class="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-400">Sellos</p>
+                <div class="space-y-2">
+                  <div class="ark-seal">
+                    <span class="ark-seal__label">CONSERVACIÓN</span>
+                    <span class="ark-seal__value">10 años · LFPIORPI Art. 32</span>
+                  </div>
+                  <div class="ark-seal">
+                    <span class="ark-seal__label">TRAZABILIDAD</span>
+                    <span class="ark-seal__value font-mono">0x9f3a2b1c...e3d1b2c4</span>
+                  </div>
+                  <div class="ark-foundation">
+                    <span class="ark-foundation__dot"></span>
+                    Cimiento: Cloudflare Edge
+                  </div>
+                </div>
+              </div>
+
+              <!-- Form controls -->
+              <div class="space-y-3">
+                <p class="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-400">Input</p>
+                <label class="block">
+                  <span class="mb-1.5 block text-sm font-medium text-zinc-200">
+                    RFC del despacho
+                  </span>
+                  <input
+                    type="text"
+                    placeholder="XAXX010101000"
+                    class="w-full rounded-xl border border-white/[0.08] bg-white/[0.03] px-4 py-3 text-sm text-white placeholder:font-mono placeholder:text-zinc-500 focus:border-[rgb(var(--color-ark-accent-rgb))] focus:outline-none focus:ring-2 focus:ring-[rgb(var(--color-ark-accent-rgb))]/30"
+                  />
+                  <span class="mt-1 block text-xs text-zinc-500">
+                    Formato SAT · 12 o 13 caracteres
+                  </span>
+                </label>
+              </div>
+            </div>
+
+            <!-- ========================================
+                 COLUMNA DERECHA
+                 ======================================== -->
+            <div class="space-y-8">
+              <!-- Card: default -->
+              <div class="space-y-3">
+                <p class="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-400">
+                  Card · default
+                </p>
+                <Card>
+                  <h3 class="text-base font-semibold text-white">Expediente CAS-8821</h3>
+                  <p class="mt-2 text-sm text-zinc-400">
+                    Divorcio incausado · Juzgado Familiar CDMX.
+                  </p>
+                  <div class="mt-4 flex items-center gap-2">
+                    <Badge variant="line" dot>
+                      SELLADO
+                    </Badge>
+                    <span class="text-[10px] font-mono text-zinc-500">47 archivos</span>
+                  </div>
+                </Card>
+              </div>
+
+              <!-- Card: interactive -->
+              <div class="space-y-3">
+                <p class="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-400">
+                  Card · interactive
+                </p>
+                <Card padding="none" interactive>
+                  <div class="aspect-video w-full bg-surface-hover"></div>
+                  <div class="p-5">
+                    <h3 class="text-base font-semibold text-white">Arkangel</h3>
+                    <p class="mt-2 text-sm text-zinc-400">Compliance como código ejecutable.</p>
+                  </div>
+                </Card>
+              </div>
+
+              <!-- Card: elevated -->
+              <div class="space-y-3">
+                <p class="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-400">
+                  Card · elevated
+                </p>
+                <Card variant="elevated" padding="lg">
+                  <Badge variant="line" dot>
+                    RECOMENDADO
+                  </Badge>
+                  <h3 class="mt-3 text-lg font-semibold text-white">Ark Legal Core</h3>
+                  <p class="mt-2 text-sm text-zinc-400">
+                    Expediente digital a prueba de auditoría.
+                  </p>
+                  <div class="mt-4 flex items-baseline gap-1">
+                    <span class="text-3xl font-bold text-white">$3,890</span>
+                    <span class="text-sm text-zinc-400">/mes</span>
+                  </div>
+                </Card>
+              </div>
+            </div>
+          </div>
+        </Container>
+      </Section>
+    ))}
+
+    <!-- ========================================
+         TIPOGRAFÍA
+         ======================================== -->
     <section class="space-y-6">
       <div class="flex items-center gap-3">
-        <span class="h-3.5 w-3.5 rounded-full bg-amber-500"></span>
-        <h2 class="text-2xl font-semibold text-white">Amber theme</h2>
+        <span class="h-3.5 w-3.5 rounded-full bg-white"></span>
+        <h2 class="text-2xl font-semibold text-white">Tipografía</h2>
       </div>
 
-      <div
-        data-theme="amber"
-        class="space-y-8 rounded-3xl border border-white/[0.08] bg-surface/50 p-6 shadow-ark-card sm:p-8"
-      >
-        <div>
-          <p class="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-zinc-400">Palette</p>
-          <div class="flex flex-wrap gap-4">
-            <div class="flex h-20 w-20 items-end rounded-2xl bg-ark-accent p-2 text-xs font-bold text-black shadow-lg shadow-ark-accent/20">
-              accent
-            </div>
-            <div class="flex h-20 w-20 items-end rounded-2xl border border-white/[0.08] bg-base p-2 text-xs font-medium text-white">
-              base
-            </div>
-            <div class="flex h-20 w-20 items-end rounded-2xl bg-white p-2 text-xs font-bold text-black">
-              text
-            </div>
+      <Card padding="lg">
+        <div class="space-y-4">
+          <div>
+            <p class="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-zinc-400">
+              Display · Fraunces
+            </p>
+            <h1 class="text-4xl font-bold tracking-tight text-white">Expediente digital</h1>
+            <h2 class="mt-2 text-3xl font-semibold text-white">A prueba de auditoría</h2>
+          </div>
+          <div>
+            <p class="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-zinc-400">
+              Body · Inter
+            </p>
+            <p class="max-w-2xl text-base leading-relaxed text-zinc-300">
+              Ark Systems es infraestructura Edge para despachos contables y legales. Cumplimiento
+              LFPIORPI/CFF, búsqueda instantánea, cadena de custodia.
+            </p>
+          </div>
+          <div>
+            <p class="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-zinc-400">
+              Mono · JetBrains Mono
+            </p>
+            <code class="block rounded-lg border border-white/[0.06] bg-white/[0.02] p-4 font-mono text-sm text-zinc-300">
+              Art. 284 Bis · Art. 386 · Art. 390 · NOM-184
+            </code>
           </div>
         </div>
-
-        <div class="space-y-4">
-          <p class="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-400">Typography</p>
-          <h3 class="text-4xl font-bold tracking-tight text-white">Heading 1</h3>
-          <h4 class="text-2xl font-semibold text-white">Heading 2</h4>
-          <p class="max-w-2xl text-base leading-relaxed text-zinc-300">
-            This second panel confirms the amber variant preserves the same hierarchy, spacing, and
-            contrast rules while switching the accent token and its hover states.
-          </p>
-        </div>
-
-        <div class="space-y-4">
-          <p class="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-400">Buttons</p>
-          <div class="flex flex-wrap gap-4">
-            <button class="inline-flex h-11 items-center justify-center rounded-full bg-ark-accent px-6 text-sm font-semibold text-black transition hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-ark-accent/60">
-              Primary
-            </button>
-            <button class="inline-flex h-11 items-center justify-center rounded-full border border-ark-accent/40 bg-white/[0.02] px-6 text-sm font-medium text-ark-accent transition hover:bg-ark-accent/10 focus:outline-none focus:ring-2 focus:ring-ark-accent/60">
-              Secondary
-            </button>
-            <button class="inline-flex h-11 items-center justify-center rounded-full px-6 text-sm font-medium text-zinc-300 transition hover:bg-white/[0.04] hover:text-white focus:outline-none focus:ring-2 focus:ring-ark-accent/60">
-              Ghost
-            </button>
-          </div>
-        </div>
-
-        <div class="max-w-md space-y-3">
-          <p class="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-400">
-            Form controls
-          </p>
-          <label class="block text-sm font-medium text-zinc-200" for="amber-email">
-            Email
-          </label>
-          <input
-            id="amber-email"
-            type="email"
-            placeholder="hello@brand.dev"
-            class="w-full rounded-xl border border-white/[0.08] bg-white/[0.03] px-4 py-3 text-sm text-white placeholder:text-zinc-500 focus:border-ark-accent focus:outline-none focus:ring-2 focus:ring-ark-accent/30"
-          />
-        </div>
-      </div>
+      </Card>
     </section>
+
+    <!-- ========================================
+         FOOTER DEL PREVIEW
+         ======================================== -->
+    <footer class="border-t border-white/[0.06] pt-8 text-center text-xs text-zinc-500">
+      <p>
+        Brand Preview v2.0 · {config.brand.name} · Cimiento:
+        <span class="font-mono text-[#F38020]">Cloudflare Edge</span>
+      </p>
+    </footer>
   </main>
 </BaseLayout>

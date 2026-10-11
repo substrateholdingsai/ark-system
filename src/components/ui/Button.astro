@@ -1,42 +1,88 @@
 ---
+type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'line';
+
 interface Props {
-  variant?: 'primary' | 'secondary' | 'ghost';
+  variant?: ButtonVariant;
+  size?: 'sm' | 'md' | 'lg';
+  line?: 'legal' | 'commerce' | 'lab';
+  fullWidth?: boolean;
+  loading?: boolean;
+  disabled?: boolean;
   href?: string;
   target?: string;
   rel?: string;
-  type?: 'button' | 'submit';
-  disabled?: boolean;
+  type?: 'button' | 'submit' | 'reset';
   class?: string;
   [key: string]: unknown;
 }
 
 const {
   variant = 'primary',
+  size = 'md',
+  line,
+  fullWidth = false,
+  loading = false,
+  disabled = false,
   href,
   target,
   rel,
   type = 'button',
-  disabled = false,
   class: className = '',
   ...restProps
 } = Astro.props;
 
+const resolvedVariant = variant === 'line' ? 'primary' : variant;
+const Tag = href && !disabled && !loading ? 'a' : 'button';
+
 const baseClass =
-  variant === 'primary'
-    ? 'ark-btn-primary'
-    : variant === 'ghost'
-      ? 'ark-btn-ghost'
-      : 'ark-btn-secondary';
-const disabledClass = 'disabled:opacity-50 disabled:pointer-events-none';
-const classes = [baseClass, disabled && disabledClass, className];
+  'inline-flex items-center justify-center gap-2 rounded-lg font-semibold transition-all duration-200 ease-ark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ark-accent/50 focus-visible:ring-offset-2 focus-visible:ring-offset-base disabled:pointer-events-none disabled:opacity-50';
+
+const variantClasses: Record<Exclude<ButtonVariant, 'line'>, string> = {
+  primary:
+    'border border-ark-accent/20 bg-ark-accent text-ark-contrast hover:-translate-y-px hover:bg-ark-accent-hover hover:shadow-ark-glow active:translate-y-0',
+  secondary:
+    'border border-white/10 bg-white/[0.06] text-white hover:border-ark-accent/30 hover:bg-white/[0.10]',
+  ghost:
+    'border border-transparent bg-transparent text-zinc-300 hover:bg-white/[0.04] hover:text-white',
+};
+
+const sizeClasses = {
+  sm: 'h-9 px-3 text-[13px]',
+  md: 'h-11 px-5 text-sm',
+  lg: 'h-12 px-6 text-[15px]',
+} as const;
+
+const classes = [
+  baseClass,
+  variantClasses[resolvedVariant],
+  sizeClasses[size],
+  fullWidth && 'w-full',
+  className,
+];
+
+const ariaProps = loading ? { 'aria-busy': true } : {};
+const isLink = Tag === 'a';
+const tagProps = isLink
+  ? { href, target, rel: rel ?? (target === '_blank' ? 'noopener noreferrer' : undefined) }
+  : { type, disabled: disabled || loading };
 ---
 
-{href ? (
-  <a href={href} target={target} rel={rel} class:list={classes} {...restProps}>
-    <slot />
-  </a>
-) : (
-  <button type={type} disabled={disabled} class:list={classes} {...restProps}>
-    <slot />
-  </button>
-)}
+<Tag class:list={classes} data-theme={line} {...tagProps} {...ariaProps} {...restProps}>
+  {loading && (
+    <svg
+      class="h-4 w-4 animate-spin"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+    >
+      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" />
+      <path
+        class="opacity-75"
+        fill="currentColor"
+        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+      />
+    </svg>
+  )}
+  <slot />
+</Tag>

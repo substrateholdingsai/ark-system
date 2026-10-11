@@ -2,199 +2,281 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Section from '../components/layout/Section.astro';
 import Container from '../components/layout/Container.astro';
+import Badge from '../components/ui/Badge.astro';
+import Button from '../components/ui/Button.astro';
 import { config } from '@/data/config';
 
+const line = config.theme.default ?? 'legal';
 const whatsappNumber = config.contact.whatsapp?.replace(/\D/g, '');
+
+const clauses = [
+  { id: 'objeto', n: '1', title: 'Objeto y naturaleza del modelo' },
+  { id: 'alcance', n: '2', title: 'Alcance del servicio' },
+  { id: 'cumplimiento', n: '3', title: 'Cumplimiento documental' },
+  { id: 'custodia', n: '4', title: 'Integridad y trazabilidad' },
+  { id: 'datos', n: '5', title: 'Datos personales' },
+  { id: 'fiscal', n: '6', title: 'Facturación y tratamiento fiscal' },
+  { id: 'propiedad', n: '7', title: 'Propiedad intelectual' },
+  { id: 'vigencia', n: '8', title: 'Vigencia, cancelación y migración' },
+  { id: 'sla', n: '9', title: 'Disponibilidad y soporte' },
+  { id: 'contacto', n: '10', title: 'Contacto y jurisdicción' },
+];
 ---
 
 <BaseLayout
-  title="Contrato Marco de Leasing Web | Ark Systems"
-  description="Modelo de referencia del contrato de arrendamiento de infraestructura y servicios digitales de Ark Systems."
+  title={`Modelo de contrato de leasing | ${config.brand.name}`}
+  description="Modelo informativo de referencia para servicios de infraestructura y productos digitales de Ark Systems."
+  line={line}
+  noindex={true}
 >
-  <Section variant="void" padding="lg" id="leasing-contrato">
+  <Section variant="void" padding="lg" id="leasing-contrato" line={line}>
     <Container>
       <div class="mx-auto max-w-4xl">
         <a
           href="/#pricing"
-          class="inline-flex items-center gap-2 font-mono text-sm text-zinc-500 transition-colors hover:text-white"
+          class="inline-flex items-center gap-2 font-mono text-sm text-text-muted transition-colors hover:text-white"
         >
           ← Volver a planes
         </a>
 
         <header class="mt-8 border-b border-white/10 pb-8">
-          <p class="font-mono text-xs font-bold tracking-[0.2em] text-ark-accent">
-            ARK SYSTEMS • SUBSTRATE HOLDINGS LLC
-          </p>
-          <h1 class="mt-4 text-3xl font-black leading-tight tracking-tight text-white sm:text-5xl">
-            Contrato Marco de Arrendamiento de Infraestructura y Servicios Digitales
+          <div class="flex flex-wrap items-center gap-2">
+            <Badge variant="line" dot>
+              {config.brand.displayName}
+            </Badge>
+            <span class="font-mono text-[11px] text-zinc-500">· {config.brand.legalName}</span>
+          </div>
+          <h1 class="mt-4 font-display text-3xl font-black leading-tight tracking-tight text-white sm:text-5xl">
+            Modelo de contrato de arrendamiento de infraestructura y servicios digitales
           </h1>
-          <p class="mt-3 text-lg text-zinc-300">(Leasing Web)</p>
-          <p class="mt-5 text-sm text-zinc-500">Última actualización: Octubre 2026</p>
+          <p class="mt-3 text-lg text-text-muted">
+            Referencia para servicios digitales de Ark Systems
+          </p>
+          <p class="mt-5 font-mono text-xs text-text-muted">Borrador informativo · Octubre 2026</p>
         </header>
 
         <aside
           class="mt-8 rounded-xl border border-amber-400/30 bg-amber-400/[0.08] p-5 text-sm leading-6 text-amber-100"
           aria-label="Aviso sobre el modelo de contrato"
         >
-          <strong class="font-semibold">Modelo informativo:</strong> este documento es una muestra
-          general y no constituye asesoría legal ni fiscal. Los términos, obligaciones, garantías
-          y afirmaciones fiscales deben revisarse y adecuarse al caso concreto por profesionales
-          antes de utilizarlo o firmarlo.
+          <strong class="font-semibold">Aviso importante:</strong> este documento es únicamente un
+          borrador de referencia, no es una oferta vinculante ni un contrato listo para firma, y no
+          constituye asesoría legal, fiscal o contable. Las funciones, precios, obligaciones,
+          niveles de servicio, tratamiento de datos y condiciones de cancelación deben acordarse
+          expresamente en una propuesta y contrato revisados por profesionales antes de contratar.
+          La disponibilidad de cada función depende del producto, configuración y plan.
         </aside>
 
-        <div class="mt-10 space-y-10 text-sm leading-7 text-zinc-300 sm:text-base">
-          <section>
-            <h2 class="text-xl font-bold text-white sm:text-2xl">1. Objeto del contrato</h2>
+        <nav
+          class="mt-10 rounded-xl border border-white/[0.06] bg-surface/40 p-6 backdrop-blur-md"
+          aria-label="Índice de cláusulas"
+        >
+          <p class="mb-4 text-xs font-bold uppercase tracking-widest text-text-muted">
+            Índice de cláusulas
+          </p>
+          <ol class="grid gap-2 sm:grid-cols-2">
+            {clauses.map((clause) => (
+              <li>
+                <a
+                  href={`#${clause.id}`}
+                  class="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-text-muted transition-colors hover:bg-white/[0.04] hover:text-white"
+                >
+                  <span class="font-mono text-xs text-zinc-500">{clause.n.padStart(2, '0')}</span>
+                  <span>{clause.title}</span>
+                </a>
+              </li>
+            ))}
+          </ol>
+        </nav>
+
+        <div class="mt-12 space-y-12 text-sm leading-7 text-zinc-300 sm:text-base">
+          <section id="objeto" class="scroll-mt-24">
+            <h2 class="font-display text-xl font-bold text-white sm:text-2xl">
+              1. Objeto y naturaleza del modelo
+            </h2>
             <p class="mt-3">
-              El presente contrato establece los términos y condiciones bajo los cuales ARK SYSTEMS
-              (en adelante, “El Proveedor”) concede el derecho de uso, acceso y explotación de una
-              Plataforma e Infraestructura Web Edge-Native a favor del cliente (en adelante, “El
-              Arrendatario”), a cambio del pago de una cuota mensual de arrendamiento (OPEX).
+              Este modelo describe una posible prestación de servicios de infraestructura y
+              productos digitales por parte de {config.brand.displayName} (el “Proveedor”) a un
+              cliente (el “Cliente”). La descripción comercial no concede por sí misma derechos de
+              uso ni crea obligaciones contractuales; estos surgirán únicamente de un acuerdo
+              firmado por las partes.
+            </p>
+            <p class="mt-3">
+              El servicio es tecnológico. No constituye asesoría legal, fiscal o contable ni
+              sustituye el criterio de los profesionales del Cliente.
             </p>
           </section>
 
-          <section>
-            <h2 class="text-xl font-bold text-white sm:text-2xl">
-              2. Alcance del servicio de leasing
+          <section id="alcance" class="scroll-mt-24">
+            <h2 class="font-display text-xl font-bold text-white sm:text-2xl">
+              2. Alcance del servicio
             </h2>
             <p class="mt-3">
-              La renta mensual cubierta por El Arrendatario incluye de manera integral y sin costos
-              ocultos:
+              La propuesta y el contrato definitivo deberán identificar el producto, entregables,
+              infraestructura, soporte, límites de uso, precio, calendario y exclusiones aplicables.
+              Según el proyecto, el servicio puede incluir:
             </p>
 
-            <h3 class="mt-6 font-semibold text-white">Infraestructura y Red Edge (Cloudflare Network)</h3>
+            <h3 class="mt-6 font-semibold text-white">Infraestructura Edge</h3>
             <ul class="mt-3 list-disc space-y-2 pl-6">
-              <li>Despliegue global en la red de borde de Cloudflare (Workers / Pages).</li>
-              <li>Certificados de seguridad SSL/TLS dedicados y administrados.</li>
+              <li>Despliegue de sitios o aplicaciones en servicios de Cloudflare acordados.</li>
+              <li>Configuración HTTPS/TLS y distribución de contenido cuando aplique.</li>
               <li>
-                Ciberseguridad activa: Cortafuegos de aplicaciones web (WAF) y protección contra
-                ataques de denegación de servicio (Anti-DDoS).
+                Funciones de seguridad de Cloudflare únicamente cuando estén disponibles y
+                configuradas para el proyecto.
               </li>
-              <li>Red de distribución de contenido (CDN) global con tiempos de respuesta en milisegundos.</li>
+              <li>
+                Rendimiento y disponibilidad dependientes de la aplicación, configuración,
+                conectividad y proveedores externos; no se garantiza un tiempo de carga específico
+                con este modelo.
+              </li>
             </ul>
 
-            <h3 class="mt-6 font-semibold text-white">Diseño, Desarrollo y Código Fuente</h3>
+            <h3 class="mt-6 font-semibold text-white">Producto, datos y mantenimiento</h3>
             <ul class="mt-3 list-disc space-y-2 pl-6">
-              <li>Uso de la arquitectura web desarrollada en Astro 5 / TypeScript.</li>
               <li>
-                Optimización continua para rendimiento de nivel empresarial (Core Web Vitals /
-                Google Lighthouse).
-              </li>
-            </ul>
-
-            <h3 class="mt-6 font-semibold text-white">Mantenimiento Técnico Operativo</h3>
-            <ul class="mt-3 list-disc space-y-2 pl-6">
-              <li>Monitoreo de disponibilidad 24/7/365.</li>
-              <li>
-                Actualizaciones de seguridad, dependencias y parches de infraestructura sin costo
-                adicional.
+                Estructuración documental, búsqueda, auditoría o verificación de integridad solo
+                cuando dichas funciones formen parte del alcance contratado.
               </li>
               <li>
-                Soporte para modificaciones menores de contenido (actualización de precios, textos,
-                imágenes o datos de contacto) incluidas dentro del periodo mensual.
+                Mantenimiento, actualizaciones, monitoreo y modificaciones de contenido según los
+                límites y horarios acordados por escrito.
+              </li>
+              <li>
+                El uso de Astro, TypeScript u otras tecnologías dependerá de la solución
+                seleccionada para cada proyecto.
               </li>
             </ul>
           </section>
 
-          <section>
-            <h2 class="text-xl font-bold text-white sm:text-2xl">
-              3. Modelo fiscal y facturación (OPEX)
+          <section id="cumplimiento" class="scroll-mt-24">
+            <h2 class="font-display text-xl font-bold text-white sm:text-2xl">
+              3. Cumplimiento documental
             </h2>
-            <ul class="mt-3 space-y-3">
-              <li>
-                <strong class="text-white">Naturaleza del Gasto:</strong> El servicio se factura
-                bajo el concepto de Arrendamiento de Infraestructura y Servicios Digitales
-                Continuos, constituyendo un Gasto Operativo (OPEX).
-              </li>
-              <li>
-                <strong class="text-white">Deducibilidad:</strong> La factura emitida (CFDI 4.0 /
-                Invoice internacional) podrá tener el tratamiento fiscal que corresponda conforme
-                a la legislación vigente y a las circunstancias del Arrendatario. La deducibilidad
-                y acreditamiento deben confirmarse con su asesor fiscal.
-              </li>
-              <li>
-                <strong class="text-white">Periodo de Pago:</strong> La cuota de arrendamiento se
-                cubrirá de forma mensual anticipada mediante transferencia bancaria (SPEI), tarjeta
-                de crédito/débito o activos digitales autorizados.
-              </li>
-            </ul>
-          </section>
-
-          <section>
-            <h2 class="text-xl font-bold text-white sm:text-2xl">
-              4. Propiedad intelectual y derechos de uso
-            </h2>
-            <ul class="mt-3 space-y-3">
-              <li>
-                <strong class="text-white">Propiedad del Código Base:</strong> El Proveedor mantiene
-                la titularidad de los derechos de propiedad intelectual de la arquitectura,
-                componentes, plantillas y código base subyacente de la plataforma (Core Engine).
-              </li>
-              <li>
-                <strong class="text-white">Propiedad de los Datos del Cliente:</strong> El
-                Arrendatario es el único y exclusivo propietario de sus marcas, logotipos, imágenes,
-                catálogo de productos, bases de datos de clientes y cualquier contenido propio
-                proporcionado para el sitio web.
-              </li>
-              <li>
-                <strong class="text-white">Derecho de Adquisición (Buyout Option):</strong> En caso
-                de que El Arrendatario desee adquirir la propiedad total del código fuente para
-                migrarlo a sus propios servidores, podrá ejercer la opción de compra del software
-                mediante la liquidación de la tarifa de compra única vigente.
-              </li>
-            </ul>
-          </section>
-
-          <section>
-            <h2 class="text-xl font-bold text-white sm:text-2xl">5. Vigencia y cancelación</h2>
-            <ul class="mt-3 space-y-3">
-              <li>
-                <strong class="text-white">Sin Contratos Forzosos:</strong> El esquema de
-                arrendamiento opera mes a mes, a menos que se haya pactado por escrito un periodo
-                mínimo específico dentro de un plan personalizado.
-              </li>
-              <li>
-                <strong class="text-white">Proceso de Cancelación:</strong> El Arrendatario podrá
-                dar de baja el servicio en cualquier momento notificando con al menos 15 días de
-                anticipación al siguiente periodo de corte.
-              </li>
-              <li>
-                <strong class="text-white">Efectos de la Cancelación:</strong> Al dar de baja el
-                arrendamiento, se suspenderá la distribución del sitio web en la red Edge. El
-                Proveedor entregará al cliente un respaldo comprimido de todos sus activos de
-                contenido y datos propios.
-              </li>
-            </ul>
-          </section>
-
-          <section>
-            <h2 class="text-xl font-bold text-white sm:text-2xl">
-              6. Niveles de servicio (SLA) y garantía
-            </h2>
-            <ul class="mt-3 space-y-3">
-              <li>
-                <strong class="text-white">Disponibilidad:</strong> El Proveedor propone un tiempo de
-                actividad (Uptime) de la infraestructura Edge del 99.9% anual, sujeto a las
-                condiciones del servicio, exclusiones y dependencias de terceros que se establezcan
-                en el acuerdo firmado.
-              </li>
-              <li>
-                <strong class="text-white">Tiempos de Respuesta:</strong> Las solicitudes de soporte
-                técnico o ajustes menores de contenido se atenderán en un plazo objetivo de 24 a 48
-                horas hábiles, conforme al plan contratado.
-              </li>
-            </ul>
-          </section>
-
-          <section>
-            <h2 class="text-xl font-bold text-white sm:text-2xl">7. Contacto y jurisdicción</h2>
             <p class="mt-3">
-              Para cualquier duda, aclaración o gestión relacionada con este modelo de contrato de
-              leasing, puedes contactar a ARK SYSTEMS:
+              Las herramientas digitales pueden apoyar procesos documentales definidos por el
+              Cliente. El Proveedor no determina qué obligaciones, documentos, plazos de
+              conservación o controles son aplicables a una actividad. El Cliente deberá
+              identificarlos y validarlos con sus asesores profesionales.
+            </p>
+            <p class="mt-3">
+              Los plazos y referencias normativas que se incorporen en una solución deberán
+              especificarse y revisarse para el caso concreto. Ninguna función o contenido del
+              sistema certifica, garantiza ni acredita por sí mismo el cumplimiento normativo.
+            </p>
+          </section>
+
+          <section id="custodia" class="scroll-mt-24">
+            <h2 class="font-display text-xl font-bold text-white sm:text-2xl">
+              4. Integridad y trazabilidad
+            </h2>
+            <p class="mt-3">
+              Los registros de actividad, controles de acceso, sellos de tiempo, hashes
+              criptográficos o mecanismos de verificación deberán describirse individualmente en el
+              alcance si se ofrecen para el proyecto. No se debe presumir una cadena de custodia
+              legal, inmutabilidad, audit log completo ni valor probatorio a partir de la sola
+              contratación de infraestructura.
+            </p>
+          </section>
+
+          <section id="datos" class="scroll-mt-24">
+            <h2 class="font-display text-xl font-bold text-white sm:text-2xl">
+              5. Datos personales
+            </h2>
+            <p class="mt-3">
+              Antes de tratar datos personales, las partes deberán definir sus respectivos roles,
+              instrucciones, finalidades, medidas de seguridad, subencargados, transferencias,
+              atención de derechos y procedimiento para incidentes en los documentos contractuales
+              correspondientes.
+            </p>
+            <p class="mt-3">
+              Este modelo no sustituye el aviso de privacidad, el contrato de tratamiento de datos
+              ni una evaluación de cumplimiento aplicable al proyecto. No representa una garantía de
+              cifrado, auditoría continua o ausencia de transferencias a terceros.
+            </p>
+          </section>
+
+          <section id="fiscal" class="scroll-mt-24">
+            <h2 class="font-display text-xl font-bold text-white sm:text-2xl">
+              6. Facturación y tratamiento fiscal
+            </h2>
+            <p class="mt-3">
+              Los importes, moneda, periodicidad, impuestos, comprobantes y medios de pago deberán
+              quedar establecidos en la propuesta aceptada y en el contrato aplicable.
+            </p>
+            <p class="mt-3">
+              La clasificación contable o fiscal, deducibilidad y acreditamiento de impuestos
+              dependen de la legislación aplicable y de las circunstancias del Cliente. Deben ser
+              confirmados con su asesor fiscal; este modelo no asegura un resultado tributario.
+            </p>
+          </section>
+
+          <section id="propiedad" class="scroll-mt-24">
+            <h2 class="font-display text-xl font-bold text-white sm:text-2xl">
+              7. Propiedad intelectual y derechos de uso
+            </h2>
+            <p class="mt-3">
+              La propuesta y el contrato definitivo deberán distinguir el código preexistente,
+              componentes de terceros, entregables desarrollados para el Cliente, licencias y
+              contenidos aportados por cada parte.
+            </p>
+            <p class="mt-3">
+              El plan de Compra Única actualmente publicado muestra un precio de referencia de
+              {new Intl.NumberFormat(config.locale.replace('_', '-'), {
+                style: 'currency',
+                currency:
+                  config.pricing.plans.find((plan) => plan.id === 'buyout')?.currency ?? 'MXN',
+                maximumFractionDigits: 0,
+              }).format(config.pricing.plans.find((plan) => plan.id === 'buyout')?.price ?? 0)}
+              . Ese precio no define por sí solo qué derechos se transfieren; el alcance, licencias
+              y condiciones deben constar en el contrato de compra correspondiente.
+            </p>
+          </section>
+
+          <section id="vigencia" class="scroll-mt-24">
+            <h2 class="font-display text-xl font-bold text-white sm:text-2xl">
+              8. Vigencia, cancelación y migración
+            </h2>
+            <p class="mt-3">
+              El plazo, renovación, cancelación, cargos pendientes y fecha de suspensión deberán
+              acordarse por escrito. No se debe asumir que el servicio es mes a mes o que puede
+              cancelarse sin condiciones salvo que el contrato aplicable lo establezca.
+            </p>
+            <p class="mt-3">
+              Formatos, costos, tiempos y asistencia para exportar o migrar información, así como
+              los periodos de retención y eliminación posteriores a la terminación, deberán
+              especificarse en el contrato y en los documentos de tratamiento de datos. Este modelo
+              no garantiza respaldos, plazos de conservación post-cancelación ni borrado seguro.
+            </p>
+          </section>
+
+          <section id="sla" class="scroll-mt-24">
+            <h2 class="font-display text-xl font-bold text-white sm:text-2xl">
+              9. Disponibilidad y soporte
+            </h2>
+            <p class="mt-3">
+              Cualquier SLA deberá constar expresamente en el acuerdo firmado e indicar cómo se
+              mide, periodo de evaluación, exclusiones, canales de soporte, horarios, tiempos de
+              respuesta y remedios aplicables. La infraestructura de terceros está sujeta a sus
+              propios términos y disponibilidad.
+            </p>
+            <p class="mt-3">
+              Las métricas o tiempos que se conversen antes de la firma son objetivos de referencia,
+              no garantías contractuales, salvo que se incorporen expresamente al acuerdo.
+            </p>
+          </section>
+
+          <section id="contacto" class="scroll-mt-24">
+            <h2 class="font-display text-xl font-bold text-white sm:text-2xl">
+              10. Contacto y jurisdicción
+            </h2>
+            <p class="mt-3">
+              Para dudas sobre planes o para solicitar una propuesta, puedes contactar a Ark Systems
+              por estos canales:
             </p>
             <ul class="mt-4 space-y-2">
               <li>
-                Sitio Web Oficial:
+                Sitio:
                 <a
                   href={`https://${config.brand.domain}`}
                   class="text-ark-accent underline underline-offset-4"
@@ -203,7 +285,7 @@ const whatsappNumber = config.contact.whatsapp?.replace(/\D/g, '');
                 </a>
               </li>
               <li>
-                Correo de Atención:
+                Correo:
                 <a
                   href={`mailto:${config.contact.email}`}
                   class="text-ark-accent underline underline-offset-4"
@@ -213,33 +295,46 @@ const whatsappNumber = config.contact.whatsapp?.replace(/\D/g, '');
               </li>
               {whatsappNumber && config.contact.whatsapp && (
                 <li>
-                  WhatsApp de Soporte:
+                  WhatsApp:
                   <a
                     href={`https://wa.me/${whatsappNumber}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     class="text-ark-accent underline underline-offset-4"
                   >
-                    +52 56 5706 2511
+                    {config.contact.whatsapp}
                   </a>
                 </li>
               )}
             </ul>
+            <p class="mt-4 text-sm text-text-muted">
+              La ley aplicable y jurisdicción deben definirse y revisarse en el contrato firmado por
+              ambas partes. Este modelo no establece por sí mismo un fuero.
+            </p>
           </section>
         </div>
 
-        <div class="mt-12 flex flex-wrap gap-3 border-t border-white/10 pt-8">
-          <a
-            href="/#pricing"
-            class="inline-flex min-h-11 items-center justify-center rounded-lg bg-ark-accent px-5 py-2 text-sm font-bold text-black transition-opacity hover:opacity-90"
-          >
-            Ver planes de leasing
-          </a>
-          <a
-            href={`mailto:${config.contact.email}`}
-            class="inline-flex min-h-11 items-center justify-center rounded-lg border border-white/15 px-5 py-2 text-sm font-semibold text-white transition-colors hover:bg-white/[0.06]"
-          >
-            Consultar sobre el contrato
-          </a>
-        </div>
+        <footer class="mt-12 border-t border-white/10 pt-8">
+          <div class="flex flex-wrap gap-3">
+            <Button variant="primary" href="/#pricing">
+              Ver planes de arrendamiento
+            </Button>
+            <Button variant="secondary" href={`mailto:${config.contact.email}`}>
+              Consultar sobre una propuesta
+            </Button>
+          </div>
+          <div class="mt-8 flex flex-wrap items-center gap-3">
+            <Badge variant="line" dot>
+              {config.brand.displayName}
+            </Badge>
+            <Badge variant="foundation" dot>
+              Infraestructura Cloudflare
+            </Badge>
+            <span class="text-xs text-text-muted">
+              Modelo informativo · Funciones y términos sujetos a acuerdo escrito
+            </span>
+          </div>
+        </footer>
       </div>
     </Container>
   </Section>

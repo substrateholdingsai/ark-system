@@ -1,20 +1,68 @@
 ---
+type BadgeVariant = 'default' | 'success' | 'warning' | 'error' | 'line' | 'foundation' | 'legal';
+
 interface Props {
-  variant?: 'default' | 'success' | 'warning' | 'error';
+  variant?: BadgeVariant;
+  line?: 'legal' | 'commerce' | 'lab';
+  dot?: boolean;
+  as?: 'span' | 'a' | 'button' | 'div';
+  href?: string;
+  target?: string;
   class?: string;
 }
 
-const { variant = 'default', class: className = '' } = Astro.props;
+const {
+  variant = 'default',
+  line,
+  dot = false,
+  as = 'span',
+  href,
+  target,
+  class: className = '',
+} = Astro.props;
 
-const base = 'ark-badge';
-const tones = {
-  default: '',
-  success: 'border-success/20 bg-success/10 text-success',
-  warning: 'border-warning/20 bg-warning/10 text-warning',
-  error: 'border-error/20 bg-error/10 text-error',
-} as const;
+const resolvedVariant = variant === 'legal' ? 'line' : variant;
+const Tag = href ? 'a' : as;
+
+const base = 'ark-badge whitespace-nowrap';
+const tones: Record<BadgeVariant, string> = {
+  default: 'border-white/10 bg-white/[0.03] text-zinc-300',
+  success: 'border-emerald-500/20 bg-emerald-500/10 text-emerald-400',
+  warning: 'border-amber-500/20 bg-amber-500/10 text-amber-400',
+  error: 'border-red-500/20 bg-red-500/10 text-red-400',
+  line: 'border-ark-accent/30 bg-ark-accent/[0.08] text-ark-accent',
+  foundation: 'border-[#F38020]/30 bg-[#F38020]/[0.08] text-[#F38020]',
+  legal: 'border-ark-accent/30 bg-ark-accent/[0.08] text-ark-accent',
+};
+
+const linkProps =
+  Tag === 'a' && href
+    ? {
+        href,
+        target,
+        rel: target === '_blank' ? 'noopener noreferrer' : undefined,
+      }
+    : {};
 ---
 
-<span class:list={[base, tones[variant], className]}>
+<Tag
+  class:list={[base, tones[resolvedVariant], className]}
+  data-theme={line}
+  type={Tag === 'button' ? 'button' : undefined}
+  {...linkProps}
+>
+  {dot && (
+    <span
+      class:list={[
+        'h-1.5 w-1.5 rounded-full',
+        resolvedVariant === 'foundation'
+          ? 'bg-[#F38020]'
+          : resolvedVariant === 'line'
+            ? 'bg-ark-accent'
+            : 'bg-current',
+      ]}
+      aria-hidden="true"
+    />
+  )}
   <slot />
-</span>
+</Tag>

@@ -9,10 +9,23 @@ interface Props {
   title?: string;
   description?: string;
   image?: string;
+  type?: 'website' | 'article' | 'product';
+  line?: 'legal' | 'commerce' | 'lab';
+  keywords?: string[];
+  noindex?: boolean;
 }
 
-const { title = pageTitle, description = config.hero.subheadline, image } = Astro.props;
+const {
+  title = pageTitle,
+  description = config.hero.subheadline,
+  image,
+  type,
+  line,
+  keywords,
+  noindex,
+} = Astro.props;
 ---
+
 <!doctype html>
 <html lang={config.locale} data-theme={config.theme.default}>
   <head>
@@ -28,7 +41,15 @@ const { title = pageTitle, description = config.hero.subheadline, image } = Astr
     <link rel="alternate icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" href="/assets/og-default.svg" />
     <link rel="sitemap" href="/sitemap.xml" />
-    <Seo title={title} description={description} image={image} />
+    <Seo
+      title={title}
+      description={description}
+      image={image}
+      type={type}
+      line={line}
+      keywords={keywords}
+      noindex={noindex}
+    />
   </head>
   <body>
     <Header />

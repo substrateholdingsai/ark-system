@@ -1,5 +1,6 @@
 ---
 import type { NavLink } from '@/data/config';
+import { config } from '@/data/config';
 
 interface Props {
   links: NavLink[];
@@ -9,23 +10,126 @@ interface Props {
 
 const { links, currentPath = '/', class: className = '' } = Astro.props;
 
-// `build.format: 'directory'` means Astro.url.pathname arrives as "/portfolio/",
-// so trailing slashes must be normalized before comparing against hrefs.
 const normalize = (path: string) => path.replace(/\/+$/, '') || '/';
-const isActive = (href: string) =>
-  !href.includes('#') && normalize(currentPath) === normalize(href);
+const isActive = (href: string) => {
+  if (href.includes('#')) return false;
+  const normalized = normalize(href);
+  const current = normalize(currentPath);
+  return current === normalized || current.startsWith(`${normalized}/`);
+};
+
+const linesWithProducts = config.lines.map((line) => ({
+  ...line,
+  href: `/portfolio#line-${line.id}`,
+  products: config.portfolio.flatMap((item) => {
+    if (item.line !== line.id || !item.url || item.available === false) return [];
+
+    return [
+      {
+        name: item.name,
+        href: item.url,
+        description:
+          item.description.length > 60
+            ? `${item.description.slice(0, 57).trimEnd()}...`
+            : item.description,
+        external: item.url.startsWith('http'),
+      },
+    ];
+  }),
+}));
+
+const lineHrefs = new Set(linesWithProducts.map((line) => line.href));
+const mainLinks = links.filter((link) => !lineHrefs.has(link.href) && link.href !== '/');
 ---
 
-<nav class={`flex items-center gap-2 ${className}`} aria-label="Main navigation" data-ark-nav>
-  <ul class="hidden items-center gap-8 md:flex">
-    {links.map((link) => (
+<nav
+  class={`flex items-center gap-2 ${className}`}
+  aria-label="Navegación principal"
+  data-ark-nav
+  data-theme={config.theme.default}
+>
+  <ul class="hidden items-center gap-1 lg:flex">
+    {linesWithProducts.map((line) => (
+      <li class="group relative" data-nav-dropdown data-theme={line.id}>
+        <a
+          href={line.href}
+          class:list={[
+            'inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-bold tracking-wide text-zinc-400 transition-colors duration-200 ease-ark hover:text-white',
+            isActive(line.href) && 'text-white',
+          ]}
+          aria-haspopup="true"
+          aria-expanded="false"
+          data-nav-trigger
+        >
+          <span class="h-1.5 w-1.5 rounded-full bg-ark-accent" aria-hidden="true"></span>
+          {line.name}
+          <svg
+            class="h-3 w-3 transition-transform duration-200 group-hover:rotate-180"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="2.5"
+            aria-hidden="true"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+          </svg>
+        </a>
+
+        <div
+          data-nav-panel
+          class="invisible absolute left-0 top-full z-50 mt-2 w-[320px] origin-top-left scale-95 opacity-0 transition-all duration-200 ease-ark group-hover:visible group-hover:scale-100 group-hover:opacity-100 group-focus-within:visible group-focus-within:scale-100 group-focus-within:opacity-100"
+        >
+          <div class="overflow-hidden rounded-xl border border-white/[0.08] bg-base/95 shadow-2xl backdrop-blur-xl">
+            <div class="border-b border-white/[0.06] px-4 py-3">
+              <div class="text-[10px] font-black uppercase tracking-widest text-zinc-500">
+                {line.name}
+              </div>
+              <div class="mt-1 text-xs text-zinc-400">{line.tagline}</div>
+            </div>
+
+            <ul class="p-2">
+              {line.products.map((product) => (
+                <li>
+                  <a
+                    href={product.href}
+                    target={product.external ? '_blank' : undefined}
+                    rel={product.external ? 'noopener noreferrer' : undefined}
+                    class="flex flex-col gap-0.5 rounded-lg px-3 py-2 transition-colors hover:bg-white/[0.04]"
+                  >
+                    <span class="text-sm font-medium text-white">{product.name}</span>
+                    {product.description && (
+                      <span class="line-clamp-1 text-[11px] text-zinc-500">
+                        {product.description}
+                      </span>
+                    )}
+                  </a>
+                </li>
+              ))}
+            </ul>
+
+            <div class="border-t border-white/[0.06] p-2">
+              <a
+                href={line.href}
+                class="flex items-center justify-between rounded-lg px-3 py-2 text-xs font-bold text-ark-accent transition-colors hover:bg-white/[0.04]"
+              >
+                Ver {line.name} completo
+                <span aria-hidden="true">→</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </li>
+    ))}
+
+    {mainLinks.map((link) => (
       <li>
         <a
           href={link.href}
           target={link.external ? '_blank' : undefined}
           rel={link.external ? 'noopener noreferrer' : undefined}
           class:list={[
-            'text-sm font-medium tracking-wide text-zinc-400 transition-colors duration-200 ease-ark hover:text-white',
+            'inline-flex items-center rounded-lg px-3 py-2 text-sm font-medium tracking-wide text-zinc-400 transition-colors duration-200 ease-ark hover:text-white',
             isActive(link.href) && 'text-white',
           ]}
           aria-current={isActive(link.href) ? 'page' : undefined}
@@ -39,10 +143,10 @@ const isActive = (href: string) =>
   <button
     type="button"
     data-nav-toggle
-    class="relative z-50 flex h-10 w-10 items-center justify-center rounded-full border border-white/[0.08] bg-surface/50 text-white backdrop-blur-md transition-all duration-300 ease-ark hover:bg-surface-hover focus:outline-none focus:ring-2 focus:ring-ark-accent/50 md:hidden"
+    class="relative z-50 flex h-10 w-10 items-center justify-center rounded-full border border-white/[0.08] bg-surface/50 text-white backdrop-blur-md transition-all duration-300 ease-ark hover:bg-surface-hover focus:outline-none focus:ring-2 focus:ring-ark-accent/50 lg:hidden"
     aria-expanded="false"
     aria-controls="ark-mobile-menu"
-    aria-label="Open menu"
+    aria-label="Abrir menú"
   >
     <svg
       class="h-5 w-5"
@@ -73,30 +177,86 @@ const isActive = (href: string) =>
   <div
     id="ark-mobile-menu"
     data-nav-menu
-    class="fixed inset-0 z-40 hidden flex-col items-center justify-center gap-8 bg-base/95 backdrop-blur-xl md:hidden"
+    class="fixed inset-0 z-40 hidden flex-col overflow-y-auto bg-base/95 backdrop-blur-xl lg:hidden"
     role="dialog"
     aria-modal="true"
-    aria-label="Mobile navigation"
+    aria-label="Navegación móvil"
   >
-    <ul class="flex flex-col items-center gap-6">
-      {links.map((link) => (
-        <li>
-          <a
-            href={link.href}
-            target={link.external ? '_blank' : undefined}
-            rel={link.external ? 'noopener noreferrer' : undefined}
-            data-nav-link
-            class:list={[
-              'font-display text-2xl font-semibold tracking-tight text-white transition-colors duration-200 ease-ark hover:text-ark-accent',
-              isActive(link.href) && 'text-ark-accent',
-            ]}
-            aria-current={isActive(link.href) ? 'page' : undefined}
+    <div class="flex min-h-full flex-col items-center justify-center gap-8 px-6 py-20">
+      <ul class="flex w-full max-w-sm flex-col gap-2">
+        {linesWithProducts.map((line) => (
+          <li
+            data-nav-mobile-section
+            class="border-b border-white/[0.06] pb-2"
+            data-theme={line.id}
           >
-            {link.label}
-          </a>
-        </li>
-      ))}
-    </ul>
+            <details class="group">
+              <summary class="flex cursor-pointer list-none items-center justify-between rounded-lg px-3 py-3 transition-colors hover:bg-white/[0.04]">
+                <div class="flex items-center gap-2.5">
+                  <span class="h-2 w-2 rounded-full bg-ark-accent" aria-hidden="true"></span>
+                  <span class="font-display text-lg font-semibold tracking-tight text-white">
+                    {line.name}
+                  </span>
+                </div>
+                <svg
+                  class="h-4 w-4 text-zinc-500 transition-transform group-open:rotate-180"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  aria-hidden="true"
+                >
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+              </summary>
+              <ul class="mt-1 flex flex-col gap-0.5 pb-1 pl-6">
+                <li>
+                  <a
+                    href={line.href}
+                    data-nav-link
+                    class="block rounded-lg px-3 py-2 text-sm font-semibold text-ark-accent transition-colors hover:bg-white/[0.04]"
+                  >
+                    Ver línea completa
+                  </a>
+                </li>
+                {line.products.map((product) => (
+                  <li>
+                    <a
+                      href={product.href}
+                      target={product.external ? '_blank' : undefined}
+                      rel={product.external ? 'noopener noreferrer' : undefined}
+                      data-nav-link
+                      class="block rounded-lg px-3 py-2 text-sm text-zinc-400 transition-colors hover:bg-white/[0.04] hover:text-white"
+                    >
+                      {product.name}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </details>
+          </li>
+        ))}
+
+        {mainLinks.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              target={link.external ? '_blank' : undefined}
+              rel={link.external ? 'noopener noreferrer' : undefined}
+              data-nav-link
+              class:list={[
+                'block rounded-lg px-3 py-3 font-display text-lg font-semibold tracking-tight text-white transition-colors hover:bg-white/[0.04] hover:text-ark-accent',
+                isActive(link.href) && 'text-ark-accent',
+              ]}
+              aria-current={isActive(link.href) ? 'page' : undefined}
+            >
+              {link.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
   </div>
 </nav>
 
@@ -116,7 +276,7 @@ const isActive = (href: string) =>
       menu.classList.toggle('hidden', !open);
       menu.classList.toggle('flex', open);
       toggle.setAttribute('aria-expanded', String(open));
-      toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      toggle.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
       iconOpen?.classList.toggle('hidden', open);
       iconClose?.classList.toggle('hidden', !open);
       document.body.style.overflow = open ? 'hidden' : '';
@@ -150,6 +310,20 @@ const isActive = (href: string) =>
     });
 
     links.forEach((link) => link.addEventListener('click', close));
+
+    nav.querySelectorAll<HTMLElement>('[data-nav-dropdown]').forEach((dropdown) => {
+      const trigger = dropdown.querySelector<HTMLAnchorElement>('[data-nav-trigger]');
+      if (!trigger) return;
+
+      dropdown.addEventListener('focusin', () => {
+        trigger.setAttribute('aria-expanded', 'true');
+      });
+      dropdown.addEventListener('focusout', (event) => {
+        if (!dropdown.contains(event.relatedTarget as Node | null)) {
+          trigger.setAttribute('aria-expanded', 'false');
+        }
+      });
+    });
   };
 
   document.querySelectorAll<HTMLElement>('[data-ark-nav]').forEach(initNav);

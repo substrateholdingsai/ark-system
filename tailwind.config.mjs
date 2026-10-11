@@ -9,16 +9,20 @@ export default {
         surface: 'hsl(var(--surface) / <alpha-value>)',
         'surface-hover': 'hsl(var(--surface-hover) / <alpha-value>)',
         border: 'hsl(var(--border))',
+        text: {
+          primary: 'hsl(var(--text-primary) / <alpha-value>)',
+          muted: 'hsl(var(--text-muted) / <alpha-value>)',
+        },
         ark: {
           accent: 'hsl(var(--ark-accent) / <alpha-value>)',
           'accent-hover': 'hsl(var(--ark-accent-hover) / <alpha-value>)',
-          'accent-glow': 'hsl(var(--ark-accent) / <alpha-value>)',
+          'accent-to': 'hsl(var(--ark-accent-to) / <alpha-value>)',
           contrast: 'hsl(var(--ark-accent-contrast) / <alpha-value>)',
         },
-
         success: 'hsl(var(--success) / <alpha-value>)',
         warning: 'hsl(var(--warning) / <alpha-value>)',
         error: 'hsl(var(--error) / <alpha-value>)',
+        info: 'hsl(var(--info) / <alpha-value>)',
       },
       fontFamily: {
         display: ['var(--font-display)'],
@@ -26,7 +30,7 @@ export default {
         mono: ['var(--font-mono)'],
       },
       transitionTimingFunction: {
-        ark: 'cubic-bezier(0.16, 1, 0.3, 1)',
+        ark: 'cubic-bezier(0.22, 1, 0.36, 1)',
       },
       keyframes: {
         'ark-fade-up': {
@@ -39,15 +43,15 @@ export default {
         },
       },
       animation: {
-        'fade-up': 'ark-fade-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+        'fade-up': 'ark-fade-up 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards',
         'pulse-soft': 'ark-pulse-soft 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
       },
       boxShadow: {
-        'ark-card': '0 0 0 1px rgba(255, 255, 255, 0.05), 0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+        'ark-card': '0 0 0 1px rgba(255, 255, 255, 0.05), 0 12px 30px rgba(0, 0, 0, 0.12)',
         'ark-glow': '0 0 40px -10px hsl(var(--ark-accent) / 0.55)',
       },
       maxWidth: {
-        'ark-container': '1280px', // 7xl
+        'ark-container': '1280px',
         'ark-prose': '65ch',
       },
     },

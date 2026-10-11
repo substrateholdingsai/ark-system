@@ -3,91 +3,335 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Section from '../components/layout/Section.astro';
 import Container from '../components/layout/Container.astro';
+import Card from '../components/ui/Card.astro';
+import Badge from '../components/ui/Badge.astro';
 import Input from '../components/ui/Input.astro';
 import Button from '../components/ui/Button.astro';
+import { config } from '@/data/config';
+
+const line = config.theme.default ?? 'legal';
+
+// Contactos alternativos
+const whatsappNumber = config.contact.whatsapp?.replace(/\D/g, '');
+const whatsappMessage = encodeURIComponent(
+  'Hola Pavel, me interesa una demo de 3 minutos de Ark Legal para mi despacho.',
+);
 ---
 
-<BaseLayout title="Contacto | Ark System">
-  <Section id="contact" class="bg-void py-24">
+<BaseLayout
+  title="Contacto | Ark Systems"
+  description="Solicite una demo de 3 minutos de Ark Legal. Expediente digital a prueba de auditoría para despachos contables y legales."
+>
+  <Section id="contact" line={line} padding="lg" labelledBy="contact-heading">
     <Container>
-      <div class="max-w-2xl mx-auto text-center mb-16">
-        <h2 class="text-4xl font-bold text-white mb-4">Hablemos de tu proyecto</h2>
-        <p class="text-zinc-400">Estamos listos para llevar tu infraestructura al siguiente nivel.</p>
+      <!-- ========================================
+           HEADER
+           ======================================== -->
+      <div class="mx-auto mb-12 max-w-2xl text-center">
+        <Badge variant="line" dot class="mb-4">
+          DEMO 3 MIN
+        </Badge>
+        <h1 id="contact-heading" class="font-display text-4xl font-bold text-white sm:text-5xl">
+          Demo con su propio expediente
+        </h1>
+        <p class="mt-4 text-base text-zinc-400 sm:text-lg">
+          Agendamos 15 minutos. Definimos su caso piloto. Le mostramos cómo se ve su expediente
+          ordenado, con trazabilidad, en el Edge.
+        </p>
       </div>
 
-      <form id="contact-form" class="space-y-6 max-w-lg mx-auto">
-        <Input 
-          label="Nombre" 
-          type="text" 
-          name="name" 
-          placeholder="Tu nombre completo" 
-          required 
-        />
-        <Input 
-          label="Email" 
-          type="email" 
-          name="email" 
-          placeholder="tu@empresa.com" 
-          required 
-        />
-        <div class="space-y-2">
-          <label class="block text-sm font-medium text-zinc-300">Mensaje</label>
-          <textarea 
-            name="message" 
-            rows={4} 
-            class="w-full bg-surface border border-border rounded-lg px-4 py-3 text-white focus:border-accent focus:ring-1 focus:ring-accent outline-none transition-colors"
-            placeholder="Cuéntanos sobre tu idea..."
-            required
-          ></textarea>
+      <!-- ========================================
+           GRID: FORMULARIO + INFO
+           ======================================== -->
+      <div class="mx-auto grid max-w-5xl gap-8 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)]">
+        <!-- ========================================
+             COLUMNA IZQUIERDA: FORMULARIO
+             ======================================== -->
+        <Card padding="lg" variant="elevated">
+          <form id="contact-form" class="space-y-6" novalidate>
+            <!-- Nombre -->
+            <Input
+              label="Nombre completo"
+              type="text"
+              name="name"
+              placeholder="Lic. María González"
+              required
+              autocomplete="name"
+            />
+
+            <!-- Email -->
+            <Input
+              label="Email profesional"
+              type="email"
+              name="email"
+              placeholder="maria@despacho.mx"
+              required
+              autocomplete="email"
+            />
+
+            <!-- Nombre del despacho -->
+            <Input
+              label="Nombre del despacho"
+              type="text"
+              name="firm"
+              placeholder="González y Asociados"
+              autocomplete="organization"
+            />
+
+            <!-- Tipo de despacho -->
+            <div class="space-y-2">
+              <label for="firm-type" class="block text-sm font-medium text-zinc-300">
+                Tipo de despacho
+              </label>
+              <select
+                id="firm-type"
+                name="firmType"
+                class="w-full rounded-lg border border-white/[0.08] bg-white/[0.03] px-4 py-3 text-sm text-white transition-colors focus:border-[rgb(var(--color-ark-accent-rgb))] focus:outline-none focus:ring-1 focus:ring-[rgb(var(--color-ark-accent-rgb))]"
+              >
+                <option value="">Seleccione una opción</option>
+                <option value="contable">Contable / Fiscal</option>
+                <option value="legal">Legal / Litigio</option>
+                <option value="fintech">Fintech / Cobranza</option>
+                <option value="corporativo">Corporativo / In-house</option>
+                <option value="otro">Otro</option>
+              </select>
+            </div>
+
+            <!-- Volumen mensual -->
+            <div class="space-y-2">
+              <label for="volume" class="block text-sm font-medium text-zinc-300">
+                Expedientes activos (aproximado)
+              </label>
+              <select
+                id="volume"
+                name="volume"
+                class="w-full rounded-lg border border-white/[0.08] bg-white/[0.03] px-4 py-3 text-sm text-white transition-colors focus:border-[rgb(var(--color-ark-accent-rgb))] focus:outline-none focus:ring-1 focus:ring-[rgb(var(--color-ark-accent-rgb))]"
+              >
+                <option value="">Seleccione una opción</option>
+                <option value="1-20">1 – 20</option>
+                <option value="21-100">21 – 100</option>
+                <option value="101-500">101 – 500</option>
+                <option value="500+">Más de 500</option>
+              </select>
+            </div>
+
+            <!-- Mensaje -->
+            <div class="space-y-2">
+              <label for="message" class="block text-sm font-medium text-zinc-300">
+                ¿Qué le gustaría resolver?
+              </label>
+              <textarea
+                id="message"
+                name="message"
+                rows={4}
+                class="w-full rounded-lg border border-white/[0.08] bg-white/[0.03] px-4 py-3 text-sm text-white placeholder:text-zinc-500 transition-colors focus:border-[rgb(var(--color-ark-accent-rgb))] focus:outline-none focus:ring-1 focus:ring-[rgb(var(--color-ark-accent-rgb))]"
+                placeholder="Ej: Necesito ordenar 200 expedientes de divorcio con trazabilidad para auditoría."
+                required
+              ></textarea>
+            </div>
+
+            <!-- Aviso de privacidad (LFPDPPP) -->
+            <div class="rounded-lg border border-white/[0.06] bg-white/[0.02] p-4">
+              <p class="text-[11px] leading-relaxed text-zinc-500">
+                Al enviar este formulario, acepta nuestro
+                <a
+                  href="/privacidad"
+                  class="text-[rgb(var(--color-ark-accent-rgb))] underline-offset-2 hover:underline"
+                >
+                  aviso de privacidad
+                </a>
+                y el tratamiento de sus datos conforme a la LFPDPPP.
+                <strong class="text-zinc-400">No compartimos su información con terceros.</strong>
+              </p>
+            </div>
+
+            <!-- Submit + estado -->
+            <div class="space-y-3">
+              <Button type="submit" fullWidth size="lg" id="contact-submit">
+                Solicitar demo 3 min →
+              </Button>
+
+              <p class="text-center text-[11px] text-zinc-500">
+                Respuesta &lt; 2h · Contrato en 1 página · Sin letra chica
+              </p>
+            </div>
+
+            <!-- Status message -->
+            <div
+              id="form-status"
+              class="hidden text-center text-sm"
+              role="status"
+              aria-live="polite"
+            ></div>
+          </form>
+        </Card>
+
+        <!-- ========================================
+             COLUMNA DERECHA: INFO + ALTERNATIVAS
+             ======================================== -->
+        <div class="space-y-6">
+          <!-- Trust signals -->
+          <Card>
+            <p class="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-zinc-400">
+              Por qué Ark Systems
+            </p>
+            <ul class="space-y-3 text-sm">
+              <li class="flex items-start gap-3">
+                <span class="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-400">
+                  ✓
+                </span>
+                <span class="text-zinc-300">
+                  <strong class="text-white">Sin CAPEX.</strong> Arrendamiento 100% deducible ISR +
+                  IVA.
+                </span>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-400">
+                  ✓
+                </span>
+                <span class="text-zinc-300">
+                  <strong class="text-white">Sin instalar nada.</strong> Demo con su propio
+                  expediente.
+                </span>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-400">
+                  ✓
+                </span>
+                <span class="text-zinc-300">
+                  <strong class="text-white">Sin cambiar su operación.</strong> Nos adaptamos a su
+                  flujo.
+                </span>
+              </li>
+            </ul>
+          </Card>
+
+          <!-- Alternativas de contacto -->
+          <Card>
+            <p class="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-zinc-400">
+              Otras formas de contacto
+            </p>
+            <ul class="space-y-3 text-sm">
+              <!-- Email -->
+              <li>
+                <a
+                  href={`mailto:${config.contact.email}`}
+                  class="flex items-center gap-3 text-zinc-300 transition-colors hover:text-white"
+                >
+                  <span class="text-zinc-500">✉️</span>
+                  <span class="font-mono text-xs">{config.contact.email}</span>
+                </a>
+              </li>
+
+              <!-- WhatsApp -->
+              {whatsappNumber && config.contact.whatsapp && (
+                <li>
+                  <a
+                    href={`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="flex items-center gap-3 text-zinc-300 transition-colors hover:text-emerald-400"
+                  >
+                    <span class="text-emerald-500">💬</span>
+                    <span class="font-mono text-xs">WhatsApp directo</span>
+                  </a>
+                </li>
+              )}
+
+              <!-- Cal.com (agenda directa) -->
+              <li>
+                <a
+                  href={config.contact.bookingUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="flex items-center gap-3 text-zinc-300 transition-colors hover:text-[rgb(var(--color-ark-accent-rgb))]"
+                >
+                  <span class="text-zinc-500">📅</span>
+                  <span class="font-mono text-xs">Agendar directo en Cal.com</span>
+                </a>
+              </li>
+            </ul>
+          </Card>
+
+          <!-- Sello de cimiento -->
+          <Card padding="sm">
+            <div class="flex items-center gap-3">
+              <span class="h-2 w-2 shrink-0 rounded-full bg-[#F38020]"></span>
+              <div>
+                <p class="text-xs text-zinc-400">
+                  Cimiento: <span class="font-mono text-[#F38020]">Cloudflare Edge</span>
+                </p>
+                <p class="mt-0.5 text-[10px] text-zinc-600">
+                  300+ ciudades · SSL Enterprise · <span class="font-mono">SHA-256</span>
+                </p>
+              </div>
+            </div>
+          </Card>
         </div>
-        
-        <Button type="submit" class="w-full">Enviar Mensaje</Button>
-        
-        <div id="form-status" class="hidden text-center mt-4"></div>
-      </form>
+      </div>
     </Container>
   </Section>
 
+  <!-- ========================================
+       SCRIPT: envío del formulario
+       ======================================== -->
   <script is:inline>
-    /** @type {HTMLFormElement} */
-    const form = document.getElementById('contact-form');
-    /** @type {HTMLDivElement} */
-    const statusDiv = document.getElementById('form-status');
-    /** @type {HTMLButtonElement} */
-    const submitBtn = form.querySelector('button[type="submit"]');
+    (function () {
+      /** @type {HTMLFormElement | null} */
+      const form = document.getElementById('contact-form');
+      if (!form) return;
 
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const originalText = submitBtn.innerText;
-      
-      submitBtn.disabled = true;
-      submitBtn.innerText = 'Enviando...';
-      statusDiv.classList.add('hidden');
+      /** @type {HTMLDivElement | null} */
+      const statusDiv = document.getElementById('form-status');
+      /** @type {HTMLButtonElement | null} */
+      const submitBtn = document.getElementById('contact-submit');
 
-      try {
-        const formData = new FormData(form);
-        const response = await fetch('/api/contact', {
-          method: 'POST',
-          body: formData
-        });
+      if (!statusDiv || !submitBtn) return;
 
-        const data = await response.json();
+      form.addEventListener('submit', async function (e) {
+        e.preventDefault();
 
-        if (response.ok) {
-          statusDiv.innerText = '¡Mensaje enviado con éxito! Nos pondremos en contacto pronto.';
-          statusDiv.className = 'text-center mt-4 text-emerald-500 font-medium';
-          form.reset();
-        } else {
-          throw new Error(data.error || 'Error al enviar');
+        // Captura el contenido original del botón
+        const originalHTML = submitBtn.innerHTML;
+
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = 'Enviando...';
+        statusDiv.classList.add('hidden');
+        statusDiv.classList.remove('text-emerald-400', 'text-red-400');
+
+        try {
+          const formData = new FormData(form);
+          const response = await fetch('/api/contact', {
+            method: 'POST',
+            body: formData,
+          });
+
+          const data = await response.json().catch(function () {
+            return {};
+          });
+
+          if (response.ok) {
+            statusDiv.innerText = '¡Solicitud recibida! Le contactaremos en menos de 2 horas.';
+            statusDiv.classList.remove('hidden');
+            statusDiv.classList.add('text-emerald-400');
+            form.reset();
+
+            // Redirección opcional a /gracias
+            // window.location.href = '/gracias';
+          } else {
+            throw new Error(data.error || 'Error al enviar');
+          }
+        } catch (_error) {
+          statusDiv.innerText =
+            'Hubo un error al enviar. Escríbanos directo a ' +
+            'pavel@arksystems.site o intente de nuevo.';
+          statusDiv.classList.remove('hidden');
+          statusDiv.classList.add('text-red-400');
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = originalHTML;
         }
-      } catch (_error) {
-        statusDiv.innerText = 'Hubo un error. Por favor intenta de nuevo.';
-        statusDiv.className = 'text-center mt-4 text-red-500 font-medium';
-      } finally {
-        submitBtn.disabled = false;
-        submitBtn.innerText = originalText;
-        statusDiv.classList.remove('hidden');
-      }
-    });
+      });
+    })();
   </script>
 </BaseLayout>
