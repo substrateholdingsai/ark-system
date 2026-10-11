@@ -220,46 +220,74 @@ def generate_logo_mark_by_line(line: str):
 
 
 def generate_favicon_base(path: Path, theme_name: str = "legal"):
-    """Genera un favicon simplificado del Arca para la línea indicada."""
+    """Genera el favicon de Ark Systems: el sello chevron sobre pastilla de acento.
+
+    Debe ser legible a 16 px, así que va como badge con fondo propio: un favicon
+    cargado por <link> es un documento aislado y no hereda `currentColor` ni las
+    custom properties del sitio, de modo que un trazo sin fondo desaparecería
+    sobre pestañas claras. Se usa la misma geometría que el sello del header
+    (ArkMark), escalada, para que tab y marca se lean como una familia.
+    """
     theme = get_theme(theme_name)
     size = 64
-    dwg = svgwrite.Drawing(str(path), size=(f"{size}px", f"{size}px"), viewBox=f"0 0 {size} {size}")
-    accent = theme["accent"]
 
-    corner_radius = 12
-    dwg.add(dwg.rect(
-        insert=(0, 0),
-        size=(size, size),
-        rx=corner_radius,
-        ry=corner_radius,
-        fill=NEUTRALS["void"],
-    ))
+    dwg = svgwrite.Drawing(
+        str(path),
+        size=(f"{size}px", f"{size}px"),
+        viewBox=f"0 0 {size} {size}",
+    )
 
-    hull_y = size - 20
-    dwg.add(dwg.path(
-        d=f"M 12,{hull_y - 5} Q {size // 2},{hull_y + 5} {size - 12},{hull_y - 8}",
-        fill="none",
-        stroke=accent,
-        stroke_width=4,
-        stroke_linecap="round",
-    ))
-    dwg.add(dwg.path(
-        d=f"M {size - 12},{hull_y - 8} Q {size - 8},{size // 2 + 5} {size - 16},{size // 2 - 5}",
-        fill="none",
-        stroke=accent,
-        stroke_width=4,
-        stroke_linecap="round",
-    ))
-    check_x = size // 2 - 4
-    check_y = size // 2 - 5
-    dwg.add(dwg.path(
-        d=f"M {check_x - 4},{check_y} L {check_x - 1},{check_y + 3} L {check_x + 5},{check_y - 3}",
-        fill="none",
-        stroke=NEUTRALS["white"],
-        stroke_width=2.5,
-        stroke_linecap="round",
-        stroke_linejoin="round",
-    ))
+    defs = dwg.defs
+    grad_id = "ark-favicon-accent"
+    gradient = dwg.linearGradient(id=grad_id, x1="0%", y1="0%", x2="100%", y2="100%")
+    gradient.add_stop_color("0%", theme["accent"])
+    gradient.add_stop_color("100%", theme["accent_to"])
+    defs.add(gradient)
+
+    # Pastilla: fondo sólido propio para contrastar con cualquier pestaña.
+    dwg.add(
+        dwg.rect(
+            insert=(0, 0),
+            size=(size, size),
+            rx=size * 0.25,
+            ry=size * 0.25,
+            fill=f"url(#{grad_id})",
+        )
+    )
+
+    # Chevron de la "A" de Ark: la masa principal de la marca.
+    dwg.add(
+        dwg.path(
+            d=f"M {size * 0.25},{size * 0.71875} L {size * 0.5},{size * 0.28125} "
+              f"L {size * 0.75},{size * 0.71875}",
+            fill="none",
+            stroke=NEUTRALS["white"],
+            stroke_width=size * 0.10625,
+            stroke_linecap="round",
+            stroke_linejoin="round",
+        )
+    )
+
+    # Barra del sello, partida por el nodo central.
+    seal_y = size * 0.640625
+    dwg.add(
+        dwg.path(
+            d=f"M {size * 0.33125},{seal_y} h {size * 0.06875} "
+              f"M {size * 0.6},{seal_y} h {size * 0.06875}",
+            fill="none",
+            stroke=NEUTRALS["white"],
+            stroke_width=size * 0.0875,
+            stroke_linecap="round",
+        )
+    )
+
+    dwg.add(
+        dwg.circle(
+            center=(size * 0.5, seal_y),
+            r=size * 0.06875,
+            fill=NEUTRALS["white"],
+        )
+    )
 
     dwg.save()
     print(f"[OK] Generado: {path.name} (Favicon — theme: {theme_name})")

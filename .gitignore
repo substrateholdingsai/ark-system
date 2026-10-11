@@ -214,6 +214,10 @@ pnpm-lock.yaml.bak
 # --------------------------------------------------------------------------
 # Astro preview / inspection output
 .astro-preview/
+# Herramienta de assets vectoriales (scripts/generate-assets.py)
+.venv/
+__pycache__/
+*.pyc
 # Design / screenshot output (repo root only — test snapshots stay tracked)
 /screenshots/
 /snapshots/

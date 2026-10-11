@@ -35,11 +35,17 @@ const {
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
     />
+    <!--
+      favicon.svg es la fuente de verdad (la genera scripts/generate-assets.py) y
+      la usan los navegadores modernos; el .ico cubre a los que no leen SVG y
+      apple-touch-icon.png es el ícono de home screen de iOS, que exige PNG
+      opaco. Regenerar rasters: npm run favicon.
+    -->
     <link rel="icon" type="image/svg+xml" href={config.brand.faviconSrc} sizes="any" />
-    <link rel="alternate icon" href="/favicon.ico" />
-    <link rel="apple-touch-icon" href={config.brand.faviconSrc} />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="apple-touch-icon" href="/assets/vector/apple-touch-icon.png" />
     <link rel="sitemap" href="/sitemap.xml" />
     <Seo
       title={title}

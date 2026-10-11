@@ -11,6 +11,7 @@
     "preview": "astro preview",
     "deploy": "wrangler deploy",
     "astro": "astro",
+    "favicon": "node scripts/generate-favicon.mjs",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "lint": "eslint .",

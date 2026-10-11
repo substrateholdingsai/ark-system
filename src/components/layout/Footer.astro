@@ -1,5 +1,6 @@
 ---
 import Container from './Container.astro';
+import ArkMark from '../brand/ArkMark.astro';
 import { config } from '@/data/config';
 
 const currentYear = new Date().getFullYear();
@@ -25,7 +26,7 @@ const businessLines = config.lines.map((line) => ({
           href="/"
           class="inline-flex items-center gap-2 text-base font-black tracking-wider text-white"
         >
-          <img src={config.brand.logoSrc} alt="" class="h-6 w-auto" />
+          <ArkMark class="h-6 w-auto" />
           <span>{config.brand.displayName}</span>
         </a>
 

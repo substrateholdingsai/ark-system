@@ -1,0 +1,49 @@
+---
+interface Props {
+  /** Tamaño y heredado de color actual (p. ej. "h-8 w-auto"). */
+  class?: string;
+  /**
+   * Etiqueta accesible. Omitir cuando un texto adyacente ya nombra a la marca,
+   * para no anunciarla dos veces (decorativo por defecto).
+   */
+  title?: string;
+}
+
+const { class: className = 'h-8 w-auto', title } = Astro.props;
+---
+
+{/*
+    Sello Ark redibujado para tamaños pequeños (24-32 px).
+
+    - viewBox 32x32 con trazos gruesos: 1 unidad ~= 1 px a h-8, así que nada
+      baja de ~1.7 px ni en el footer (h-6, escala 0.75).
+    - La estructura usa `currentColor`, que hereda del texto del enlace
+      contenedor (blanco en header y footer, ~19:1 sobre el fondo oscuro).
+    - El nodo central usa `hsl(var(--ark-accent))`, o sea el acento del tema
+      activo (legal/commerce/lab), sin depender de variables del documento:
+      al ir inline el SVG sí hereda las custom properties del sitio, algo que
+      no ocurría cuando se cargaba por <img src>.
+  */}
+<svg
+  class:list={['shrink-0', className]}
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 32 32"
+  fill="none"
+  role={title ? 'img' : undefined}
+  aria-label={title}
+  aria-hidden={title ? undefined : true}
+>
+  {/* Chevron de la "A" de Ark: la masa principal de la marca */}
+  <path
+    d="M6 26.5 16 6.5 26 26.5"
+    stroke="currentColor"
+    stroke-width="3.6"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+  {/* Barra del sello, partida por el nodo central */}
+  <path d="M10.6 20.5h2.2" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" />
+  <path d="M19.2 20.5h2.2" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" />
+  {/* Nodo central con el acento del tema */}
+  <circle cx="16" cy="20.5" r="2.9" fill="hsl(var(--ark-accent))" />
+</svg>

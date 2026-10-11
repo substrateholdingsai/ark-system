@@ -1,6 +1,7 @@
 ---
 import Nav from './Nav.astro';
 import Button from '../ui/Button.astro';
+import ArkMark from '../brand/ArkMark.astro';
 import { config } from '@/data/config';
 
 const currentPath = Astro.url.pathname;
@@ -13,7 +14,7 @@ const currentPath = Astro.url.pathname;
       href="/"
       class="flex items-center gap-2 text-xl font-display font-bold tracking-tight text-white transition-opacity hover:opacity-80"
     >
-      <img src={config.brand.logoSrc} alt="" class="h-8 w-auto" />
+      <ArkMark class="h-8 w-auto" />
       <span>{config.brand.displayName}</span>
     </a>
 
