@@ -7,6 +7,7 @@ import Card from '../components/ui/Card.astro';
 import Badge from '../components/ui/Badge.astro';
 import Input from '../components/ui/Input.astro';
 import Button from '../components/ui/Button.astro';
+import CalEmbed from '../components/sections/CalEmbed.astro';
 import { config } from '@/data/config';
 
 const line = config.theme.default ?? 'legal';
@@ -271,6 +272,11 @@ const whatsappMessage = encodeURIComponent(
       </div>
     </Container>
   </Section>
+
+  <CalEmbed
+    title="Agenda una asesoría"
+    description="Elige un horario para conversar sobre tu proyecto y resolver tus dudas."
+  />
 
   <!-- ========================================
        SCRIPT: envío del formulario

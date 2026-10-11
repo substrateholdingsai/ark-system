@@ -322,7 +322,7 @@ export const config: SiteConfig = {
     tagline: '0 servidores. 0 humo.',
     domain: 'arksystems.site',
     logoSrc: '/assets/vector/logo-mark.svg',
-    faviconSrc: '/assets/vector/favicon.svg',
+    faviconSrc: '/assets/vector/logo-mark.svg',
     ogImageSrc: '/assets/og-default.svg',
   },
 
