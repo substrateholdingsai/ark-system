@@ -118,7 +118,8 @@ ark-system/
 │   │   │   ├── MedicalApp.jsx          Fictional appointment and payment-flow demo
 │   │   │   ├── TalosApp.jsx            Simulated mining-data collector concept
 │   │   │   ├── VirtualAssetsMapApp.jsx Legal-topic filtering demo; references unverified
-│   │   │   └── SBCCalculator.jsx       NEW: Interactive SBC 2026 calculator
+│   │   │   ├── SBCCalculator.jsx       NEW: Interactive SBC 2026 calculator
+│   │   │   └── IsnCalculator.jsx       NEW: Interactive ISN 2026 calculator (32 estados)
 │   │   └── ui/
 │   │       ├── Badge.astro
 │   │       ├── Button.astro
@@ -142,7 +143,8 @@ ark-system/
 │   │   │   ├── medical.astro
 │   │   │   ├── talos.astro
 │   │   │   ├── mapa-crypto.astro
-│   │   │   └── sbc-2026-calculadora.astro        NEW: SBC 2026 calculator page
+│   │   │   ├── sbc-2026-calculadora.astro        NEW: SBC 2026 calculator page
+│   │   │   └── isn-2026-calculadora.astro        NEW: ISN 2026 calculator page (32 estados)
 │   │   ├── pricing.astro
 │   │   ├── brand.astro
 │   │   ├── leasing-contrato.astro    NEW: Leasing contract template page
@@ -188,6 +190,7 @@ The site includes the following implemented pages:
 - `/portfolio/talos` — interactive Talos mining-data collector concept with simulated metrics
 - `/portfolio/mapa-crypto` — interactive topic map with filters and unverified legal references
 - `/portfolio/sbc-2026-calculadora` — NEW: interactive SBC 2026 calculator (Salario Base de Cotización)
+- `/portfolio/isn-2026-calculadora` — NEW: interactive ISN 2026 calculator (Impuesto Sobre Nómina, 32 estados)
 - La Bianca Tropical is linked directly from the gallery to its external storefront; it has no local portfolio detail route
 - Padel Outlet is a concept card only; it has no route or interactive demo
 - `/pricing` — pricing page
@@ -198,9 +201,9 @@ The site includes the following implemented pages:
 
 The route model is file-based and follows Astro conventions.
 
-The `/portfolio` page presents 12 config-driven cards grouped into Ark Legal, Ark Commerce, and Ark Lab: nine interactive demos, two external sites, and one concept without an interactive demo. Portfolio metadata, line assignments, tags, and disclaimers live in the typed `config.portfolio` collection in `src/data/config.ts`. Each interactive demo has its own page and mounts its React app with `client:only="react"`. The Acepta Bitcoin case study has a local detail page whose portfolio link opens the external site; La Bianca Tropical links directly to its external storefront. The SBC 2026 calculator is an interactive demo with local-only calculations.
+The `/portfolio` page presents 13 config-driven cards grouped into Ark Legal, Ark Commerce, and Ark Lab: ten interactive demos, two external sites, and one concept without an interactive demo. Portfolio metadata, line assignments, tags, and disclaimers live in the typed `config.portfolio` collection in `src/data/config.ts`. Each interactive demo has its own page and mounts its React app with `client:only="react"`. The Acepta Bitcoin case study has a local detail page whose portfolio link opens the external site; La Bianca Tropical links directly to its external storefront. The SBC 2026 calculator is an interactive demo with local-only calculations.
 
-The demos are: Temozonia, a sample storefront with catalog, cart, and illustrative checkout; Tomato for Bitcoin, a sample produce storefront with six products, cart, and payment-method selection; Arkangel, a UI simulation with illustrative conduct categories, mock cases, and a non-persistent ledger; Velvet Room, a fictional bar menu and atmosphere gallery; Medical Express, a fictional schedule selector with local-only payment-flow simulations; Talos, simulated mining-data metrics and spread; Mapa Crypto, searchable and filterable topic summaries with unverified references; and SBC 2026 Calculadora, a demonstrative calculator for Salario Base de Cotización that updates results in the browser with no backend. Velvet Room and Medical Express do not accept reservations or payments. Medical Express is not a healthcare provider and offers no medical care or advice; no patient data is collected. Talos does not connect to data sources, mining pools, exchanges, a treasury, payment APIs, or trading services, and makes no financial recommendations. Mapa Crypto reproduces topics and legal references from user-provided material without validating them; the references may be incomplete, outdated, or inaccurate, and the demo provides no legal interpretation or advice. None of Arkangel's indicators represent a live integration, operational legal controls, verified legal citations, or legal advice. Temozonia's data is explicitly demo data; storefront payment and contact values generally must be confirmed before real transactions or production use. Padel Outlet is a concept card only, with no inventory, interactive experience, or checkout. SBC 2026 calculator values are educational references only and do not constitute fiscal or legal advice.
+The demos are: Temozonia, a sample storefront with catalog, cart, and illustrative checkout; Tomato for Bitcoin, a sample produce storefront with six products, cart, and payment-method selection; Arkangel, a UI simulation with illustrative conduct categories, mock cases, and a non-persistent ledger; Velvet Room, a fictional bar menu and atmosphere gallery; Medical Express, a fictional schedule selector with local-only payment-flow simulations; Talos, simulated mining-data metrics and spread; Mapa Crypto, searchable and filterable topic summaries with unverified references; SBC 2026 Calculadora, a demonstrative calculator for Salario Base de Cotización that updates results in the browser with no backend; and ISN 2026 Calculadora, a demonstrative calculator for Impuesto Sobre Nómina with 32 official state rates, editable perception breakdown (gravadas/exentas), and CSV export. Velvet Room and Medical Express do not accept reservations or payments. Medical Express is not a healthcare provider and offers no medical care or advice; no patient data is collected. Talos does not connect to data sources, mining pools, exchanges, a treasury, payment APIs, or trading services, and makes no financial recommendations. Mapa Crypto reproduces topics and legal references from user-provided material without validating them; the references may be incomplete, outdated, or inaccurate, and the demo provides no legal interpretation or advice. None of Arkangel's indicators represent a live integration, operational legal controls, verified legal citations, or legal advice. Temozonia's data is explicitly demo data; storefront payment and contact values generally must be confirmed before real transactions or production use. Padel Outlet is a concept card only, with no inventory, interactive experience, or checkout. SBC 2026 calculator values are educational references only and do not constitute fiscal or legal advice.
 
 ## 6. Design / Theme Architecture
 
@@ -258,7 +261,7 @@ The `config.ts` has been significantly expanded:
 - Reusable UI primitives (Button, Card, Badge, Input)
 - Config-driven landing page sections
 - Cloudflare Workers deployment configuration (Astro server output + static asset binding + AI + D1)
-- React integration via `@astrojs/react`, used by the eight portfolio demos
+- React integration via `@astrojs/react`, used by the ten portfolio demos
 - Temozonia checkout prototype with cart quantity management, WhatsApp order link, CLABE copy action, and Lightning payment details
 - Tomato for Bitcoin marketplace prototype at `/portfolio/tomato`, with six sample products, cart, payment-method selection, WhatsApp order link, and CLABE copy action
 - Arkangel compliance-flow simulation at `/portfolio/arkangel`, with eight illustrative sections, mock cases, and a non-persistent sample ledger
@@ -267,6 +270,7 @@ The `config.ts` has been significantly expanded:
 - Talos concept at `/portfolio/talos`, with local-only simulated mining-data metrics and spread values; no connected collector, data sources, treasury, financial products, or active API, and it is not financial or investment advice
 - Mapa Crypto at `/portfolio/mapa-crypto`, with searchable/filterable subject summaries and references explicitly marked as unverified; it gives no legal classification or advice
 - **SBC 2026 Calculadora** at `/portfolio/sbc-2026-calculadora`, interactive Salario Base de Cotización calculator with local-only calculations; values are educational references only
+- **ISN 2026 Calculadora** at `/portfolio/isn-2026-calculadora`, interactive Impuesto Sobre Nómina calculator with 32 official state rates, editable perception breakdown (gravadas/exentas), and CSV export; values are educational references only
 - **Leasing contract page** at `/leasing-contrato`, template for client contracts
 - **Pricing page** with config-driven comparison, FAQs, and final CTA
 - **Contact booking**: header and mobile navigation CTAs lead to the Spanish Cal.com embed at `/contact#booking`
@@ -302,6 +306,7 @@ The `config.ts` has been significantly expanded:
 - Talos is a fictional mining-data collector concept; its metrics and spread are simulated locally, with no connected collector, data sources, treasury, financial products, or active API, and it is not financial or investment advice
 - Mapa Crypto's legal topics and references came from unverified user-provided material; the demo omits penalty amounts and legal conclusions, and is not legal advice
 - SBC 2026 calculator at `/portfolio/sbc-2026-calculadora` — values are educational references only and do not constitute fiscal or legal advice
+- ISN 2026 calculator at `/portfolio/isn-2026-calculadora` — values are educational references only and do not constitute fiscal or legal advice
 - Business-specific links, form handling, and demo content still need client-approved production values
 - The official seal is integrated without additional `.ark-seal` CSS: that class already styles informational compliance seals, so logo-specific effects should use a separate class if needed
 - The Cloudflare Worker deployment requires valid account configuration, including the session KV binding, AI binding, and D1 database
@@ -412,9 +417,9 @@ This confirms the source builds locally; it does not verify deployed behavior, t
 
 ## 12. Bottom Line
 
-The repo is a structured, config-driven marketing site with reusable routes, components, documented client-onboarding steps, and a portfolio of nine interactive React demos, two external sites, and one concept card. Its local production build is green. It is not yet production-ready for a particular client: placeholders, demo payment/contact values, external integrations, and deployment details still need to be supplied and verified.
+The repo is a structured, config-driven marketing site with reusable routes, components, documented client-onboarding steps, and a portfolio of ten interactive React demos, two external sites, and one concept card. Its local production build is green. It is not yet production-ready for a particular client: placeholders, demo payment/contact values, external integrations, and deployment details still need to be supplied and verified.
 
-**Current status (2026-10-12)**: The vector asset pipeline is operational, the official Ark seal is integrated as the site logo and favicon, and the booking CTAs lead to the Cal.com embed on the contact page. Pricing FAQs and comparison content are config-driven. The SBC 2026 calculator interactive demo is now live at `/portfolio/sbc-2026-calculadora` with improved legibility. These latest changes pass the local production build but remain uncommitted and undeployed; `main` is otherwise up to date with `origin/main` at `31f936a`. The informational leasing page is not a signed contract or legal advice. Existing demo, pricing, and client-specific content still require confirmation before production use.
+**Current status (2026-10-12)**: The vector asset pipeline is operational, the official Ark seal is integrated as the site logo and favicon, and the booking CTAs lead to the Cal.com embed on the contact page. Pricing FAQs and comparison content are config-driven. The SBC 2026 calculator interactive demo is now live at `/portfolio/sbc-2026-calculadora` with improved legibility. The ISN 2026 calculator interactive demo is now live at `/portfolio/isn-2026-calculadora` with 32 official state rates and CSV export. These latest changes pass the local production build but remain uncommitted and undeployed; `main` is otherwise up to date with `origin/main` at `31f936a`. The informational leasing page is not a signed contract or legal advice. Existing demo, pricing, and client-specific content still require confirmation before production use.
 
 ---
 

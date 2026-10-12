@@ -1,0 +1,79 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Section from '../../components/layout/Section.astro';
+import Container from '../../components/layout/Container.astro';
+import IsnCalculator from '../../components/portfolio/IsnCalculator.jsx';
+---
+
+<BaseLayout title="ISN 2026 • Calculadora Interactiva | Ark System">
+  <Section id="portfolio-isn" variant="void" padding="lg">
+    <Container>
+      <div class="mb-12 text-center">
+        <a
+          href="/portfolio"
+          class="inline-flex items-center gap-2 font-mono text-sm text-zinc-500 transition-colors hover:text-white"
+        >
+          ← Volver al Portfolio
+        </a>
+        <div class="mt-6">
+          <span class="mb-2 block font-mono text-sm text-accent">
+            CLIENTE 01 · NÓMINA EDGE
+          </span>
+          <h1 class="text-4xl font-bold text-white sm:text-5xl">ISN 2026 · Calculadora Interactiva</h1>
+        </div>
+        <p class="mx-auto mt-4 max-w-3xl text-lg leading-relaxed text-zinc-400">
+          Calculadora demostrativa del Impuesto Sobre Nómina que actualiza sus resultados en el
+          navegador. Tasas oficiales por entidad federativa (32 estados), desglose de percepciones
+          gravadas / exentas y exportación a Excel. No envía datos; sus valores son referencias
+          educativas y no constituyen asesoría fiscal o legal.
+        </p>
+        <p class="mx-auto mt-3 max-w-3xl rounded-lg border border-amber-400/30 bg-amber-400/10 p-3 text-sm text-amber-200">
+          Referencias educativas; los resultados no constituyen asesoría fiscal o legal.
+        </p>
+      </div>
+
+      <div class="overflow-hidden rounded-xl border border-border shadow-2xl">
+        <IsnCalculator client:only="react" />
+      </div>
+
+      <div class="mt-8 grid gap-6 md:grid-cols-3">
+        <div class="rounded-lg border border-border bg-surface/50 p-6">
+          <h3 class="mb-2 font-mono text-sm text-accent">STACK</h3>
+          <ul class="space-y-1 text-zinc-400">
+            <li>React 19 + Tailwind CSS</li>
+            <li>Astro 5 (islas interactivas)</li>
+            <li>Cloudflare Pages (edge)</li>
+            <li>Cálculo 100% cliente (sin backend)</li>
+          </ul>
+        </div>
+        <div class="rounded-lg border border-border bg-surface/50 p-6">
+          <h3 class="mb-2 font-mono text-sm text-accent">CARACTERÍSTICAS</h3>
+          <ul class="space-y-1 text-zinc-400">
+            <li>32 estados con tasas 2026 oficiales</li>
+            <li>Desglose G/E editable en vivo</li>
+            <li>Exporta CSV compatible Excel/Sheets</li>
+            <li>Laptop UI con tabla tipo spreadsheet</li>
+          </ul>
+        </div>
+        <div class="rounded-lg border border-border bg-surface/50 p-6">
+          <h3 class="mb-2 font-mono text-sm text-accent">MÉTRICAS</h3>
+          <ul class="space-y-1 text-zinc-400">
+            <li>Lighthouse 100/100</li>
+            <li>0 bytes JS bloqueante</li>
+            <li>Deploy atómico en 12s</li>
+            <li>Edge global 300+ PoPs</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="mt-12 text-center">
+        <a
+          href="mailto:noah@arksystems.site?subject=Cálculo masivo ISN 2026&body=Hola Noah, quiero cotizar cálculo masivo de ISN para mi nómina..."
+          class="inline-flex items-center gap-2 font-mono text-sm text-zinc-500 transition-colors hover:text-white"
+        >
+          Cálculo masivo → noah@arksystems.site
+        </a>
+      </div>
+    </Container>
+  </Section>
+</BaseLayout>

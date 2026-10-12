@@ -516,6 +516,17 @@ export const config: SiteConfig = {
       tags: ['DEMO INTERACTIVA', 'Calculadora SBC', 'Cálculo local', 'Sin backend'],
       disclaimer: 'Referencias educativas; los resultados no constituyen asesoría fiscal o legal.',
     },
+    {
+      line: 'legal',
+      name: 'ISN 2026 • Calculadora Interactiva',
+      url: '/portfolio/isn-2026-calculadora',
+      image:
+        'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80',
+      description:
+        'Calculadora demostrativa del Impuesto Sobre Nómina con tasas oficiales 2026 por entidad federativa (32 estados). Incluye desglose editable de percepciones gravadas/exentas y exportación a CSV. No envía datos; valores son referencias educativas.',
+      tags: ['DEMO INTERACTIVA', 'Calculadora ISN', '32 estados', 'Cálculo local', 'Sin backend', 'Export CSV'],
+      disclaimer: 'Referencias educativas; los resultados no constituyen asesoría fiscal o legal.',
+    },
   ],
 
   how: {
