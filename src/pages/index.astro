@@ -14,7 +14,7 @@ import { config } from '@/data/config';
 
 <BaseLayout>
   <Hero />
-  <NoahChatWidget client:visible mode="hero" assistant={config.assistant} />
+  <NoahChatWidget client:load mode="hero" assistant={config.assistant} />
   <ConfiguredContent />
   <TechStack />
   <PortfolioGrid />

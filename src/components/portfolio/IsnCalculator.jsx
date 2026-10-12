@@ -294,7 +294,7 @@ export default function IsnCalculator() {
                 <span className="w-1.5 h-1.5 rounded-full bg-[#1A1A1A] border border-white/10" />
                 <span className="w-6 h-1 rounded-full bg-white/10" />
               </div>
-              <div ref={laptopRef} className="laptop-screen rounded-[12px] bg-white overflow-hidden border border-white/20 max-h-[620px] overflow-auto w-full">
+              <div ref={laptopRef} className="laptop-screen rounded-[12px] bg-white border border-white/20 max-h-[620px] overflow-auto w-full">
                 <div className="h-9 bg-[#F3F4F6] border-b border-[#E5E7EB] flex items-center px-3 gap-2 text-[11px]">
                   <span className="px-2 py-1 rounded bg-[#0A2540] text-white font-semibold">Inicio</span>
                   <span className="px-2 py-1 text-[#6B7A90]">Fórmulas</span>

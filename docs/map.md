@@ -16,7 +16,7 @@ Status at a glance:
 - Deployment config: Cloudflare adapter with server output, Worker config in `wrangler.jsonc`, with `SESSION` KV binding, `AI` binding, and `DB` D1 binding for the adapter runtime
 - Portfolio: 12 cards — nine interactive demos (Temozonia, Tomato for Bitcoin, Arkangel, Velvet Room, Medical Express, Talos, Mapa Crypto, SBC 2026 Calculadora), two external sites (Acepta Bitcoin and La Bianca Tropical), and the Padel Outlet concept, which has no interactive demo yet
 - Placeholder content: still present, including some contact/booking destinations, form endpoint, and sample pricing content
-- Latest local updates: the header and mobile navigation now direct visitors to the Cal.com booking embed at `/contact#booking`; the official Ark seal is integrated as the logo and favicon
+- Latest local updates: the header and mobile navigation now direct visitors to the Cal.com booking embed at `/contact#booking`; the official Ark seal is integrated as the logo and favicon; NoahChatWidget on home now uses `client:load` for immediate hydration; TypeScript config fixed (deprecated `baseUrl` removed, relative paths added); ISN calculator overflow conflict resolved; cSpell configuration added for Spanish vocabulary
 - Git/deployment status: these latest updates are uncommitted on `main` and have not been deployed; `origin/main` still points to `31f936a`
 - Onboarding documentation: available in `docs/client-onboarding.md`
 - Latest portfolio update: project cards now describe the implemented demo behavior and mark sample data, mock integrations, external destinations, and the unimplemented Padel Outlet concept. The latest portfolio changes are committed to `main`; a corresponding production deployment has not been confirmed here.
@@ -277,7 +277,7 @@ The `config.ts` has been significantly expanded:
 - **Official Ark seal** integrated in the header/footer and configured as the favicon and Apple touch icon
 - **Brand preview page** at `/brand`, internal design system showcase
 - **AI chat endpoint** at `/api/chat`, using Cloudflare Workers AI binding
-- **NoahChatWidget** component for conversational UI, with line-specific contexts and response fingerprints
+- **NoahChatWidget** component for conversational UI, with line-specific contexts and response fingerprints; home page widget now uses `client:load` for immediate hydration
 - CI workflow and Lighthouse budget configuration
 - **Vector asset generation script** (`scripts/generate-assets.py`) supports Legal, Commerce, and Lab themes plus legacy site paths
 - **10 currently available SVG brand assets** (logo, favicon, glows, grids, portfolio placeholders)
@@ -395,6 +395,7 @@ This confirms the source builds locally; it does not verify deployed behavior, t
 - `.github/workflows/ci.yml` runs format check, lint, and build on pushes and PRs
 - `lighthouserc.json` enforces Lighthouse performance/accessibility thresholds (95% performance/accessibility, 90% best-practices/SEO)
 - `npm run verify` exists for a combined quality pass (format:check + lint + build)
+- **`cspell.json`** added for Spanish vocabulary spell-checking (legal/fiscal terms: cumplimiento, lavado, cripto, criptoactivos, expediente, productos, pagos, envíos, datos, respuesta, generada, constituye, asesoría, abogado, contador, huella, navegador, registro, auditoría, cerrar, necesita, resguardar, selecciona, tema, pregúntame, necesites, buscas, duda, exploramos, técnica, enviar, mensaje, servidor, tiene, formato, inválido, pudo, calcular, está, disponible, momento, intenta, nuevo, abrir, soporte)
 
 ## 10. High-Level Risks And Gaps
 
@@ -419,7 +420,7 @@ This confirms the source builds locally; it does not verify deployed behavior, t
 
 The repo is a structured, config-driven marketing site with reusable routes, components, documented client-onboarding steps, and a portfolio of ten interactive React demos, two external sites, and one concept card. Its local production build is green. It is not yet production-ready for a particular client: placeholders, demo payment/contact values, external integrations, and deployment details still need to be supplied and verified.
 
-**Current status (2026-10-12)**: The vector asset pipeline is operational, the official Ark seal is integrated as the site logo and favicon, and the booking CTAs lead to the Cal.com embed on the contact page. Pricing FAQs and comparison content are config-driven. The SBC 2026 calculator interactive demo is now live at `/portfolio/sbc-2026-calculadora` with improved legibility. The ISN 2026 calculator interactive demo is now live at `/portfolio/isn-2026-calculadora` with 32 official state rates and CSV export. These latest changes pass the local production build but remain uncommitted and undeployed; `main` is otherwise up to date with `origin/main` at `31f936a`. The informational leasing page is not a signed contract or legal advice. Existing demo, pricing, and client-specific content still require confirmation before production use.
+**Current status (2026-10-12)**: The vector asset pipeline is operational, the official Ark seal is integrated as the site logo and favicon, and the booking CTAs lead to the Cal.com embed on the contact page. Pricing FAQs and comparison content are config-driven. The SBC 2026 calculator interactive demo is now live at `/portfolio/sbc-2026-calculadora` with improved legibility. The ISN 2026 calculator interactive demo is now live at `/portfolio/isn-2026-calculadora` with 32 official state rates and CSV export. TypeScript config fixed (deprecated `baseUrl` removed, all paths now use relative `./` prefixes). ISN calculator overflow conflict resolved (removed conflicting `overflow-hidden` from scrollable area). cSpell configuration added with Spanish legal/fiscal vocabulary. NoahChatWidget on home page now uses `client:load` for immediate hydration. These latest changes pass the local production build but remain uncommitted and undeployed; `main` is otherwise up to date with `origin/main` at `31f936a`. The informational leasing page is not a signed contract or legal advice. Existing demo, pricing, and client-specific content still require confirmation before production use.
 
 ---
 
