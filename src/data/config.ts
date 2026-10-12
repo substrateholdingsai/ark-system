@@ -508,7 +508,7 @@ export const config: SiteConfig = {
     {
       line: 'legal',
       name: 'SBC 2026 • Calculadora Interactiva',
-      url: '/portfolio/sbc-2026-calculadora.html',
+      url: '/portfolio/sbc-2026-calculadora',
       image:
         'https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=1200&q=80',
       description:
