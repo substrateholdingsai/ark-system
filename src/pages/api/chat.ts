@@ -108,7 +108,7 @@ function detectPldAlert(message: string): boolean {
   const amountMatches = lower.match(/(?:\$|\bmxn\s*)?(\d{1,3}(?:,\d{3})+|\d+)(?:\s*(?:k|mil|pesos|mxn))?/gi);
   if (amountMatches) {
     for (const match of amountMatches) {
-      const clean = match.replace(/[\$,\s]|mxn|pesos/gi, '');
+      const clean = match.replace(/[$,\s]|mxn|pesos/gi, '');
       if (/k$/i.test(clean)) {
         const val = parseFloat(clean.replace(/k$/i, '')) * 1000;
         if (val >= 100000) return true;

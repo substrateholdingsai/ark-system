@@ -9,6 +9,7 @@ export default {
         surface: 'hsl(var(--surface) / <alpha-value>)',
         'surface-hover': 'hsl(var(--surface-hover) / <alpha-value>)',
         border: 'hsl(var(--border))',
+        'border-strong': 'hsl(var(--border-strong))',
         text: {
           primary: 'hsl(var(--text-primary) / <alpha-value>)',
           muted: 'hsl(var(--text-muted) / <alpha-value>)',

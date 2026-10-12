@@ -96,13 +96,13 @@ function ChatBubble({
   return (
     <div className={`mb-4 flex ${isUser ? 'justify-end' : 'justify-start'} animate-fade-up`}>
       <div className="max-w-[85%]">
-        <div
-          className={`rounded-xl border px-4 py-3 text-sm leading-relaxed transition-colors ${
-            isUser
-              ? 'bg-ark-accent text-white border-transparent shadow-lg'
-              : 'bg-ark-surface/80 backdrop-blur-md border-ark-border text-zinc-100'
-          }`}
-        >
+<div
+            className={`rounded-xl border px-4 py-3 text-sm leading-relaxed transition-colors ${
+              isUser
+                ? 'bg-ark-accent text-white border-transparent shadow-lg'
+                : 'bg-surface/80 backdrop-blur-md border-border text-white'
+            }`}
+          >
           <p className="whitespace-pre-wrap font-sans">{message.content}</p>
           {!isUser && message.isStreaming && (
             <span className="ml-1 inline-block h-4 w-1.5 animate-pulse bg-ark-accent align-middle" />
@@ -155,7 +155,7 @@ function Header({
   }[assistant.line];
 
   return (
-    <div className="flex shrink-0 items-center justify-between border-b border-ark-border bg-ark-surface/50 px-5 py-4">
+    <div className="flex shrink-0 items-center justify-between border-b border-border bg-surface/50 px-5 py-4">
       <div className="flex items-center gap-3">
         <div className="rounded-lg border border-ark-accent/30 bg-ark-accent/10 p-2">
           <ActiveIcon className="h-5 w-5 text-ark-accent" />
@@ -163,7 +163,7 @@ function Header({
         <div>
           <div className="flex items-center gap-2">
             <h3 className="font-display text-base font-bold text-white">{assistant.name}</h3>
-            <span className="rounded border border-ark-border px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-wider text-zinc-500">
+            <span className="rounded border border-border px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-wider text-zinc-500">
               {lineLabel}
             </span>
           </div>
@@ -173,7 +173,7 @@ function Header({
       {onClose && (
         <button
           onClick={onClose}
-          className="rounded-lg p-2 text-zinc-400 transition-colors hover:bg-ark-surface-hover hover:text-white"
+          className="rounded-lg p-2 text-zinc-400 transition-colors hover:bg-surface-hover hover:text-white"
           aria-label="Cerrar"
         >
           <X size={18} />
@@ -193,7 +193,7 @@ function ContextBar({
   onSwitch: (key: string) => void;
 }) {
   return (
-    <div className="flex shrink-0 gap-2 overflow-x-auto border-b border-ark-border bg-ark-base/50 px-3 py-2 no-scrollbar">
+    <div className="flex shrink-0 gap-2 overflow-x-auto border-b border-border bg-base/50 px-3 py-2 no-scrollbar">
       {contexts.map(({ key, label, iconName }) => {
         const Icon = ICON_MAP[iconName];
         const active = context === key;
@@ -206,7 +206,7 @@ function ContextBar({
             className={`flex items-center gap-2 whitespace-nowrap rounded-lg px-3 py-1.5 text-xs font-medium transition-all duration-200 ${
               active
                 ? 'bg-ark-accent text-white shadow-md'
-                : 'border border-ark-border bg-ark-surface text-zinc-300 hover:border-ark-border-strong hover:text-white'
+                : 'border border-border bg-surface text-zinc-300 hover:border-border-strong hover:text-white'
             }`}
           >
             <Icon className="h-3.5 w-3.5" /> {label}
@@ -309,7 +309,7 @@ function Composer({
           onChange={(event) => setInput(event.target.value)}
           placeholder={lang === 'es' ? 'Pregúntame lo que necesites...' : 'Ask me anything...'}
           disabled={isLoading}
-          className="flex-1 rounded-xl border border-ark-border bg-ark-base px-4 py-2.5 text-sm text-white outline-none transition-all placeholder:text-zinc-500 focus:border-ark-accent focus:ring-1 focus:ring-ark-accent"
+          className="flex-1 rounded-xl border border-border bg-base px-4 py-2.5 text-sm text-white outline-none transition-all placeholder:text-zinc-500 focus:border-ark-accent focus:ring-1 focus:ring-ark-accent"
         />
         <button
           type="submit"
@@ -458,7 +458,7 @@ export default function NoahChatWidget({
         lang={lang}
       />
       {showDisclaimer && (
-        <div className="flex shrink-0 items-start gap-1.5 border-t border-ark-border bg-ark-surface/30 px-4 py-2 text-[10px] leading-tight text-zinc-500">
+        <div className="flex shrink-0 items-start gap-1.5 border-t border-border bg-surface/30 px-4 py-2 text-[10px] leading-tight text-zinc-500">
           <Info className="mt-0.5 h-3 w-3 shrink-0" />
           <span>{disclaimer}</span>
         </div>
@@ -471,17 +471,17 @@ export default function NoahChatWidget({
       <div data-theme={assistant.line}>
         <button
           onClick={() => setIsOpen(true)}
-          className="group fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full border border-ark-border-strong bg-ark-surface shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-ark-glow"
+          className="group fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full border border-border-strong bg-surface shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-ark-glow"
           aria-label={lang === 'es' ? `Abrir ${assistant.name}` : `Open ${assistant.name}`}
           aria-expanded={isOpen}
         >
           <MessageSquare className="h-6 w-6 text-ark-accent transition-transform group-hover:scale-110" />
-          <span className="absolute -right-1 -top-1 h-3 w-3 rounded-full border-2 border-ark-base bg-emerald-500" />
+          <span className="absolute -right-1 -top-1 h-3 w-3 rounded-full border-2 border-base bg-emerald-500" />
         </button>
         {isOpen && (
           <section
             aria-label={`${assistant.name} chat`}
-            className="fixed bottom-24 right-6 z-50 flex h-[550px] w-[min(92vw,400px)] flex-col overflow-hidden rounded-2xl border border-ark-border-strong bg-ark-base/95 shadow-2xl backdrop-blur-xl animate-scale-in"
+            className="fixed bottom-24 right-6 z-50 flex h-[550px] w-[min(92vw,400px)] flex-col overflow-hidden rounded-2xl border border-border-strong bg-base/95 shadow-2xl backdrop-blur-xl animate-scale-in"
           >
             {contents}
           </section>
@@ -494,7 +494,7 @@ export default function NoahChatWidget({
     <section
       data-theme={assistant.line}
       aria-label={`${assistant.name} chat`}
-      className="mx-auto flex w-full max-w-3xl flex-col overflow-hidden rounded-2xl border border-ark-border-strong bg-ark-base/95 shadow-2xl backdrop-blur-xl animate-fade-up"
+      className="mx-auto flex w-full max-w-3xl flex-col overflow-hidden rounded-2xl border border-border-strong bg-base/95 shadow-2xl backdrop-blur-xl animate-fade-up"
     >
       {contents}
     </section>
