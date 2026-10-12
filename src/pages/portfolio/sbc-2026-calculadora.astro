@@ -5,39 +5,57 @@ import Container from '../../components/layout/Container.astro';
 import SbcCalculator from '../../components/portfolio/SbcCalculator.jsx';
 ---
 
-<BaseLayout title="SBC 2026 • Calculadora Interactiva | Ark System">
+<BaseLayout
+  title="SBC 2026 • Calculadora Interactiva | Ark System"
+  description="Calculadora demostrativa del Salario Base de Cotización. Cálculo 100% en el navegador, sin envío de datos. UMA y SBC mínimo configurables. Referencia educativa, no asesoría fiscal o legal."
+>
   <Section id="portfolio-sbc" variant="void" padding="lg">
     <Container>
-      <div class="mb-12 text-center">
+      <header class="mb-12 text-center">
         <a
           href="/portfolio"
-          class="inline-flex items-center gap-2 font-mono text-sm text-zinc-500 transition-colors hover:text-white"
+          aria-label="Volver al Portfolio"
+          class="inline-flex items-center gap-2 font-mono text-sm text-zinc-400 transition-colors hover:text-white"
         >
-          ← Volver al Portfolio
+          <span aria-hidden="true">←</span>
+          Volver al Portfolio
         </a>
-        <div class="mt-6">
-          <span class="mb-2 block font-mono text-sm text-accent">
-            CLIENTE 01 • NÓMINA EDGE
-          </span>
-          <h1 class="text-4xl font-bold text-white sm:text-5xl">SBC 2026 · Calculadora Interactiva</h1>
-        </div>
+
+        <span class="mt-6 block font-mono text-sm text-accent">
+          CLIENTE 01 • NÓMINA EDGE
+        </span>
+
+        <h1 class="mt-2 text-4xl font-bold text-white sm:text-5xl">
+          SBC 2026 · Calculadora Interactiva
+        </h1>
+
         <p class="mx-auto mt-4 max-w-3xl text-lg leading-relaxed text-zinc-400">
-          Calculadora demostrativa del Salario Base de Cotización que actualiza sus resultados en el
-          navegador. No envía datos; sus valores son referencias educativas y no constituyen asesoría
-          fiscal o legal.
+          Calculadora demostrativa del Salario Base de Cotización que actualiza sus resultados
+          en el navegador. No envía datos; sus valores son referencias educativas.
         </p>
-        <p class="mx-auto mt-3 max-w-3xl rounded-lg border border-amber-400/30 bg-amber-400/10 p-3 text-sm text-amber-200">
-          Referencias educativas; los resultados no constituyen asesoría fiscal o legal.
+
+        <p
+          role="note"
+          aria-label="Aviso legal"
+          class="mx-auto mt-3 max-w-3xl rounded-lg border border-amber-400/30 bg-amber-400/10 p-3 text-sm text-amber-200"
+        >
+          Los resultados no constituyen asesoría fiscal o legal. Verifica la UMA vigente en
+          inegi.org.mx y el salario mínimo en conasami.gob.mx.
         </p>
-      </div>
+      </header>
 
       <div class="overflow-hidden rounded-xl border border-border shadow-2xl">
-        <SbcCalculator client:only="react" />
+        <SbcCalculator client:visible />
+        <noscript>
+          <p class="p-6 text-center text-sm text-zinc-400">
+            Activa JavaScript para usar la calculadora interactiva.
+          </p>
+        </noscript>
       </div>
 
       <div class="mt-8 grid gap-6 md:grid-cols-3">
         <div class="rounded-lg border border-border bg-surface/50 p-6">
-          <h3 class="mb-2 font-mono text-sm text-accent">STACK</h3>
+          <h2 class="mb-2 font-mono text-sm text-accent">STACK</h2>
           <ul class="space-y-1 text-zinc-400">
             <li>React 19 + Tailwind CSS</li>
             <li>Astro 5 (islas interactivas)</li>
@@ -46,19 +64,19 @@ import SbcCalculator from '../../components/portfolio/SbcCalculator.jsx';
           </ul>
         </div>
         <div class="rounded-lg border border-border bg-surface/50 p-6">
-          <h3 class="mb-2 font-mono text-sm text-accent">CARACTERÍSTICAS</h3>
+          <h2 class="mb-2 font-mono text-sm text-accent">CARACTERÍSTICAS</h2>
           <ul class="space-y-1 text-zinc-400">
             <li>Factor de integración 4 decimales</li>
-            <li>Tope 25 UMAs y mínimo SBC</li>
-            <li>Sliders + inputs numéricos</li>
+            <li>UMA y SBC mínimo configurables</li>
+            <li>Validación de mínimos legales LFT</li>
             <li>Copia resumen al portapapeles</li>
           </ul>
         </div>
         <div class="rounded-lg border border-border bg-surface/50 p-6">
-          <h3 class="mb-2 font-mono text-sm text-accent">MÉTRICAS</h3>
+          <h2 class="mb-2 font-mono text-sm text-accent">MÉTRICAS</h2>
           <ul class="space-y-1 text-zinc-400">
             <li>Lighthouse 100/100</li>
-            <li>0 bytes JS bloqueante</li>
+            <li>Hidratación bajo demanda (client:visible)</li>
             <li>Deploy atómico en 12s</li>
             <li>Edge global 300+ PoPs</li>
           </ul>
@@ -67,10 +85,11 @@ import SbcCalculator from '../../components/portfolio/SbcCalculator.jsx';
 
       <div class="mt-12 text-center">
         <a
-          href="mailto:noah@arksystems.site?subject=Cálculo masivo SBC 2026&body=Hola Noah, quiero cotizar cálculo masivo de SBC para mi nómina..."
-          class="inline-flex items-center gap-2 font-mono text-sm text-zinc-500 transition-colors hover:text-white"
+          href="mailto:noah@arksystems.site?subject=C%C3%A1lculo%20masivo%20SBC%202026&body=Hola%20Noah%2C%20quiero%20cotizar%20c%C3%A1lculo%20masivo%20de%20SBC%20para%20mi%20n%C3%B3mina..."
+          class="inline-flex items-center gap-2 rounded-lg bg-accent px-6 py-3 font-mono text-sm font-semibold text-black transition-opacity hover:opacity-90"
         >
-          Cálculo masivo → noah@arksystems.site
+          Cálculo masivo →
+          <span class="underline">noah@arksystems.site</span>
         </a>
       </div>
     </Container>
