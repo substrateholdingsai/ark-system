@@ -3,42 +3,64 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Section from '../../components/layout/Section.astro';
 import Container from '../../components/layout/Container.astro';
 import IsnCalculator from '../../components/portfolio/IsnCalculator.jsx';
+
+// Actualiza esta fecha cuando revises el dataset de tasas
+const TASAS_VIGENCIA = '2026-01-01';
 ---
 
-<BaseLayout title="ISN 2026 • Calculadora Interactiva | Ark System">
+<BaseLayout
+  title="ISN 2026 • Calculadora Interactiva | Ark System"
+  description="Calculadora demostrativa del Impuesto Sobre Nómina con tasas de referencia por entidad federativa. Desglose gravado/exento y exportación CSV. Cálculo 100% en el navegador."
+>
   <Section id="portfolio-isn" variant="void" padding="lg">
     <Container>
-      <div class="mb-12 text-center">
+      <header class="mb-12 text-center">
         <a
           href="/portfolio"
-          class="inline-flex items-center gap-2 font-mono text-sm text-zinc-500 transition-colors hover:text-white"
+          aria-label="Volver al Portfolio"
+          class="inline-flex items-center gap-2 font-mono text-sm text-zinc-400 transition-colors hover:text-white"
         >
-          ← Volver al Portfolio
+          <span aria-hidden="true">←</span>
+          Volver al Portfolio
         </a>
-        <div class="mt-6">
-          <span class="mb-2 block font-mono text-sm text-accent">
-            CLIENTE 01 · NÓMINA EDGE
-          </span>
-          <h1 class="text-4xl font-bold text-white sm:text-5xl">ISN 2026 · Calculadora Interactiva</h1>
-        </div>
+
+        <span class="mt-6 block font-mono text-sm text-accent">
+          CLIENTE 01 • NÓMINA EDGE
+        </span>
+
+        <h1 class="mt-2 text-4xl font-bold text-white sm:text-5xl">
+          ISN 2026 · Calculadora Interactiva
+        </h1>
+
         <p class="mx-auto mt-4 max-w-3xl text-lg leading-relaxed text-zinc-400">
-          Calculadora demostrativa del Impuesto Sobre Nómina que actualiza sus resultados en el
-          navegador. Tasas oficiales por entidad federativa (32 estados), desglose de percepciones
-          gravadas / exentas y exportación a Excel. No envía datos; sus valores son referencias
-          educativas y no constituyen asesoría fiscal o legal.
+          Calculadora demostrativa del Impuesto Sobre Nómina que actualiza sus resultados en
+          el navegador. Tasas de referencia por entidad federativa, desglose de percepciones
+          gravadas y exentas, y exportación a CSV. No envía datos.
         </p>
-        <p class="mx-auto mt-3 max-w-3xl rounded-lg border border-amber-400/30 bg-amber-400/10 p-3 text-sm text-amber-200">
-          Referencias educativas; los resultados no constituyen asesoría fiscal o legal.
+
+        <p
+          role="note"
+          aria-label="Aviso legal"
+          class="mx-auto mt-3 max-w-3xl rounded-lg border border-amber-400/30 bg-amber-400/10 p-3 text-sm text-amber-200"
+        >
+          Tasas de referencia vigentes al {TASAS_VIGENCIA}. La clasificación gravado/exento
+          es responsabilidad del usuario conforme a la Ley de Hacienda de su entidad. Los
+          resultados no constituyen asesoría fiscal o legal.
         </p>
-      </div>
+      </header>
 
       <div class="overflow-hidden rounded-xl border border-border shadow-2xl">
-        <IsnCalculator client:only="react" />
+        <IsnCalculator client:visible />
+        <noscript>
+          <p class="p-6 text-center text-sm text-zinc-400">
+            Activa JavaScript para usar la calculadora y exportar a CSV.
+          </p>
+        </noscript>
       </div>
 
       <div class="mt-8 grid gap-6 md:grid-cols-3">
         <div class="rounded-lg border border-border bg-surface/50 p-6">
-          <h3 class="mb-2 font-mono text-sm text-accent">STACK</h3>
+          <h2 class="mb-2 font-mono text-sm text-accent">STACK</h2>
           <ul class="space-y-1 text-zinc-400">
             <li>React 19 + Tailwind CSS</li>
             <li>Astro 5 (islas interactivas)</li>
@@ -47,19 +69,19 @@ import IsnCalculator from '../../components/portfolio/IsnCalculator.jsx';
           </ul>
         </div>
         <div class="rounded-lg border border-border bg-surface/50 p-6">
-          <h3 class="mb-2 font-mono text-sm text-accent">CARACTERÍSTICAS</h3>
+          <h2 class="mb-2 font-mono text-sm text-accent">CARACTERÍSTICAS</h2>
           <ul class="space-y-1 text-zinc-400">
-            <li>32 estados con tasas 2026 oficiales</li>
-            <li>Desglose G/E editable en vivo</li>
-            <li>Exporta CSV compatible Excel/Sheets</li>
-            <li>Laptop UI con tabla tipo spreadsheet</li>
+            <li>32 entidades federativas con tasas de referencia</li>
+            <li>Desglose gravado/exento editable en vivo</li>
+            <li>Exportación CSV compatible Excel/Sheets (UTF-8 BOM)</li>
+            <li>Interfaz tipo hoja de cálculo optimizada para escritorio</li>
           </ul>
         </div>
         <div class="rounded-lg border border-border bg-surface/50 p-6">
-          <h3 class="mb-2 font-mono text-sm text-accent">MÉTRICAS</h3>
+          <h2 class="mb-2 font-mono text-sm text-accent">MÉTRICAS</h2>
           <ul class="space-y-1 text-zinc-400">
             <li>Lighthouse 100/100</li>
-            <li>0 bytes JS bloqueante</li>
+            <li>Hidratación bajo demanda (client:visible)</li>
             <li>Deploy atómico en 12s</li>
             <li>Edge global 300+ PoPs</li>
           </ul>
@@ -68,10 +90,11 @@ import IsnCalculator from '../../components/portfolio/IsnCalculator.jsx';
 
       <div class="mt-12 text-center">
         <a
-          href="mailto:noah@arksystems.site?subject=Cálculo masivo ISN 2026&body=Hola Noah, quiero cotizar cálculo masivo de ISN para mi nómina..."
-          class="inline-flex items-center gap-2 font-mono text-sm text-zinc-500 transition-colors hover:text-white"
+          href="mailto:noah@arksystems.site?subject=C%C3%A1lculo%20masivo%20ISN%202026&body=Hola%20Noah%2C%20quiero%20cotizar%20c%C3%A1lculo%20masivo%20de%20ISN%20para%20mi%20n%C3%B3mina..."
+          class="inline-flex items-center gap-2 rounded-lg bg-accent px-6 py-3 font-mono text-sm font-semibold text-black transition-opacity hover:opacity-90"
         >
-          Cálculo masivo → noah@arksystems.site
+          Cálculo masivo →
+          <span class="underline">noah@arksystems.site</span>
         </a>
       </div>
     </Container>
