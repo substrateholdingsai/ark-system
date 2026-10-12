@@ -2,15 +2,15 @@
 
 # ⚖️ Ark Systems
 
-**Infraestructura Edge para despachos contables y legales.**
+**Infraestructura Edge para negocios y profesionales.**
 
-Cumplimiento documental · Análisis jurídico · Herramientas profesionales.
+Sitios de alto rendimiento · Cumplimiento documental · Herramientas profesionales.
 
 [![Astro](https://img.shields.io/badge/Astro-5.0-ff5d01?style=flat-square&logo=astro)](https://astro.build)
 [![Cloudflare](https://img.shields.io/badge/Cloudflare-Edge-f38020?style=flat-square&logo=cloudflare)](https://cloudflare.com)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.6-3178c6?style=flat-square&logo=typescript)](https://www.typescriptlang.org)
 
-[Demo](#) • [Ark Legal](#-ark-legal) • [Ark Commerce](#-ark-commerce) • [Ark Lab](#-ark-lab) • [Deploy](#-deployment)
+[Sitio](https://arksystems.site) • [Portafolio](https://arksystems.site/portfolio) • [Ark Legal](#-ark-legal) • [Ark Commerce](#-ark-commerce) • [Ark Lab](#-ark-lab)
 
 </div>
 
@@ -18,71 +18,78 @@ Cumplimiento documental · Análisis jurídico · Herramientas profesionales.
 
 ## 👁 Visión
 
-Ark no es una agencia web. Es **infraestructura de cumplimiento** para profesionales que no pueden permitirse fallar.
+Ark Systems construye y opera sitios web de alto rendimiento sobre Cloudflare Edge, en modelo de arrendamiento operativo (OPEX) o compra única (CAPEX). El portafolio se organiza en tres líneas que comparten el mismo cimiento técnico.
 
 ### El Problema
 
-- **Despachos contables** deben conservar expedientes 5-10 años (CFF, LFPIORPI). La mayoría los guarda en carpetas, WhatsApp y discos externos.
-- **Despachos legales** pierden casos por no encontrar un documento a tiempo. Sin cadena de custodia, sin respaldo, sin búsqueda.
-- **La tecnología tradicional** (WordPress, hosting compartido) es lenta, vulnerable y cara de mantener.
+- **Sitios lentos** (WordPress, Wix, hosting compartido) pierden visitas y ventas: 40% de abandono por carga >3s.
+- **Inversión inicial alta** ($40,000–$100,000 MXN) que se deprecia en 2 años.
+- **Mantenimiento costoso** y dependencia de developers para cada cambio.
+- **Despachos y profesionales** sin expediente digital ordenado, sin trazabilidad, sin búsqueda.
 
-### La Solución Ark
+### La Solución
 
-- **Expediente digital a prueba de auditoría**: ordenado, respaldado, buscable en segundos.
-- **Cumplimiento automatizado**: LFPIORPI, CFF, cadena de custodia.
-- **Herramientas de análisis jurídico**: mapas de conducta-ley-sanación, calculadoras profesionales, compliance como código.
-- **$0 de CAPEX**: arrendamiento operativo 100% deducible.
-- **Cloudflare Edge**: 300+ ciudades, <0.4s, sin servidores que mantener.
+- **Arrendamiento OPEX**: $3,890/mes Core, $6,890/mes Pro+IA, setup $0, 100% deducible ISR + IVA.
+- **Compra única CAPEX**: $55,000, activo intangible amortizable, ownership total del código.
+- **Stack Edge**: Astro 5 + TypeScript + Cloudflare Workers/Pages/D1/Vector, <0.4s, 300+ PoPs.
+- **Cumplimiento documental** (Ark Legal): expedientes a prueba de auditoría, trazabilidad, búsqueda.
 
 ---
 
-## 🏛 Las tres líneas de Ark
+## 🏛 Las tres líneas
 
-### ⚖️ Ark Legal
+### ⚖️ Ark Legal — *Nuestra bandera*
 
-**Nuestra bandera. Donde el valor es 10x.**
+Cumplimiento documental y análisis jurídico para despachos contables y legales.
 
-Herramientas para despachos contables, fiscales y legales:
-
-| Producto | Qué hace | Para quién |
+| Producto | Qué hace | Estado |
 |:---|:---|:---|
-| **Arkangel** | Compliance como código. Evalúa conductas antes de actuar. | Cobranza, fintech, call centers |
-| **Mapa Crypto** | Mapa conducta → ley → sanción. Parametrizable a cualquier rama. | Despachos fiscales, compliance |
-| **SBC 2026** | Calculadora LFT 2023 + LSS Art.27 + LISR Art.93. | RH, nómina, despachos laborales |
-| **Expediente Fiscal** | Repositorio documental a prueba de auditoría. | Despachos contables |
-| **Expediente Legal** | Repositorio con cadena de custodia. | Despachos legales |
+| **Arkangel** | Simulación de compliance como código para cobranza | Demo interactiva |
+| **Mapa Crypto** | Explorador de activos virtuales, 12 temas con búsqueda y filtros | Demo interactiva |
+| **SBC 2026** | Calculadora de Salario Base de Cotización (LFT 2023 + LSS Art. 27) | Demo interactiva |
+| **ISN 2026** | Calculadora de Impuesto Sobre Nómina por entidad federativa | Demo interactiva |
 
-**Modelo:** Arrendamiento desde $3,890/mes. 100% deducible ISR + IVA.
+**Modelo:** arrendamiento desde $3,890/mes · 100% deducible ISR + IVA.
 
 ---
 
-### 🛒 Ark Commerce
+### 🛒 Ark Commerce — *Nuestro flujo*
 
-**Nuestro flujo. Prueba de que la tecnología funciona en producción.**
+Sitios de alto rendimiento para negocios, en distintas verticales.
 
 | Producto | Vertical | Estado |
 |:---|:---|:---|
-| **Temozonia** | E-commerce carnes | Demo live |
-| **Tomato for Bitcoin** | Campo a mesa ₿ | Demo live |
-| **La Bianca Tropical** | Hotel boutique | Sitio real |
-| **Medical Express** | Agenda médica | Prototipo |
-| **Padel Outlet** | Outlet deportivo | Concepto |
-| **Velvet Room** | Bar / nightlife | Concepto |
+| **Temozonia Carnes Ahumadas** | E-commerce carnes | Demo interactiva |
+| **Tomato for Bitcoin** | Campo a mesa ₿ | Demo interactiva |
+| **La Bianca Tropical** | Hotel boutique | Sitio externo |
+| **Padel Outlet** | Outlet deportivo | Plantilla |
+| **Velvet Room** | Cocktail bar | Demo interactiva |
+| **Medical Express** | Agenda médica | Demo interactiva |
 
-**Modelo:** Arrendamiento desde $3,890/mes. Mismo motor, distinta vertical.
+**Modelo:** arrendamiento desde $3,890/mes. Mismo motor, distinta vertical.
 
 ---
 
-### 🔬 Ark Lab
+### 🔬 Ark Lab — *Nuestro I+D*
 
-**Nuestro I+D. Credibilidad técnica.**
+Datos, Bitcoin y agentes inteligentes. Open source / experimental.
 
-| Producto | Qué explora |
-|:---|:---|
-| **Talos** | Colector de datos para minería Bitcoin |
-| **Acepta Bitcoin** | Directorio de comercios ₿ |
+| Producto | Qué explora | Estado |
+|:---|:---|:---|
+| **Acepta Bitcoin** | Directorio de comercios que aceptan Bitcoin | Caso de estudio |
+| **Talos** | Colector de datos para minería Bitcoin | Demo interactiva |
 
-**Modelo:** Open source / experimental. Alimenta el resto.
+---
+
+## 💰 Modelo comercial
+
+| Plan | Precio | Setup | Fiscal |
+|:---|:---|:---|:---|
+| **Arrendamiento Core** | $3,890/mes | $0 | 100% deducible ISR + IVA |
+| **Arrendamiento Pro + IA** | $6,890/mes | $0 | 100% deducible ISR + IVA |
+| **Licencia / Compra única** | $55,000 | — | Activo intangible amortizable |
+
+**Métodos de pago:** SPEI (CFDI 4.0) · Stripe (tarjetas) · BTC/Lightning (BTCPay/Blink) · USDT/USDC.
 
 ---
 
@@ -105,12 +112,13 @@ Herramientas para despachos contables, fiscales y legales:
 | **Astro 5** | Static-first, zero-JS por defecto |
 | **TypeScript 5.6** | Type safety |
 | **Tailwind CSS 3.4** | Design system |
+| **Python** | Automatización, procesamiento de datos, microservicios IA |
 
 ### Integraciones
 
 | Servicio | Uso |
 |:---|:---|
-| **Stripe** | Pagos globales |
+| **Stripe** | Pagos con tarjeta |
 | **Mercado Pago** | SPEI, OXXO, MSI |
 | **BTCPay / Blink** | Bitcoin Lightning |
 | **Cal.com** | Agendamiento sin backend |
@@ -131,12 +139,24 @@ ark-system/
 ├── public/
 │   ├── assets/
 │   ├── favicon.ico
+│   ├── llms.txt
+│   ├── llms-full.txt
 │   └── robots.txt
 ├── src/
 │   ├── components/
 │   ├── data/
+│   │   ├── isn-tasas-2026.ts
+│   │   ├── sbc-parametros-2026.ts
+│   │   ├── productos-ark.ts
+│   │   └── herramientas.ts
 │   ├── layouts/
 │   ├── pages/
+│   │   ├── index.astro
+│   │   ├── portfolio/
+│   │   │   ├── index.astro
+│   │   │   ├── sbc-2026-calculadora.astro
+│   │   │   └── isn-2026-calculadora.astro
+│   │   └── llms-full.txt.ts
 │   ├── styles/
 │   └── utils/
 ├── docs/
@@ -145,13 +165,6 @@ ark-system/
 └── .github/
     └── workflows/
 ```
-
-### Principios de arquitectura
-
-- **Edge-first**: el procesamiento y la entrega ocurren lo más cerca posible del usuario.
-- **Compliance por diseño**: cada flujo documental se construye con trazabilidad, retención y respaldo.
-- **Productos reutilizables**: Ark Legal, Ark Commerce y Ark Lab comparten el mismo motor técnico.
-- **Operación 100% deducible**: infraestructura como servicio, no como inversión de capital.
 
 ---
 
@@ -166,19 +179,6 @@ npx wrangler pages deploy dist
 ```
 
 Se puede desplegar en Cloudflare Pages o en cualquier entorno compatible con Astro + Workers.
-
----
-
-## 🎯 Dirección estratégica
-
-Ark Systems no es un sitio institucional. Es un sistema operativo para profesionales que necesitan:
-
-- resolver riesgo legal y fiscal,
-- documentar evidencias con trazabilidad,
-- automatizar cumplimiento,
-- y operar desde infraestructura edge sin fricción.
-
-Nuestra misión es convertir la gestión documental y regulatoria de despachos y negocios en un activo operativo y no en un archivo caótico.
 
 ---
 
