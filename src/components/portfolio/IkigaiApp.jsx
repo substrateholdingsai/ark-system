@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import {
   ArrowRight, Check, Clock, Copy, Droplets, Flame,
   MapPin, Minus, Moon, Plus, ShoppingBag, Users,
