@@ -1,5 +1,5 @@
 ---
-type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'line';
+type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'line' | 'orange';
 
 interface Props {
   variant?: ButtonVariant;
@@ -44,6 +44,8 @@ const variantClasses: Record<Exclude<ButtonVariant, 'line'>, string> = {
     'border border-white/10 bg-white/[0.06] text-white hover:border-ark-accent/30 hover:bg-white/[0.10]',
   ghost:
     'border border-transparent bg-transparent text-zinc-300 hover:bg-white/[0.04] hover:text-white',
+  orange:
+    'border border-orange-500/20 bg-orange-500 text-white hover:-translate-y-px hover:bg-orange-600 active:translate-y-0',
 };
 
 const sizeClasses = {

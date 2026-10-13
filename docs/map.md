@@ -1,6 +1,6 @@
 ﻿# Ark System — Project Map
 
-> Current status snapshot for the repo as of 2026-10-12.
+> Current status snapshot for the repo as of 2026-10-13.
 > This document reflects the current implementation in the codebase today, with the active deployment model set to Astro + Cloudflare Workers (hybrid SSR + static assets). It is not the original aspirational roadmap.
 
 ## 1. Executive Summary
@@ -430,7 +430,7 @@ User Message → Clef (Classification) → D1 Lookup → Structured Response
 
 The repo is a structured, config-driven marketing site with reusable routes, components, documented client-onboarding steps, and a portfolio of eleven interactive React demos, two external sites, and one concept card. Local Astro checking passes. A full production build passed for the newly added demos before the latest homepage preview adjustment; run `npm run build` before releasing the complete current working tree. It is not yet production-ready for a particular client: placeholders, demo payment/contact values, external integrations, and deployment details still need to be supplied and verified.
 
-**Current status (2026-10-12)**: `main` and `origin/main` are synchronized at `7983b43`. The Ikigai React hydration fix is committed, deployed, and verified live: the page mounts the app and adding a ceremony updates the cart and total. The current local working tree also contains an uncommitted Ark cube logo refresh, the Calculadora Vintage demo, and its Ark Legal homepage preview card; these changes have not been deployed. Astro checking passed after the homepage preview edit. The informational leasing page is not a signed contract or legal advice. Existing demo, pricing, and client-specific content still require confirmation before production use.
+**Current status (2026-10-12)**: `main` and `origin/main` are synchronized at `7983b43`. The Ikigai React hydration fix is committed, deployed, and verified live: the page mounts the app and adding a ceremony updates the cart and total. The current local working tree also contains uncommitted changes: cSpell dictionary fixes (Spanish terminology), Arrendamiento Core and Arrendamiento Pro payment integrations with Clip checkout (orange CTA buttons + shared /gracias thank-you page), the Ark cube logo refresh, the Calculadora Vintage demo, and its Ark Legal homepage preview card; these changes have not been deployed. Astro checking passed after the homepage preview edit. The informational leasing page is not a signed contract or legal advice. Existing demo, pricing, and client-specific content still require confirmation before production use.
 
 ---
 

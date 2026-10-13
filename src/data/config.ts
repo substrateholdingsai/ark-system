@@ -36,7 +36,7 @@ export interface CTAButton {
   label: string;
   href: string;
   external?: boolean;
-  variant?: 'primary' | 'secondary' | 'ghost';
+  variant?: 'primary' | 'secondary' | 'ghost' | 'orange';
 }
 
 export interface HeroStat {
@@ -766,12 +766,12 @@ export const config: SiteConfig = {
           'Soporte y actualización de contenidos incluida',
           'Mantenimiento continuo y monitoreo 24/7',
         ],
-        cta: {
-          label: 'Comenzar en Leasing',
-          href: 'https://cal.com/pablo-cortes-wuzivu/15min',
-          external: true,
-          variant: 'primary',
-        },
+cta: {
+            label: 'Pagar Arrendamiento Core',
+            href: 'https://pago.clip.mx/v3/63b5c218-726e-4b5e-981b-678eeb5358a9',
+            external: true,
+            variant: 'orange',
+          },
         microcopy: 'Cancelación flexible • Sin activos desactualizados',
       },
       {
@@ -792,12 +792,12 @@ export const config: SiteConfig = {
           'Integración de agenda en vivo o checkout automatizado',
           'Infraestructura dedicada (Workers + Vector DB)',
         ],
-        cta: {
-          label: 'Agendar Demo Pro',
-          href: 'https://cal.com/pablo-cortes-wuzivu/15min',
-          external: true,
-          variant: 'primary',
-        },
+cta: {
+            label: 'Pagar Arrendamiento Pro',
+            href: 'https://pago.clip.mx/v3/adefd217-a8b9-4e92-b924-9fd26252ab99',
+            external: true,
+            variant: 'orange',
+          },
         available: true,
       },
       {

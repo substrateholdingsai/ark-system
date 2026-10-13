@@ -1,0 +1,90 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Section from '../components/layout/Section.astro';
+import Container from '../components/layout/Container.astro';
+import Button from '../components/ui/Button.astro';
+import { config } from '@/data/config';
+
+const line = config.theme.default ?? 'legal';
+---
+
+<BaseLayout
+  title={`Gracias por tu pago | ${config.brand.name}`}
+  description="Tu pago de Arrendamiento Core ha sido procesado correctamente."
+  line={line}
+>
+  <Section variant="void" padding="xl" line={line} labelledBy="thanks-heading">
+    <Container class="text-center">
+      <div class="mx-auto max-w-2xl">
+        <div class="mb-8 flex items-center justify-center">
+          <div class="flex h-20 w-20 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-500">
+            <svg
+              class="h-10 w-10"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2"
+              aria-hidden="true"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+            </svg>
+          </div>
+        </div>
+
+        <h1
+          id="thanks-heading"
+          class="font-display text-4xl font-bold tracking-tight text-white sm:text-5xl"
+        >
+          ¡Gracias por tu pago!
+        </h1>
+        <p class="mt-6 text-lg text-zinc-300">
+          Tu pago de <strong class="text-white">Arrendamiento Core</strong> ha sido procesado correctamente.
+          Recibirás la confirmación y los detalles en tu correo electrónico.
+        </p>
+
+        <div class="mt-10 rounded-xl border border-white/10 bg-white/[0.03] p-6 text-left">
+          <h2 class="text-lg font-semibold text-white">¿Qué sigue ahora?</h2>
+          <ul class="mt-4 space-y-3 text-sm text-zinc-400">
+            <li class="flex items-start gap-3">
+              <span class="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-500">
+                <svg class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+              </span>
+              <span>Nuestro equipo se pondrá en contacto contigo en menos de 24 horas hábiles para coordinar el inicio.</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-500">
+                <svg class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+              </span>
+              <span>Recibirás un correo con los accesos a tu panel de control y la factura correspondiente.</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-500">
+                <svg class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+              </span>
+              <span>Tu sitio comenzará a desarrollarse según el alcance acordado en el contrato.</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="mt-10 flex flex-wrap items-center justify-center gap-3">
+          <Button variant="primary" size="lg" href="/contact">
+            Contactar soporte
+          </Button>
+          <Button variant="ghost" size="lg" href="/portfolio">
+            Ver portafolio
+          </Button>
+        </div>
+
+        <p class="mt-8 text-xs text-zinc-500">
+          Si tienes alguna duda, escríbenos a <a href="mailto:{config.contact.email}" class="underline hover:text-ark-accent">{config.contact.email}</a>
+        </p>
+      </div>
+    </Container>
+  </Section>
+</BaseLayout>
