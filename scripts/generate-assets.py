@@ -78,219 +78,107 @@ def get_root() -> Path:
 # ==========================================
 
 def generate_logo_mark_ark(path: Path, theme_name: str = "legal"):
-    """
-    Genera el logo mark de Ark Systems: el Arca como constelación.
-
-    Integra el casco del Arca, capas tipo expediente, una balanza,
-    un sello de verificación y nodos conectados.
-    """
-    theme = get_theme(theme_name)
-    accent = theme["accent"]
-    accent_to = theme["accent_to"]
-    white = NEUTRALS["white"]
-    gray = NEUTRALS["gray_light"]
+    """Genera el icono cúbico compacto de la identidad Ark Systems."""
     size = 512
+    scale = size / 64
     dwg = svgwrite.Drawing(str(path), size=(f"{size}px", f"{size}px"), viewBox=f"0 0 {size} {size}")
-
-    cx = size // 2
-    hull_top_y = 180
-    hull_bottom_y = 380
-    prow_x = size - 90
-    stern_x = 90
-
+    dwg.add(dwg.rect(insert=(0, 0), size=(size, size), rx=12 * scale, fill="#FFFCF7"))
     dwg.add(dwg.path(
-        d=f"M {stern_x},{hull_bottom_y - 30} Q {cx},{hull_bottom_y + 20} {prow_x},{hull_bottom_y - 40}",
+        d=f"M {32 * scale} {7 * scale} L {54 * scale} {20 * scale} "
+          f"V {44 * scale} L {32 * scale} {57 * scale} L {10 * scale} {44 * scale} "
+          f"V {20 * scale} Z",
         fill="none",
-        stroke=accent,
-        stroke_width=6,
-        stroke_linecap="round",
+        stroke="#1B2A4E",
+        stroke_width=2.5 * scale,
+        stroke_linecap="square",
+        stroke_linejoin="miter",
     ))
-
-    layer_ys = [hull_top_y + 30, hull_top_y + 80, hull_top_y + 130]
-    for i, y in enumerate(layer_ys):
-        dwg.add(dwg.line(
-            start=(stern_x + 40 + i * 10, y),
-            end=(prow_x - 60 - i * 10, y - i * 10),
-            stroke=accent,
-            stroke_width=3,
-            stroke_linecap="round",
-            opacity=0.9 - i * 0.2,
-        ))
-
     dwg.add(dwg.path(
-        d=f"M {prow_x},{hull_bottom_y - 40} Q {prow_x + 10},{hull_top_y + 60} {prow_x - 40},{hull_top_y + 20}",
+        d=f"M {32 * scale} {7 * scale} V {32 * scale} M {32 * scale} {32 * scale} "
+          f"V {57 * scale} M {32 * scale} {32 * scale} L {54 * scale} {20 * scale} "
+          f"M {32 * scale} {32 * scale} L {10 * scale} {20 * scale}",
         fill="none",
-        stroke=accent,
-        stroke_width=6,
-        stroke_linecap="round",
+        stroke="#1B2A4E",
+        stroke_width=2.5 * scale,
+        stroke_linecap="square",
+        stroke_linejoin="miter",
     ))
-
-    balance_x = prow_x - 40
-    balance_y_top = hull_top_y + 20
-    balance_y_bottom = hull_top_y - 40
-    dwg.add(dwg.line(
-        start=(balance_x, balance_y_top),
-        end=(balance_x, balance_y_bottom),
-        stroke=accent_to,
-        stroke_width=4,
-        stroke_linecap="round",
-    ))
-    arm_width = 40
-    dwg.add(dwg.line(
-        start=(balance_x - arm_width, balance_y_bottom + 10),
-        end=(balance_x + arm_width, balance_y_bottom + 10),
-        stroke=accent_to,
-        stroke_width=4,
-        stroke_linecap="round",
-    ))
-    for x in (balance_x - arm_width, balance_x + arm_width):
-        dwg.add(dwg.circle(center=(x, balance_y_bottom + 25), r=6, fill=accent_to, opacity=0.8))
-
-    check_x = cx - 20
-    check_y = hull_top_y + 10
-    dwg.add(dwg.circle(center=(check_x, check_y), r=22, fill="none", stroke=white, stroke_width=3, opacity=0.9))
     dwg.add(dwg.path(
-        d=f"M {check_x - 10},{check_y} L {check_x - 3},{check_y + 8} L {check_x + 12},{check_y - 8}",
+        d=f"M {20 * scale} {20 * scale} V {26 * scale} L {25 * scale} {29 * scale} "
+          f"M {32 * scale} {16 * scale} V {24 * scale} M {44 * scale} {20 * scale} "
+          f"V {30 * scale} M {20 * scale} {44 * scale} V {38 * scale} L {25 * scale} {35 * scale} "
+          f"M {32 * scale} {48 * scale} V {40 * scale} M {44 * scale} {44 * scale} V {34 * scale}",
         fill="none",
-        stroke=white,
-        stroke_width=3,
-        stroke_linecap="round",
-        stroke_linejoin="round",
+        stroke="#D4AF37",
+        stroke_width=1.5 * scale,
+        stroke_linecap="square",
     ))
-
-    nodes = [
-        (stern_x + 40, hull_top_y + 30, 6),
-        (stern_x + 80, hull_bottom_y - 20, 5),
-        (cx - 60, hull_bottom_y, 5),
-        (cx + 60, hull_bottom_y - 10, 5),
-        (prow_x - 60, hull_top_y + 80, 5),
-        (prow_x - 20, hull_bottom_y - 30, 6),
-        (balance_x, balance_y_bottom + 10, 4),
-    ]
-    for nx, ny, radius in nodes:
-        dwg.add(dwg.circle(center=(nx, ny), r=radius + 4, fill=accent, opacity=0.25))
-        dwg.add(dwg.circle(center=(nx, ny), r=radius, fill=white))
-
-    constellation_pairs = [
-        ((stern_x + 40, hull_top_y + 30), (cx - 60, hull_bottom_y)),
-        ((cx - 60, hull_bottom_y), (prow_x - 20, hull_bottom_y - 30)),
-        ((prow_x - 20, hull_bottom_y - 30), (prow_x - 60, hull_top_y + 80)),
-        ((cx - 60, hull_bottom_y), (cx + 60, hull_bottom_y - 10)),
-        ((cx + 60, hull_bottom_y - 10), (prow_x - 20, hull_bottom_y - 30)),
-    ]
-    for start, end in constellation_pairs:
-        dwg.add(dwg.line(
-            start=start,
-            end=end,
-            stroke=gray,
-            stroke_width=1.5,
-            stroke_dasharray="4,6",
-            opacity=0.5,
-            stroke_linecap="round",
-        ))
-
-    dwg.add(dwg.line(
-        start=(size - 80, 80),
-        end=(size - 30, 80),
-        stroke=gray,
-        stroke_width=2,
-        stroke_dasharray="6,4",
-        opacity=0.4,
+    dwg.add(dwg.circle(
+        center=(32 * scale, 32 * scale),
+        r=3.5 * scale,
+        fill="#B8336A",
+        stroke="#1B2A4E",
+        stroke_width=1.25 * scale,
     ))
-    dwg.add(dwg.circle(center=(size - 30, 80), r=3, fill=gray, opacity=0.6))
-    dwg.add(dwg.line(
-        start=(30, size - 80),
-        end=(30, size - 30),
-        stroke=gray,
-        stroke_width=2,
-        stroke_dasharray="6,4",
-        opacity=0.4,
-    ))
-    dwg.add(dwg.circle(center=(30, size - 30), r=3, fill=gray, opacity=0.6))
-
     dwg.save()
-    print(f"[OK] Generado: {path.name} (Logo Mark Ark — theme: {theme_name})")
+    print(f"[OK] Generado: {path.name} (Ark Systems icon — theme: {theme_name})")
 
 
 def generate_logo_mark_by_line(line: str):
     """Genera el logo mark para una línea de negocio."""
     if line not in THEMES:
         raise ValueError(f"Tema desconocido: {line}")
-    generate_logo_mark_ark(get_root() / f"logo-mark-{line}.svg", theme_name=line)
+    generate_logo_mark_ark(get_root() / f"ark-mark-{line}.svg", theme_name=line)
 
 
 def generate_favicon_base(path: Path, theme_name: str = "legal"):
-    """Genera el favicon de Ark Systems: el sello chevron sobre pastilla de acento.
-
-    Debe ser legible a 16 px, así que va como badge con fondo propio: un favicon
-    cargado por <link> es un documento aislado y no hereda `currentColor` ni las
-    custom properties del sitio, de modo que un trazo sin fondo desaparecería
-    sobre pestañas claras. Se usa la misma geometría que el sello del header
-    (ArkMark), escalada, para que tab y marca se lean como una familia.
-    """
-    theme = get_theme(theme_name)
+    """Genera el favicon cúbico con fondo claro y trazos de alto contraste."""
     size = 64
-
     dwg = svgwrite.Drawing(
         str(path),
         size=(f"{size}px", f"{size}px"),
         viewBox=f"0 0 {size} {size}",
     )
-
-    defs = dwg.defs
-    grad_id = "ark-favicon-accent"
-    gradient = dwg.linearGradient(id=grad_id, x1="0%", y1="0%", x2="100%", y2="100%")
-    gradient.add_stop_color("0%", theme["accent"])
-    gradient.add_stop_color("100%", theme["accent_to"])
-    defs.add(gradient)
-
-    # Pastilla: fondo sólido propio para contrastar con cualquier pestaña.
-    dwg.add(
-        dwg.rect(
-            insert=(0, 0),
-            size=(size, size),
-            rx=size * 0.25,
-            ry=size * 0.25,
-            fill=f"url(#{grad_id})",
-        )
-    )
-
-    # Chevron de la "A" de Ark: la masa principal de la marca.
-    dwg.add(
-        dwg.path(
-            d=f"M {size * 0.25},{size * 0.71875} L {size * 0.5},{size * 0.28125} "
-              f"L {size * 0.75},{size * 0.71875}",
+    dwg.add(dwg.rect(insert=(0, 0), size=(size, size), rx=12, fill="#FFFCF7"))
+    for path_data in (
+        "M 32,7 L 54,20 L 54,44 L 32,57 L 10,44 L 10,20 Z",
+        "M 32,7 V 32",
+        "M 32,32 V 57",
+        "M 32,32 L 54,20",
+        "M 32,32 L 10,20",
+    ):
+        dwg.add(dwg.path(
+            d=path_data,
             fill="none",
-            stroke=NEUTRALS["white"],
-            stroke_width=size * 0.10625,
-            stroke_linecap="round",
-            stroke_linejoin="round",
-        )
-    )
-
-    # Barra del sello, partida por el nodo central.
-    seal_y = size * 0.640625
-    dwg.add(
-        dwg.path(
-            d=f"M {size * 0.33125},{seal_y} h {size * 0.06875} "
-              f"M {size * 0.6},{seal_y} h {size * 0.06875}",
+            stroke="#1B2A4E",
+            stroke_width=2.5,
+            stroke_linecap="square",
+            stroke_linejoin="miter",
+        ))
+    for path_data in (
+        "M 20,20 V 26 L 25,29",
+        "M 32,16 V 24",
+        "M 44,20 V 30",
+        "M 20,44 V 38 L 25,35",
+        "M 32,48 V 40",
+        "M 44,44 V 34",
+    ):
+        dwg.add(dwg.path(
+            d=path_data,
             fill="none",
-            stroke=NEUTRALS["white"],
-            stroke_width=size * 0.0875,
-            stroke_linecap="round",
-        )
-    )
-
-    dwg.add(
-        dwg.circle(
-            center=(size * 0.5, seal_y),
-            r=size * 0.06875,
-            fill=NEUTRALS["white"],
-        )
-    )
-
+            stroke="#D4AF37",
+            stroke_width=1.5,
+            stroke_linecap="square",
+        ))
+    dwg.add(dwg.circle(
+        center=(32, 32),
+        r=3.5,
+        fill="#B8336A",
+        stroke="#1B2A4E",
+        stroke_width=1.25,
+    ))
     dwg.save()
-    print(f"[OK] Generado: {path.name} (Favicon — theme: {theme_name})")
+    print(f"[OK] Generado: {path.name} (Ark Systems favicon — theme: {theme_name})")
 
 
 def generate_grid_pattern(path: Path, cell_size=40, theme_name="legal"):
@@ -678,7 +566,7 @@ if __name__ == "__main__":
         generate_neon_glow_orb_svg(root / f"glow-{line}.svg", theme_name=line)
 
     # Mantener las rutas existentes que consume el sitio.
-    generate_logo_mark_ark(root / "logo-mark.svg", theme_name="legal")
+    generate_logo_mark_ark(root / "ark-mark.svg", theme_name="legal")
     generate_favicon_base(root / "favicon.svg", theme_name="legal")
     generate_og_image(root.parent / "og-default.svg", theme_name="legal")
     generate_grid_pattern(root / "grid-accent.svg", theme_name="legal")

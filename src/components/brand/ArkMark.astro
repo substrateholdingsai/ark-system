@@ -12,38 +12,22 @@ interface Props {
 const { class: className = 'h-8 w-auto', title } = Astro.props;
 ---
 
-{/*
-    Sello Ark redibujado para tamaños pequeños (24-32 px).
-
-    - viewBox 32x32 con trazos gruesos: 1 unidad ~= 1 px a h-8, así que nada
-      baja de ~1.7 px ni en el footer (h-6, escala 0.75).
-    - La estructura usa `currentColor`, que hereda del texto del enlace
-      contenedor (blanco en header y footer, ~19:1 sobre el fondo oscuro).
-    - El nodo central usa `hsl(var(--ark-accent))`, o sea el acento del tema
-      activo (legal/commerce/lab), sin depender de variables del documento:
-      al ir inline el SVG sí hereda las custom properties del sitio, algo que
-      no ocurría cuando se cargaba por <img src>.
-  */}
 <svg
   class:list={['shrink-0', className]}
   xmlns="http://www.w3.org/2000/svg"
-  viewBox="0 0 32 32"
+  viewBox="0 0 64 64"
   fill="none"
   role={title ? 'img' : undefined}
   aria-label={title}
   aria-hidden={title ? undefined : true}
 >
-  {/* Chevron de la "A" de Ark: la masa principal de la marca */}
-  <path
-    d="M6 26.5 16 6.5 26 26.5"
-    stroke="currentColor"
-    stroke-width="3.6"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-  />
-  {/* Barra del sello, partida por el nodo central */}
-  <path d="M10.6 20.5h2.2" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" />
-  <path d="M19.2 20.5h2.2" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" />
-  {/* Nodo central con el acento del tema */}
-  <circle cx="16" cy="20.5" r="2.9" fill="hsl(var(--ark-accent))" />
+  <rect width="64" height="64" rx="12" fill="#FFFCF7" />
+  <g stroke="#1B2A4E" stroke-width="2.5" stroke-linecap="square" stroke-linejoin="miter">
+    <path d="M32 7 54 20v24L32 57 10 44V20L32 7Z" />
+    <path d="M32 7v25M32 32v25M32 32l22-12M32 32 10 20" />
+  </g>
+  <g stroke="#D4AF37" stroke-width="1.5" stroke-linecap="square">
+    <path d="M20 20v6l5 3M32 16v8M44 20v10M20 44v-6l5-3M32 48v-8M44 44V34" />
+  </g>
+  <circle cx="32" cy="32" r="3.5" fill="#B8336A" stroke="#1B2A4E" stroke-width="1.25" />
 </svg>

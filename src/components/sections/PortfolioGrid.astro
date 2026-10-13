@@ -10,21 +10,27 @@ const line = config.theme.default ?? 'legal';
 
 const featuredByLine = (['legal', 'commerce', 'lab'] as const).flatMap((lineId) => {
   const lineData = config.lines.find((entry) => entry.id === lineId);
-  const item = config.portfolio.find(
+  const items = config.portfolio.filter(
     (entry) => entry.line === lineId && entry.available !== false && Boolean(entry.url),
   );
+  const featuredItems =
+    lineId === 'legal'
+      ? [items[0], items.find((entry) => entry.url === '/portfolio/calculadora-vintage')]
+      : [items[0]];
 
-  return item?.url
-    ? [
-        {
-          line: lineId,
-          lineName: lineData?.name ?? 'Ark',
-          lineTagline: lineData?.tagline ?? '',
-          item,
-          url: item.url,
-        },
-      ]
-    : [];
+  return featuredItems.flatMap((item) =>
+    item?.url
+      ? [
+          {
+            line: lineId,
+            lineName: lineData?.name ?? 'Ark',
+            lineTagline: lineData?.tagline ?? '',
+            item,
+            url: item.url,
+          },
+        ]
+      : [],
+  );
 });
 ---
 
@@ -88,7 +94,11 @@ const featuredByLine = (['legal', 'commerce', 'lab'] as const).flatMap((lineId) 
 
               <div class="mt-5 flex items-center justify-between gap-3">
                 <span class="inline-flex items-center gap-2 text-sm font-medium text-ark-accent">
-                  {lineId === 'legal' ? 'Ver análisis' : 'Ver caso'}
+                  {url === '/portfolio/calculadora-vintage'
+                    ? 'Probar calculadora'
+                    : lineId === 'legal'
+                      ? 'Ver análisis'
+                      : 'Ver caso'}
                   <svg
                     class="h-4 w-4 transition-transform duration-300 ease-ark group-hover:translate-x-1"
                     fill="none"

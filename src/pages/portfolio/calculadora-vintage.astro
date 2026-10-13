@@ -1,0 +1,81 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Section from '../../components/layout/Section.astro';
+import Container from '../../components/layout/Container.astro';
+import VintageCalculatorApp from '../../components/portfolio/VintageCalculatorApp.jsx';
+---
+
+<BaseLayout
+  title="Calculadora Vintage • Widget Contable | Ark Systems"
+  description="Demo interactiva de una calculadora aritmética para sitios de contabilidad y despachos. Cálculo local, sin backend ni envío de datos."
+>
+  <Section id="portfolio-calculadora-vintage" variant="void" padding="lg">
+    <Container>
+      <header class="mb-12 text-center">
+        <a
+          href="/portfolio"
+          aria-label="Volver al Portafolio"
+          class="inline-flex items-center gap-2 font-mono text-sm text-zinc-400 transition-colors hover:text-white"
+        >
+          <span aria-hidden="true">←</span>
+          Volver al Portafolio
+        </a>
+
+        <span class="mt-6 block font-mono text-sm text-accent">ARK LEGAL • WIDGET CONTABLE</span>
+
+        <h1 class="mt-2 text-4xl font-bold text-white sm:text-5xl">Calculadora Vintage</h1>
+
+        <p class="mx-auto mt-4 max-w-3xl text-lg leading-relaxed text-zinc-400">
+          Una calculadora aritmética interactiva con estética clásica, diseñada como
+          microherramienta visual para sitios de contabilidad y despachos. Las operaciones se
+          ejecutan localmente en el navegador.
+        </p>
+
+        <p
+          role="note"
+          aria-label="Aviso"
+          class="mx-auto mt-3 max-w-3xl rounded-lg border border-amber-400/30 bg-amber-400/10 p-3 text-sm text-amber-200"
+        >
+          Demo ilustrativa: realiza operaciones aritméticas básicas, no calcula impuestos ni
+          sustituye herramientas contables o asesoría profesional.
+        </p>
+      </header>
+
+      <div class="overflow-hidden rounded-xl border border-border shadow-2xl">
+        <VintageCalculatorApp client:visible />
+        <noscript>
+          <p class="p-6 text-center text-sm text-zinc-400">
+            Activa JavaScript para usar la calculadora interactiva.
+          </p>
+        </noscript>
+      </div>
+
+      <div class="mt-8 grid gap-6 md:grid-cols-3">
+        <div class="rounded-lg border border-border bg-surface/50 p-6">
+          <h2 class="mb-2 font-mono text-sm text-accent">OPERACIONES</h2>
+          <ul class="space-y-1 text-zinc-400">
+            <li>Suma, resta, multiplicación y división</li>
+            <li>Operación de porcentaje</li>
+            <li>Entrada por teclado o botones</li>
+          </ul>
+        </div>
+        <div class="rounded-lg border border-border bg-surface/50 p-6">
+          <h2 class="mb-2 font-mono text-sm text-accent">PRIVACIDAD</h2>
+          <ul class="space-y-1 text-zinc-400">
+            <li>Cálculo local en el navegador</li>
+            <li>Sin formularios ni datos personales</li>
+            <li>Sin backend ni persistencia</li>
+          </ul>
+        </div>
+        <div class="rounded-lg border border-border bg-surface/50 p-6">
+          <h2 class="mb-2 font-mono text-sm text-accent">PRESENTACIÓN</h2>
+          <ul class="space-y-1 text-zinc-400">
+            <li>Diseño de calculadora vintage</li>
+            <li>Pantalla LCD y controles táctiles</li>
+            <li>Prototipo de widget para despachos</li>
+          </ul>
+        </div>
+      </div>
+    </Container>
+  </Section>
+</BaseLayout>

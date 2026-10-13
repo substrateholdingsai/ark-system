@@ -537,6 +537,18 @@ export const config: SiteConfig = {
       tags: ['DEMO INTERACTIVA', 'Calculadora ISN', '32 estados', 'Cálculo local', 'Sin backend', 'Export CSV'],
       disclaimer: 'Referencias educativas; los resultados no constituyen asesoría fiscal o legal.',
     },
+    {
+      line: 'legal',
+      name: 'Calculadora Vintage • Widget Contable',
+      url: '/portfolio/calculadora-vintage',
+      image:
+        'https://images.unsplash.com/photo-1587145820266-a5951ee6f620?auto=format&fit=crop&w=1200&q=80',
+      description:
+        'Prototipo interactivo de calculadora aritmética para sitios de contabilidad y despachos. Opera localmente en el navegador; no calcula impuestos ni procesa datos.',
+      tags: ['DEMO INTERACTIVA', 'Widget contable', 'Cálculo local', 'Sin backend'],
+      disclaimer:
+        'Calculadora aritmética de muestra; no sustituye herramientas contables ni asesoría profesional.',
+    },
   ],
 
   how: {

@@ -5,23 +5,23 @@
 
 ## 1. Executive Summary
 
-Ark System is an edge-native marketing and conversion site built with Astro, Tailwind CSS, TypeScript, React islands, and Cloudflare Workers. The repo contains a functioning site scaffold, a typed config contract with Ark as Client 0, CI/Lighthouse checks, and a portfolio with 12 entries: nine interactive demos, two external sites, and one unimplemented concept. The production build passes locally.
+Ark System is an edge-native marketing and conversion site built with Astro, Tailwind CSS, TypeScript, React islands, and Cloudflare Workers. The repo contains a functioning site scaffold, a typed config contract with Ark as Client 0, CI/Lighthouse checks, and a portfolio with 14 entries: eleven interactive demos, two external sites, and one unimplemented concept.
 
 Status at a glance:
 
-- Build status: **green** locally (`npm run build` passes with the current Cloudflare Workers configuration)
+- Build status: latest `npm run check` passes; run a full `npm run build` before releasing the current local changes
 - Core platform: Astro 5 + Tailwind 3 + React 19 + Cloudflare Workers (hybrid SSR + static assets)
 - Content model: typed reusable contract and Ark Client 0 instance in `src/data/config.ts`
-- Route architecture: implemented for the home, pricing, contact, portfolio, brand preview, Acepta Bitcoin case-study, SBC 2026 calculator, leasing contract, and eight interactive demo pages, plus 404
+- Route architecture: implemented for the home, pricing, contact, portfolio, brand preview, Acepta Bitcoin case-study, SBC 2026 and ISN 2026 calculators, leasing contract, and eleven interactive demo pages, plus 404
 - Deployment config: Cloudflare adapter with server output, Worker config in `wrangler.jsonc`, with `SESSION` KV binding, `AI` binding, and `DB` D1 binding for the adapter runtime
-- Portfolio: 12 cards — nine interactive demos (Temozonia, Tomato for Bitcoin, Arkangel, Velvet Room, Medical Express, Talos, Mapa Crypto, SBC 2026 Calculadora), two external sites (Acepta Bitcoin and La Bianca Tropical), and the Padel Outlet concept, which has no interactive demo yet
+- Portfolio: 14 cards — eleven interactive demos (Temozonia, Tomato for Bitcoin, Arkangel, Velvet Room, Medical Express, Talos, Mapa Crypto, SBC 2026 Calculadora, ISN 2026 Calculadora, Ikigai Wellness, and Calculadora Vintage), two external sites (Acepta Bitcoin and La Bianca Tropical), and the Padel Outlet concept, which has no interactive demo yet
 - Placeholder content: still present, including some contact/booking destinations, form endpoint, and sample pricing content
-- Latest local updates: the header and mobile navigation now direct visitors to the Cal.com booking embed at `/contact#booking`; the official Ark seal is integrated as the logo and favicon; NoahChatWidget on home now uses `client:load` for immediate hydration; TypeScript config fixed (deprecated `baseUrl` removed, relative paths added); ISN calculator overflow conflict resolved; cSpell configuration added for Spanish vocabulary
-- Git/deployment status: these latest updates are uncommitted on `main` and have not been deployed; `origin/main` still points to `31f936a`
+- Latest local updates: Ikigai Wellness now hydrates correctly after importing React in its component; the homepage preview features a second Ark Legal card for the Calculadora Vintage; the compact cube mark, full logo lockup, favicon, and structured-data logo assets have been updated locally
+- Git/deployment status: `main` is synchronized with `origin/main` at `7983b43`. Local working-tree changes include the new Calculadora Vintage demo, the homepage portfolio preview card, and the logo refresh; these local changes have not been deployed
 - Onboarding documentation: available in `docs/client-onboarding.md`
-- Latest portfolio update: project cards now describe the implemented demo behavior and mark sample data, mock integrations, external destinations, and the unimplemented Padel Outlet concept. The latest portfolio changes are committed to `main`; a corresponding production deployment has not been confirmed here.
+- Latest portfolio update: project cards describe implemented demo behavior and mark sample data, mock integrations, external destinations, and the unimplemented Padel Outlet concept. The Ikigai hydration fix is committed and deployed; the Calculadora Vintage card and logo refresh are still local changes.
 - CI: workflow is defined in `.github/workflows/ci.yml`; Lighthouse budget exists in `lighthouserc.json`; remote CI status is not recorded here
-- **Vector asset generator**: produces 33 theme-aware SVGs in `public/assets/vector/` and four Open Graph SVGs; preserves the site's legacy asset filenames. Existing assets are not replaced until the script is run.
+- **Vector asset generator**: `scripts/generate-assets.py` creates theme assets, the cube mark, and the favicon source; `npm run favicon` generates browser and structured-data raster variants. The full Ark Systems lockup is maintained separately in `public/assets/vector/ark-systems-lockup.svg`.
 - **New integrations**: AI binding for Cloudflare Workers AI, D1 database binding for fiscal/legal data, NoahChatWidget for conversational UI
 - **Intelligent chat endpoint**: `/api/chat` uses Cloudflare Clef for structured classification (PLD alert, topic category) + D1 lookup for pre-approved answers with legal references
 - **Knowledge base**: `schema.sql` defines `knowledge_base` table (topic, question, answer, legal_reference); seeded with PLD and fiscal samples; executed on local D1
@@ -51,7 +51,7 @@ Current implementation details:
 
 - Astro config uses `output: 'server'` and the Cloudflare adapter in `astro.config.mjs`
 - `wrangler.jsonc` configures the Cloudflare Worker, static asset binding, session KV binding, AI binding, and D1 database binding
-- React is integrated through `@astrojs/react`; all eight interactive portfolio demos mount client-only React islands
+- React is integrated through `@astrojs/react`; the interactive portfolio demos mount as hydrated React islands
 - CI performs `npm run build` and runs Lighthouse checks against `./dist`
 - The project has a generated `dist/` directory from the latest local build attempt
 
@@ -77,11 +77,13 @@ ark-system/
 │   ├── robots.txt
 │   ├── sitemap.xml
 │   └── assets/
-│       ├── ark-logo.svg
 │       ├── og-default.png
 │       ├── vector/                   NEW: Generated vector assets
-│       │   ├── logo-mark.svg
+│       │   ├── ark-systems-lockup.svg     Full brand lockup
+│       │   ├── ark-mark.svg               Generated cube icon
 │       │   ├── favicon.svg
+│       │   ├── apple-touch-icon.png
+│       │   ├── logo-512.png                Structured-data logo
 │       │   ├── grid-accent.svg
 │       │   ├── grid-gold.svg
 │       │   ├── glow-accent.svg
@@ -92,8 +94,9 @@ ark-system/
 │       │   └── portfolio-placeholder-3.svg
 │       └── portfolio/
 │           └── labianca.jpg
-├── scripts/                           Asset generation script
-│   └── generate-assets.py
+├── scripts/
+│   ├── generate-assets.py              Generates themed SVG assets and the cube mark
+│   └── generate-favicon.mjs            Generates favicon, Apple touch icon, and logo rasters
 ├── src/
 │   ├── components/
 │   │   ├── layout/
@@ -111,15 +114,19 @@ ark-system/
 │   │   │   ├── PricingTable.astro
 │   │   │   └── TechStack.astro
 │   │   ├── portfolio/
-│   │   │   ├── TemozoniaApp.jsx        Interactive Temozonia checkout demo
-│   │   │   ├── TomatoApp.jsx           Interactive Tomato for Bitcoin storefront demo
-│   │   │   ├── ArkangelApp.jsx         Interactive compliance-flow simulation
-│   │   │   ├── VelvetApp.jsx           Interactive bar storefront demo
-│   │   │   ├── MedicalApp.jsx          Fictional appointment and payment-flow demo
-│   │   │   ├── TalosApp.jsx            Simulated mining-data collector concept
-│   │   │   ├── VirtualAssetsMapApp.jsx Legal-topic filtering demo; references unverified
-│   │   │   ├── SBCCalculator.jsx       NEW: Interactive SBC 2026 calculator
-│   │   │   └── IsnCalculator.jsx       NEW: Interactive ISN 2026 calculator (32 estados)
+│   │   │   ├── ArkangelApp.jsx             Interactive compliance-flow simulation
+│   │   │   ├── IkigaiApp.jsx               Ceremony booking demo
+│   │   │   ├── IsnCalculator.jsx           Interactive ISN 2026 calculator (32 estados)
+│   │   │   ├── MedicalApp.jsx              Fictional appointment and payment-flow demo
+│   │   │   ├── SbcCalculator.jsx           Interactive SBC 2026 calculator
+│   │   │   ├── TalosApp.jsx                Simulated mining-data collector concept
+│   │   │   ├── TemozoniaApp.jsx            Interactive Temozonia checkout demo
+│   │   │   ├── TomatoApp.jsx               Interactive Tomato for Bitcoin storefront demo
+│   │   │   ├── VelvetApp.jsx               Interactive bar storefront demo
+│   │   │   ├── VirtualAssetsMapApp.jsx     Legal-topic filtering demo; references unverified
+│   │   │   └── VintageCalculatorApp.jsx    Vintage arithmetic calculator widget
+│   │   ├── brand/
+│   │   │   └── ArkMark.astro               Compact cube mark used in header/footer
 │   │   └── ui/
 │   │       ├── Badge.astro
 │   │       ├── Button.astro
@@ -143,8 +150,10 @@ ark-system/
 │   │   │   ├── medical.astro
 │   │   │   ├── talos.astro
 │   │   │   ├── mapa-crypto.astro
-│   │   │   ├── sbc-2026-calculadora.astro        NEW: SBC 2026 calculator page
-│   │   │   └── isn-2026-calculadora.astro        NEW: ISN 2026 calculator page (32 estados)
+│   │   │   ├── sbc-2026-calculadora.astro
+│   │   │   ├── isn-2026-calculadora.astro
+│   │   │   ├── ikigai.astro
+│   │   │   └── calculadora-vintage.astro
 │   │   ├── pricing.astro
 │   │   ├── brand.astro
 │   │   ├── leasing-contrato.astro    NEW: Leasing contract template page
@@ -190,7 +199,9 @@ The site includes the following implemented pages:
 - `/portfolio/talos` — interactive Talos mining-data collector concept with simulated metrics
 - `/portfolio/mapa-crypto` — interactive topic map with filters and unverified legal references
 - `/portfolio/sbc-2026-calculadora` — NEW: interactive SBC 2026 calculator (Salario Base de Cotización)
-- `/portfolio/isn-2026-calculadora` — NEW: interactive ISN 2026 calculator (Impuesto Sobre Nómina, 32 estados)
+- `/portfolio/isn-2026-calculadora` — interactive ISN 2026 calculator (Impuesto Sobre Nómina, 32 estados)
+- `/portfolio/ikigai` — interactive ceremony booking demo with cart, payment method previews, and WhatsApp handoff
+- `/portfolio/calculadora-vintage` — interactive local-only arithmetic calculator widget for accounting-office sites
 - La Bianca Tropical is linked directly from the gallery to its external storefront; it has no local portfolio detail route
 - Padel Outlet is a concept card only; it has no route or interactive demo
 - `/pricing` — pricing page
@@ -201,9 +212,9 @@ The site includes the following implemented pages:
 
 The route model is file-based and follows Astro conventions.
 
-The `/portfolio` page presents 13 config-driven cards grouped into Ark Legal, Ark Commerce, and Ark Lab: ten interactive demos, two external sites, and one concept without an interactive demo. Portfolio metadata, line assignments, tags, and disclaimers live in the typed `config.portfolio` collection in `src/data/config.ts`. Each interactive demo has its own page and mounts its React app with `client:only="react"`. The Acepta Bitcoin case study has a local detail page whose portfolio link opens the external site; La Bianca Tropical links directly to its external storefront. The SBC 2026 calculator is an interactive demo with local-only calculations.
+The `/portfolio` page presents 14 config-driven cards grouped into Ark Legal, Ark Commerce, and Ark Lab: eleven interactive demos, two external sites, and one concept without an interactive demo. Portfolio metadata, line assignments, tags, and disclaimers live in the typed `config.portfolio` collection in `src/data/config.ts`. Interactive demos mount React islands; the calculators and widgets use visibility-based hydration where configured. The homepage `PortfolioGrid.astro` preview shows the featured item for each line plus the Calculadora Vintage as a second Ark Legal card. The Acepta Bitcoin case study has a local detail page whose portfolio link opens the external site; La Bianca Tropical links directly to its external storefront. The SBC and ISN calculators are local-only demos.
 
-The demos are: Temozonia, a sample storefront with catalog, cart, and illustrative checkout; Tomato for Bitcoin, a sample produce storefront with six products, cart, and payment-method selection; Arkangel, a UI simulation with illustrative conduct categories, mock cases, and a non-persistent ledger; Velvet Room, a fictional bar menu and atmosphere gallery; Medical Express, a fictional schedule selector with local-only payment-flow simulations; Talos, simulated mining-data metrics and spread; Mapa Crypto, searchable and filterable topic summaries with unverified references; SBC 2026 Calculadora, a demonstrative calculator for Salario Base de Cotización that updates results in the browser with no backend; and ISN 2026 Calculadora, a demonstrative calculator for Impuesto Sobre Nómina with 32 official state rates, editable perception breakdown (gravadas/exentas), and CSV export. Velvet Room and Medical Express do not accept reservations or payments. Medical Express is not a healthcare provider and offers no medical care or advice; no patient data is collected. Talos does not connect to data sources, mining pools, exchanges, a treasury, payment APIs, or trading services, and makes no financial recommendations. Mapa Crypto reproduces topics and legal references from user-provided material without validating them; the references may be incomplete, outdated, or inaccurate, and the demo provides no legal interpretation or advice. None of Arkangel's indicators represent a live integration, operational legal controls, verified legal citations, or legal advice. Temozonia's data is explicitly demo data; storefront payment and contact values generally must be confirmed before real transactions or production use. Padel Outlet is a concept card only, with no inventory, interactive experience, or checkout. SBC 2026 calculator values are educational references only and do not constitute fiscal or legal advice.
+The demos are: Temozonia, a sample storefront with catalog, cart, and illustrative checkout; Tomato for Bitcoin, a sample produce storefront with six products, cart, and payment-method selection; Arkangel, a UI simulation with illustrative conduct categories, mock cases, and a non-persistent ledger; Velvet Room, a fictional bar menu and atmosphere gallery; Medical Express, a fictional schedule selector with local-only payment-flow simulations; Talos, simulated mining-data metrics and spread; Mapa Crypto, searchable and filterable topic summaries with unverified references; SBC 2026 Calculadora, a browser-based Salario Base de Cotización calculator; ISN 2026 Calculadora, a browser-based Impuesto Sobre Nómina calculator with 32 state reference rates, editable perception breakdown, and CSV export; Ikigai Wellness, a ceremony booking interface with a local cart and illustrative payment details that hands off to WhatsApp; and Calculadora Vintage, a local-only arithmetic widget for accounting-office sites. The vintage calculator performs basic arithmetic and percentages; it does not calculate taxes or replace accounting software or professional advice. Ikigai's pricing, payment identifiers, and contact details are illustrative and must not be used for real transactions. Velvet Room and Medical Express do not accept reservations or payments. Medical Express is not a healthcare provider and offers no medical care or advice; no patient data is collected. Talos does not connect to data sources, mining pools, exchanges, a treasury, payment APIs, or trading services, and makes no financial recommendations. Mapa Crypto reproduces topics and legal references from user-provided material without validating them; the references may be incomplete, outdated, or inaccurate, and the demo provides no legal interpretation or advice. None of Arkangel's indicators represent a live integration, operational legal controls, verified legal citations, or legal advice. Temozonia's data is explicitly demo data; storefront payment and contact values generally must be confirmed before real transactions or production use. Padel Outlet is a concept card only, with no inventory, interactive experience, or checkout. SBC and ISN calculator values are educational references only and do not constitute fiscal or legal advice.
 
 ## 6. Design / Theme Architecture
 
@@ -248,7 +259,7 @@ The `config.ts` has been significantly expanded:
 - **Payment methods**: 4 methods with codes, titles, methods, and details
 - **Final CTA**: primary booking link, secondary leasing contract link
 - **Contact**: email, WhatsApp, Facebook, X, formEndpoint (`/api/contact`), bookingUrl (Cal.com)
-- **Official identity**: favicon and Apple touch icon use the official Ark seal asset at `public/assets/vector/logo-mark.svg`
+- **Official identity**: header and footer use the compact Ark cube mark; browser icons and the structured-data logo are generated from `public/assets/vector/favicon.svg`.
 - **Pricing page**: comparison content, eight FAQs, and final CTA/seals are centralized under `pricingPage`
 - **Demos**: Temozonia configuration with products, payments (CLABE, BTCPay, WhatsApp, Lightning), and stock
 
@@ -261,10 +272,12 @@ The `config.ts` has been significantly expanded:
 - Reusable UI primitives (Button, Card, Badge, Input)
 - Config-driven landing page sections
 - Cloudflare Workers deployment configuration (Astro server output + static asset binding + AI + D1)
-- React integration via `@astrojs/react`, used by the ten portfolio demos
+- React integration via `@astrojs/react`, used by the eleven portfolio demos
 - Temozonia checkout prototype with cart quantity management, WhatsApp order link, CLABE copy action, and Lightning payment details
 - Tomato for Bitcoin marketplace prototype at `/portfolio/tomato`, with six sample products, cart, payment-method selection, WhatsApp order link, and CLABE copy action
 - Arkangel compliance-flow simulation at `/portfolio/arkangel`, with eight illustrative sections, mock cases, and a non-persistent sample ledger
+- Ikigai Wellness at `/portfolio/ikigai`, a ceremony booking interface with a local cart, sample payment details, and WhatsApp handoff; the production page was browser-verified after fixing its React hydration import
+- Calculadora Vintage at `/portfolio/calculadora-vintage`, a local-only arithmetic widget prototype for accounting-office sites; it does not calculate taxes
 - Velvet Room bar concept at `/portfolio/velvet`, with a sample cocktail menu, ambient video, and CSS scroll-snap gallery; reservation and payment actions are disabled
 - Medical Express concept at `/portfolio/medical`, with selectable fictional appointment slots and clearly labeled local-only payment-flow simulations; no real healthcare, appointment, or payment service is provided
 - Talos concept at `/portfolio/talos`, with local-only simulated mining-data metrics and spread values; no connected collector, data sources, treasury, financial products, or active API, and it is not financial or investment advice
@@ -274,13 +287,14 @@ The `config.ts` has been significantly expanded:
 - **Leasing contract page** at `/leasing-contrato`, template for client contracts
 - **Pricing page** with config-driven comparison, FAQs, and final CTA
 - **Contact booking**: header and mobile navigation CTAs lead to the Spanish Cal.com embed at `/contact#booking`
-- **Official Ark seal** integrated in the header/footer and configured as the favicon and Apple touch icon
+- **Ark cube logo refresh**: the header/footer inline mark and matching favicon/raster assets are present locally; full lockup is at `public/assets/vector/ark-systems-lockup.svg`. These uncommitted assets are not part of the current production deployment
+- **Homepage portfolio preview** includes the featured cards plus a second Ark Legal card for Calculadora Vintage; this local change is not deployed
 - **Brand preview page** at `/brand`, internal design system showcase
 - **AI chat endpoint** at `/api/chat`, using Cloudflare Workers AI binding
 - **NoahChatWidget** component for conversational UI, with line-specific contexts and response fingerprints; home page widget now uses `client:load` for immediate hydration
 - CI workflow and Lighthouse budget configuration
 - **Vector asset generation script** (`scripts/generate-assets.py`) supports Legal, Commerce, and Lab themes plus legacy site paths
-- **10 currently available SVG brand assets** (logo, favicon, glows, grids, portfolio placeholders)
+- Generated brand assets include the cube icon, favicon, full lockup, glows, grids, and portfolio placeholders
 - **Hero section** uses vector glow/grid backgrounds
 - **Portfolio grid** uses vector placeholders with hover animations
 - **BaseLayout** uses proper SVG favicon with type attribute
@@ -290,7 +304,9 @@ The `config.ts` has been significantly expanded:
 - Cal.com booking URL is configured but client-specific and should be confirmed before launch; the navigation CTA now routes through `/contact#booking`
 - Form uses `/api/contact` endpoint (needs implementation)
 - Pricing and portfolio details remain sample content and require client approval
-- Portfolio metadata and demo catalogs remain sample content; `/portfolio` contains nine interactive demos, two external sites, and the Padel Outlet concept card
+- Portfolio metadata and demo catalogs remain sample content; `/portfolio` contains eleven interactive demos, two external sites, and the Padel Outlet concept card
+- Calculadora Vintage and its Ark Legal homepage-preview card are implemented locally but not yet deployed; its keyboard controls and arithmetic are illustrative UI, not accounting or tax software
+- Ikigai Wellness is deployed and its live cart interaction was verified; the sample reservation/payment details remain illustrative and are not a real payment service
 - Temozonia's product, payment, and contact values are explicitly configured as demo data; all demo payment identifiers and contact details must be confirmed before real use
 - `public/sitemap.xml` is manually maintained instead of generated by Astro
 - `src/layouts/BaseLayout.astro` still pulls Google Fonts directly and is not fully optimized for performance
@@ -308,7 +324,7 @@ The `config.ts` has been significantly expanded:
 - SBC 2026 calculator at `/portfolio/sbc-2026-calculadora` — values are educational references only and do not constitute fiscal or legal advice
 - ISN 2026 calculator at `/portfolio/isn-2026-calculadora` — values are educational references only and do not constitute fiscal or legal advice
 - Business-specific links, form handling, and demo content still need client-approved production values
-- The official seal is integrated without additional `.ark-seal` CSS: that class already styles informational compliance seals, so logo-specific effects should use a separate class if needed
+- The cube logo refresh is local and not deployed; the existing production site may continue to show the previously deployed mark until a release containing the refresh is made
 - The Cloudflare Worker deployment requires valid account configuration, including the session KV binding, AI binding, and D1 database
 - The theming engine is partially implemented; the client onboarding workflow is documented in `docs/client-onboarding.md`
 - No end-to-end integration or feature tests beyond CI/static checks
@@ -382,13 +398,7 @@ User Message → Clef (Classification) → D1 Lookup → Structured Response
 
 ### Current verification result (2026-10-11)
 
-A local `npm run build` passes after the booking CTA/embed and official seal updates, including the portfolio React islands and the Cloudflare Workers adapter:
-
-- `astro check`: 0 errors, 0 warnings, 0 hints
-- `astro build`: completed the Cloudflare Worker server build and client build; the eight demo client modules were emitted as separate bundles
-- Astro emitted a non-blocking warning that Cloudflare does not support Sharp at runtime
-
-This confirms the source builds locally; it does not verify deployed behavior, third-party form delivery, or remote CI.
+`npm run check` passed after adding the Calculadora Vintage card to the homepage preview (56 Astro files, 0 errors, 0 warnings, 0 hints). A full local production build passed after adding the Vintage demo and before the subsequent homepage preview change. The deployment fix for Ikigai was also built independently from a clean worktree at the committed revision. Re-run `npm run build` to validate the complete current working tree before deploying the uncommitted demo and logo updates. Astro emits a non-blocking warning that Cloudflare does not support Sharp at runtime. These checks do not verify third-party form delivery or remote CI.
 
 ### Existing quality scaffolding
 
@@ -410,7 +420,7 @@ This confirms the source builds locally; it does not verify deployed behavior, t
 
 1. Confirm client-specific booking details and replace any remaining placeholder CTA and form destinations with approved production values.
 2. Replace demo copy, pricing, statistics, and portfolio entries with approved client content.
-3. **COMPLETED: Brand assets generated and integrated (logo, favicon, backgrounds, placeholders)**
+3. **Local, not deployed: Ark cube logo refresh and generated favicon/logo variants**
 4. Implement `/api/contact` endpoint for form handling.
 5. Confirm the Cloudflare Worker project, domain, sitemap, robots, and deployment configuration for the target site.
 6. Review whether to generate the currently hand-maintained sitemap.
@@ -418,9 +428,9 @@ This confirms the source builds locally; it does not verify deployed behavior, t
 
 ## 12. Bottom Line
 
-The repo is a structured, config-driven marketing site with reusable routes, components, documented client-onboarding steps, and a portfolio of ten interactive React demos, two external sites, and one concept card. Its local production build is green. It is not yet production-ready for a particular client: placeholders, demo payment/contact values, external integrations, and deployment details still need to be supplied and verified.
+The repo is a structured, config-driven marketing site with reusable routes, components, documented client-onboarding steps, and a portfolio of eleven interactive React demos, two external sites, and one concept card. Local Astro checking passes. A full production build passed for the newly added demos before the latest homepage preview adjustment; run `npm run build` before releasing the complete current working tree. It is not yet production-ready for a particular client: placeholders, demo payment/contact values, external integrations, and deployment details still need to be supplied and verified.
 
-**Current status (2026-10-12)**: The vector asset pipeline is operational, the official Ark seal is integrated as the site logo and favicon, and the booking CTAs lead to the Cal.com embed on the contact page. Pricing FAQs and comparison content are config-driven. The SBC 2026 calculator interactive demo is now live at `/portfolio/sbc-2026-calculadora` with improved legibility. The ISN 2026 calculator interactive demo is now live at `/portfolio/isn-2026-calculadora` with 32 official state rates and CSV export. TypeScript config fixed (deprecated `baseUrl` removed, all paths now use relative `./` prefixes). ISN calculator overflow conflict resolved (removed conflicting `overflow-hidden` from scrollable area). cSpell configuration added with Spanish legal/fiscal vocabulary. NoahChatWidget on home page now uses `client:load` for immediate hydration. These latest changes pass the local production build but remain uncommitted and undeployed; `main` is otherwise up to date with `origin/main` at `31f936a`. The informational leasing page is not a signed contract or legal advice. Existing demo, pricing, and client-specific content still require confirmation before production use.
+**Current status (2026-10-12)**: `main` and `origin/main` are synchronized at `7983b43`. The Ikigai React hydration fix is committed, deployed, and verified live: the page mounts the app and adding a ceremony updates the cart and total. The current local working tree also contains an uncommitted Ark cube logo refresh, the Calculadora Vintage demo, and its Ark Legal homepage preview card; these changes have not been deployed. Astro checking passed after the homepage preview edit. The informational leasing page is not a signed contract or legal advice. Existing demo, pricing, and client-specific content still require confirmation before production use.
 
 ---
 
@@ -506,12 +516,12 @@ npm run deploy   # runs: wrangler deploy
 ### 13.6 Last Confirmed Live Status
 
 - **URL**: https://ark-system.substrateholdingsai.workers.dev
-- **Version ID**: `06349b85-3fe6-422e-a8da-eec7918862a3`
+- **Version ID**: `8320af54-e312-4e94-a501-dd55c2d53935`
 - **Bindings**: `SESSION` KV namespace (`316c37d5fe864e4bab912a0dbbe6b00a`), `ASSETS`, `AI`, `DB` (D1)
-- **Worker startup time**: 29 ms
-- **Assets uploaded**: 18 files (886.46 KiB)
+- **Worker startup time**: 23 ms
+- **Assets uploaded**: 3 changed assets; 36 were already present (1.07 seconds upload)
 - **Active model**: Cloudflare Workers hybrid deployment using Astro server output and static assets
-- The last recorded deploy predates the current uncommitted booking CTA/embed and official logo changes. The Worker URL was previously verified to return HTTP 200 for `/`, `/pricing`, and `/leasing-contrato`; the latest local changes have not been deployed or live-checked.
+- `https://arksystems.site/portfolio/ikigai` was browser-verified after deployment: the React app mounted, ceremony content appeared, and adding an item updated the cart and total. This version contains the Ikigai hydration fix but does not include the uncommitted Calculadora Vintage or cube logo refresh.
 
 ### 13.7 Deployment Troubleshooting Log
 

@@ -130,7 +130,7 @@ Si usas npm, ejecuta `npm run dev`. Abre la URL local que indique Astro y revisa
 Sustituye los assets genéricos en `public/` por los archivos aprobados y con licencia de uso del cliente. En este repositorio las rutas existentes difieren de algunos nombres convencionales:
 
 - **Favicon:** reemplaza `public/favicon.ico`, que está enlazado desde `src/layouts/BaseLayout.astro`. Si prefieres `public/favicon.svg`, actualiza allí el `href` del elemento `rel="icon"` correspondiente.
-- **Logo:** el asset existente es `public/assets/ark-logo.svg`, que el header carga desde `brand.logoSrc`. Actualiza ese valor si cambias la ruta. Prepara variantes claras u oscuras si el diseño las necesita.
+- **Logo:** el lockup aprobado está en `public/assets/vector/ark-systems-lockup.svg`; el header y footer usan el icono cúbico compacto de `src/components/brand/ArkMark.astro`. El logo cuadrado para datos estructurados y los iconos de navegador se generan desde `public/assets/vector/favicon.svg` con `npm run favicon`.
 - **Imagen Open Graph:** reemplaza `public/assets/og-default.png` y conserva la ruta, o actualiza `brand.ogImageSrc` en `src/data/config.ts`. Usa una imagen de 1200 × 630 px para compartir en redes sociales.
 - **Icono de Apple:** añade `public/apple-touch-icon.png` y enlázalo desde el `<head>` de `src/layouts/BaseLayout.astro` con `<link rel="apple-touch-icon" href="/apple-touch-icon.png" />`; actualmente el layout no declara este icono.
 - **Imágenes de portafolio:** añade capturas optimizadas a `public/assets/portfolio/` y registra cada ruta en `config.portfolio`. Consulta [assets.md](./assets.md) para las dimensiones y el peso recomendado.

@@ -1690,7 +1690,7 @@ export const config = {
     legalName: 'Substrate Holdings LLC',
     tagline: '0 servidores. 0 humo.',
     domain: 'arksystems.dev', // pendiente
-    logoSrc: '/assets/ark-logo.svg',
+    logoSrc: '/assets/vector/logo-512.png',
     faviconSrc: '/favicon.ico',
     ogImageSrc: '/assets/og-default.png',
   },

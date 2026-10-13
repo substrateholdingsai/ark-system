@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 720" fill="none" role="img" aria-label="Ark Systems">
+  <title>Ark Systems</title>
+
+  <g stroke="#1B2A4E" stroke-width="10" stroke-linecap="square" stroke-linejoin="miter" fill="none">
+    <path d="M400 90 L660 240 L660 470 L400 620 L140 470 L140 240 Z" />
+    <path d="M400 90 L400 355" />
+    <path d="M400 620 L400 355" />
+    <path d="M400 355 L660 240" />
+    <path d="M400 355 L140 240" />
+  </g>
+
+  <g stroke="#D4AF37" stroke-width="5" stroke-linecap="square" fill="none">
+    <path d="M255 200 L255 290 L300 320" />
+    <path d="M320 240 L370 210 L430 245" />
+    <path d="M470 210 L470 300" />
+    <path d="M540 260 L540 370" />
+    <path d="M580 300 L580 420" />
+    <path d="M600 340 L600 460" />
+    <path d="M255 470 L255 400 L300 370" />
+    <path d="M330 520 L380 490 L440 525" />
+    <path d="M400 300 L400 420" />
+    <path d="M420 350 L460 380" />
+  </g>
+
+  <g stroke="#1B2A4E" stroke-width="6" stroke-linecap="square" fill="none">
+    <path d="M265 230 L265 250" />
+    <path d="M280 225 L280 260" />
+    <path d="M295 220 L295 270" />
+    <path d="M310 215 L310 280" />
+    <path d="M420 260 L470 285" />
+    <path d="M420 275 L470 300" />
+    <path d="M420 290 L470 315" />
+    <path d="M265 490 L265 510" />
+    <path d="M280 495 L280 530" />
+    <path d="M295 500 L295 545" />
+    <path d="M310 505 L310 560" />
+    <path d="M420 470 L470 445" />
+    <path d="M420 485 L470 460" />
+    <path d="M420 500 L470 475" />
+  </g>
+
+  <g>
+    <circle cx="400" cy="215" r="13" fill="#B8336A" />
+    <circle cx="400" cy="215" r="9" fill="none" stroke="#1B2A4E" stroke-width="4" />
+    <circle cx="400" cy="215" r="3" fill="#1B2A4E" />
+    <circle cx="470" cy="255" r="13" fill="#B8336A" />
+    <circle cx="470" cy="255" r="9" fill="none" stroke="#1B2A4E" stroke-width="4" />
+    <circle cx="470" cy="255" r="3" fill="#1B2A4E" />
+    <circle cx="500" cy="290" r="13" fill="#B8336A" />
+    <circle cx="500" cy="290" r="9" fill="none" stroke="#1B2A4E" stroke-width="4" />
+    <circle cx="500" cy="290" r="3" fill="#1B2A4E" />
+    <circle cx="580" cy="440" r="13" fill="#B8336A" />
+    <circle cx="580" cy="440" r="9" fill="none" stroke="#1B2A4E" stroke-width="4" />
+    <circle cx="580" cy="440" r="3" fill="#1B2A4E" />
+    <circle cx="500" cy="510" r="13" fill="#B8336A" />
+    <circle cx="500" cy="510" r="9" fill="none" stroke="#1B2A4E" stroke-width="4" />
+    <circle cx="500" cy="510" r="3" fill="#1B2A4E" />
+    <circle cx="400" cy="535" r="13" fill="#B8336A" />
+    <circle cx="400" cy="535" r="9" fill="none" stroke="#1B2A4E" stroke-width="4" />
+    <circle cx="400" cy="535" r="3" fill="#1B2A4E" />
+    <circle cx="255" cy="290" r="13" fill="#B8336A" />
+    <circle cx="255" cy="290" r="9" fill="none" stroke="#1B2A4E" stroke-width="4" />
+    <circle cx="255" cy="290" r="3" fill="#1B2A4E" />
+    <circle cx="400" cy="400" r="13" fill="#B8336A" />
+    <circle cx="400" cy="400" r="9" fill="none" stroke="#1B2A4E" stroke-width="4" />
+    <circle cx="400" cy="400" r="3" fill="#1B2A4E" />
+    <circle cx="255" cy="530" r="13" fill="#B8336A" />
+    <circle cx="255" cy="530" r="9" fill="none" stroke="#1B2A4E" stroke-width="4" />
+    <circle cx="255" cy="530" r="3" fill="#1B2A4E" />
+  </g>
+
+  <text
+    x="400"
+    y="690"
+    text-anchor="middle"
+    font-family="Helvetica Neue, Helvetica, Arial, sans-serif"
+    font-weight="300"
+    font-size="66"
+    letter-spacing="14"
+    fill="#D4AF37"
+  >ARK SYSTEMS</text>
+</svg>
