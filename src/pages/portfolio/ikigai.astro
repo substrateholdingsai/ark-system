@@ -1,0 +1,27 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Section from "../../components/layout/Section.astro";
+import IkigaiApp from "../../components/portfolio/IkigaiApp.jsx";
+---
+
+<BaseLayout
+  title="Ikigai Wellness — Demo interactiva | Ark Systems"
+  description="Demo de reservas para spa y ceremonias. Isla React con carrito, métodos de pago fiat y Bitcoin opcional."
+>
+  <Section>
+    <div class="mb-8">
+      <p class="text-xs uppercase tracking-widest text-[var(--ark-accent)]">Demo interactiva</p>
+      <h1 class="text-3xl md:text-4xl font-bold mt-2">Ikigai Wellness</h1>
+      <p class="mt-3 max-w-[60ch] text-[var(--muted)]">
+        Prototipo de reserva para spa y ceremonias en Homún, Yucatán. Isla React autocontenida:
+        carrito, métodos de pago fiat (SPEI, tarjeta, efectivo) y Bitcoin vía Blink como opción discreta.
+      </p>
+      <p class="mt-3 text-xs text-[var(--muted)] max-w-[70ch]">
+        Demo ilustrativa. Datos, precios, CLABE, WhatsApp y Lightning son de ejemplo y deben
+        reemplazarse antes de cualquier uso real. No constituye servicio médico, fiscal ni legal.
+      </p>
+    </div>
+
+    <IkigaiApp client:only="react" />
+  </Section>
+</BaseLayout>

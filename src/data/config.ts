@@ -464,6 +464,16 @@ export const config: SiteConfig = {
     },
     {
       line: 'commerce',
+      name: 'Ikigai Wellness',
+      url: '/portfolio/ikigai',
+      image:
+        'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=1200&q=80',
+      description:
+        'Prototipo de reserva para spa y ceremonias en Homún, Yucatán. Isla React autocontenida: carrito, métodos de pago fiat (SPEI, tarjeta, efectivo) y Bitcoin vía Blink como opción discreta.',
+      tags: ['DEMO INTERACTIVA', 'Reservas', 'Spa', 'Ceremonias', 'Bitcoin opcional'],
+    },
+    {
+      line: 'commerce',
       name: 'Medical Express',
       url: '/portfolio/medical',
       image:
@@ -1083,6 +1093,94 @@ export const demos = {
         stock: 6,
         image:
           'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=800&auto=format&fit=crop',
+      },
+    ],
+  },
+  ikigai: {
+    enabled: true,
+    demoMode: true,
+    brand: {
+      name: 'Ikigai Wellness',
+      colors: { primary: '#0A2E2E', bg: '#F5FDFD', accent: '#00D4AA' },
+    },
+    payments: {
+      clabe: {
+        number: '987654321098765432',
+        bank: 'Banorte',
+        holder: 'Ikigai Wellness Homún',
+      },
+      btcpayUrl: 'https://btcpay.ikigaiwellness.com',
+      whatsapp: '529991234567',
+      whatsappDisplay: '+52 999 123 4567',
+      lightningAddress: 'ikigai@blink.sv',
+      satsRate: 2.5,
+    },
+    services: [
+      {
+        id: 'masaje-relajante',
+        name: 'Masaje Relajante',
+        duration: '60 min',
+        price: 850,
+        desc: 'Masaje sueco con aceites esenciales de lavanda y eucalipto.',
+        badge: 'MÁS SOLICITADO',
+        category: 'Masajes',
+        image:
+          'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=800&q=80',
+      },
+      {
+        id: 'masaje-profundo',
+        name: 'Masaje Profundo',
+        duration: '90 min',
+        price: 1200,
+        desc: 'Técnicas de tejido profundo para liberar tensión crónica.',
+        badge: 'TERAPÉUTICO',
+        category: 'Masajes',
+        image:
+          'https://images.unsplash.com/photo-1519823551278-64ac92b1d2c4?auto=format&fit=crop&w=800&q=80',
+      },
+      {
+        id: 'ceremonia-cacao',
+        name: 'Ceremonia de Cacao',
+        duration: '120 min',
+        price: 650,
+        desc: 'Ceremonia ancestral maya con cacao ceremonial puro.',
+        badge: 'ESPIRITUAL',
+        category: 'Ceremonias',
+        image:
+          'https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=800&q=80',
+      },
+      {
+        id: 'temazcal',
+        name: 'Temazcal Tradicional',
+        duration: '180 min',
+        price: 1500,
+        desc: 'Baño de vapor maya con hierbas medicinales y guía.',
+        badge: 'ANCESTRAL',
+        category: 'Ceremonias',
+        image:
+          'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=800&q=80',
+      },
+      {
+        id: 'limpieza-energetica',
+        name: 'Limpieza Energética',
+        duration: '45 min',
+        price: 500,
+        desc: 'Armonización con copal, sonidos y cristales.',
+        badge: 'SANACIÓN',
+        category: 'Ceremonias',
+        image:
+          'https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=800&q=80',
+      },
+      {
+        id: 'paquete-integral',
+        name: 'Paquete Integral',
+        duration: 'Día completo',
+        price: 3500,
+        desc: 'Masaje + Ceremonia de Cacao + Temazcal + Alimentación consciente.',
+        badge: 'EXPERIENCIA COMPLETA',
+        category: 'Paquetes',
+        image:
+          'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=800&q=80',
       },
     ],
   },
