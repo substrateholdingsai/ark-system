@@ -23,6 +23,20 @@ interface LineConfig {
   role: string;
 }
 
+interface ChatLogMetadata {
+  db: unknown;
+  kv: unknown;
+  sessionId: string;
+  line: ServiceLine;
+  context: string;
+  message: string;
+  model: string;
+  pldAlert: boolean;
+  startTime: number;
+  legal_reference?: string | null;
+  source: string;
+}
+
 const LINE_CONFIGS: Record<ServiceLine, LineConfig> = {
   legal: {
     label: 'ARK LEGAL',
@@ -281,16 +295,23 @@ async function generateAiStream(
  */
 function createSseStream(
   aiStream: ReadableStream,
-  metadata: object,
+  metadata: ChatLogMetadata,
   waitUntil: (promise: Promise<void>) => void
 ): ReadableStream {
   const encoder = new TextEncoder();
-  // Include source in meta event for frontend
-  const metaLine = `data: ${JSON.stringify({ type: 'meta', ...metadata })}\n\n`;
+  // Only the fields the chat UI reads go to the client. `metadata` also carries
+  // the server-side db/KV bindings used for logging — never spread it into the
+  // stream. See ChatLogMetadata / NoahChatWidget SourceBadge.
+  const metaLine = `data: ${JSON.stringify({
+    type: 'meta',
+    source: metadata.source,
+    legal_reference: metadata.legal_reference ?? null,
+    model: metadata.model,
+  })}\n\n`;
 
   let fullResponse = '';
   // Use source from metadata (pre-determined: 'kb' | 'llm')
-  const source = (metadata as any).source || 'llm';
+  const source = metadata.source || 'llm';
 
   return new ReadableStream({
     async start(controller) {

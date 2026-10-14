@@ -514,7 +514,11 @@ export default function NoahChatWidget({
                   const copy = [...m];
                   const last = copy[copy.length - 1];
                   if (last.id === assistantMsgId) {
-                    last.metadata = parsed.metadata;
+                    last.metadata = {
+                      source: parsed.source,
+                      legal_reference: parsed.legal_reference,
+                      model: parsed.model,
+                    };
                   }
                   return copy;
                 });
@@ -534,6 +538,7 @@ export default function NoahChatWidget({
                 });
               }
             } catch {
+              // ignore parse errors
             }
           }
         }

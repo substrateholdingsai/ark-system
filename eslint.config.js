@@ -19,6 +19,7 @@ export default [
     ignores: [
       'dist/**',
       '.astro/**',
+      '.wrangler/**',
       '.lighthouseci/**',
       'node_modules/**',
       'public/**',
