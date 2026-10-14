@@ -44,5 +44,6 @@
     "**/.astro": true,
     "**/node_modules": true,
     "**/package-lock.json": true
-  }
+  },
+  "python-envs.defaultEnvManager": "ms-python.python:system"
 }

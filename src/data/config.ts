@@ -53,72 +53,6 @@ export interface HeroSection {
   microcopy?: string;
 }
 
-export interface ProblemCard {
-  id: string; // key único para React/Astro keys
-  label: string; // Ej: "01 / WORDPRESS MUSEO"
-  title: string;
-  bullets: string[];
-  cost: string; // Texto de costo comparativo
-  badge?: string; // Ej: "RECOMENDADO"
-  highlight?: boolean; // Si debe tener estilo especial
-}
-
-export interface HowStep {
-  n: string; // "01", "02"...
-  title: string;
-  desc: string;
-  meta: string; // Tag pequeña, ej: "single source of truth"
-  badge?: string;
-}
-
-export interface HowSection {
-  label: string;
-  headline: string;
-  subheadline: string;
-  steps: HowStep[];
-  rule: string; // La frase memorable de cierre
-}
-
-export interface StackItem {
-  name: string;
-  desc: string;
-}
-
-export interface StackSectionCopy {
-  label: string;
-  headline: string;
-  subheadline: string;
-}
-
-export interface UseCase {
-  id: string;
-  line?: 'legal' | 'commerce' | 'lab';
-  vertical: string;
-  traditional: string;
-  arkSolution: string;
-  badge: string;
-}
-
-export interface CostRow {
-  concept: string;
-  traditional: string;
-  arkEdge: string;
-  highlight: boolean;
-}
-
-export interface CostsSection {
-  label: string;
-  headline: string;
-  subheadline: string;
-  headers: {
-    concept: string;
-    traditional: string;
-    arkEdge: string;
-  };
-  rows: CostRow[];
-  summaryNote: string;
-}
-
 // --- PRICING TYPES ---
 
 export type PlanKind = 'anti-plan' | 'offer';
@@ -272,25 +206,8 @@ export interface SiteConfig {
   nav: NavLink[];
   hero: HeroSection;
   portfolio: PortfolioItem[];
-  how: HowSection;
-  stackSection: StackSectionCopy;
-  stack: StackItem[];
   pricingPage: PricingPageConfig;
-  useCases: {
-    label: string;
-    headline: string;
-    subheadline: string;
-    items: UseCase[];
-  };
-  costs: CostsSection;
   pricing: PricingSection;
-  finalCta: {
-    headline: string;
-    subheadline: string;
-    primary: CTAButton;
-    secondary?: CTAButton;
-    microcopy?: string;
-  };
   footer: {
     copyright: string;
     tagline: string;
@@ -371,9 +288,6 @@ export const config: SiteConfig = {
 
   nav: [
     { label: 'QUÉ ES', href: '/#que-es' },
-    { label: 'CÓMO', href: '/#como' },
-    { label: 'PARA QUÉ', href: '/#para-que' },
-    { label: 'COSTOS', href: '/#costos' },
     { label: 'PRICING', href: '/#pricing' },
     { label: 'PORTFOLIO', href: '/portfolio' },
   ],
@@ -550,194 +464,6 @@ export const config: SiteConfig = {
         'Calculadora aritmética de muestra; no sustituye herramientas contables ni asesoría profesional.',
     },
   ],
-
-  how: {
-    label: 'CÓMO LO HACEMOS',
-    headline: 'Arquitectura moderna. Sin la complejidad tradicional.',
-    subheadline:
-      'Eliminamos los servidores lentos, el mantenimiento costoso y las dependencias técnicas. Un proceso directo diseñado para que tu negocio opere en el Edge.',
-    steps: [
-      {
-        n: '01',
-        title: 'Centralización total de contenido',
-        meta: 'Single Source of Truth',
-        desc: 'Tu marca, precios y catálogo viven en un solo punto central. Actualizamos o personalizamos tu sitio en minutos sin tocar la infraestructura.',
-        badge: 'Cambios en minutos',
-      },
-      {
-        n: '02',
-        title: 'Rendimiento extremo sin sobreprecio',
-        meta: 'Astro 5 + Zero JS por defecto',
-        desc: 'Páginas ultraligeras que cargan en menos de 400ms. Sin plugins pesados de WordPress ni bases de datos vulnerables que ralenticen tu sitio.',
-        badge: '100/100 Lighthouse',
-      },
-      {
-        n: '03',
-        title: 'Despliegue global en el Edge',
-        meta: 'Cloudflare Edge Network',
-        desc: 'Tu sitio se replica en +300 ciudades simultáneamente. Máxima disponibilidad, protección anti-DDoS e infraestructura de nivel empresarial incluida.',
-        badge: '300+ PoPs globales',
-      },
-    ],
-    rule: 'Cero mantenimiento complejo. Tu sitio corre directamente en la red global de Cloudflare: ultrarrápido, seguro y 100% deducible de impuestos.',
-  },
-
-  stackSection: {
-    label: 'INFRAESTRUCTURA & TECNOLOGÍA',
-    headline: 'Desarrollo Edge-Native con arquitectura moderna',
-    subheadline:
-      'Construimos e-commerces y plataformas digitales sobre el stack técnico más rápido del mundo, bajo un modelo de leasing fiscalmente optimizado para PYMEs y profesionales.',
-  },
-
-  stack: [
-    {
-      name: 'Astro 5 + TypeScript',
-      desc: 'Arquitectura de islas tipo-segura para velocidad extrema y score 100/100 en Lighthouse.',
-    },
-    {
-      name: 'Cloudflare Edge / Workers',
-      desc: 'Ejecución serverless en +300 ciudades con latencia <40ms y cero cold starts.',
-    },
-    {
-      name: 'Python & Engine IA',
-      desc: 'Scripts de automatización, procesamiento de datos y microservicios de IA integrados.',
-    },
-    {
-      name: 'Bases de Datos Edge (D1 & Vector)',
-      desc: 'Almacenamiento SQL y búsqueda vectorial para agentes inteligentes sin servidores tradicionales.',
-    },
-    {
-      name: 'Pasarelas Multi-Moneda',
-      desc: 'Integración nativa de cobros con Tarjeta (Stripe), SPEI o Bitcoin / Lightning Network.',
-    },
-    {
-      name: 'Seguridad WAF & Zero Trust',
-      desc: 'Protección anti-DDoS, certificados SSL automáticos y cifrado de grado empresarial.',
-    },
-  ],
-
-  useCases: {
-    label: 'CASOS DE USO Y VERTICALES',
-    headline: 'Diseñado para negocios que no pueden permitirse una web lenta',
-    subheadline:
-      'Reemplazamos sitios pesados, plataformas con comisiones ocultas y hosting tradicional por infraestructura Edge de alto rendimiento.',
-    items: [
-      {
-        id: 'restaurantes',
-        line: 'commerce',
-        vertical: 'RESTAURANTES Y GASTRONOMÍA',
-        traditional: 'Sitios lentos que obligan a descargar un PDF pesado para ver el menú.',
-        arkSolution:
-          'Menú interactivo instantáneo (<0.4s), pedidos a WhatsApp y reservas sin comisiones.',
-        badge: 'Carga en < 0.4s',
-      },
-      {
-        id: 'despachos',
-        line: 'legal',
-        vertical: 'DESPACHOS Y CONSULTORES',
-        traditional:
-          'Plantillas genéricas con plugins pesados que transmiten una imagen desactualizada.',
-        arkSolution:
-          'Presencia sobria, rápida y profesional con estrategia SEO limpia para captar clientes B2B.',
-        badge: 'Imagen B2B Premium',
-      },
-      {
-        id: 'clinicas',
-        line: 'commerce',
-        vertical: 'CLÍNICAS Y SALUD',
-        traditional:
-          'Sistemas de citas de terceros que cobran comisiones por paciente o rentas altas.',
-        arkSolution:
-          'Agendamiento en vivo integrado directamente en tu sitio web sin comisiones por cita.',
-        badge: 'Cero comisiones por cita',
-      },
-      {
-        id: 'realestate',
-        line: 'commerce',
-        vertical: 'REAL ESTATE Y PROPIEDADES',
-        traditional: 'Galerías con renders de alta resolución que tardan segundos en cargar.',
-        arkSolution:
-          'Catálogo de propiedades con imágenes optimizadas al instante en cualquier celular.',
-        badge: 'Imágenes de carga rápida',
-      },
-      {
-        id: 'saas',
-        line: 'commerce',
-        vertical: 'STARTUPS Y SAAS',
-        traditional:
-          'Costos de hosting inflados en servidores en la nube solo para la landing comercial.',
-        arkSolution:
-          'Infraestructura Edge con $0 costo de hosting para la web comercial y capacidad ilimitada.',
-        badge: 'Infraestructura $0 MXN',
-      },
-      {
-        id: 'ecommerce',
-        line: 'commerce',
-        vertical: 'E-COMMERCE Y CATÁLOGOS',
-        traditional: 'Plataformas lentas que pierden el 40% de las ventas en el carrito de compra.',
-        arkSolution: 'Experiencia de compra fluida con cobro por Stripe, SPEI o activos digitales.',
-        badge: 'Alta conversión de checkout',
-      },
-    ],
-  },
-
-  costs: {
-    label: 'COMPARATIVA FINANCIERA Y OPERATIVA',
-    headline: 'Modelo Tradicional vs. Infraestructura Ark Systems',
-    subheadline:
-      'Descubre cómo el arrendamiento tecnológico elimina el gasto inicial, evita cobros ocultos de hosting y optimiza la estrategia fiscal de tu empresa.',
-    headers: {
-      concept: 'Concepto / Renglón',
-      traditional: 'Desarrollo Tradicional (WordPress/Wix)',
-      arkEdge: 'Ark Systems (Leasing Edge)',
-    },
-    rows: [
-      {
-        concept: 'Inversión Inicial (CAPEX)',
-        traditional: '$40,000 - $100,000 MXN (Pago único elevado)',
-        arkEdge: '$0 MXN (Sin desembolso inicial)',
-        highlight: true,
-      },
-      {
-        concept: 'Modelo Fiscal',
-        traditional: 'Activo Intangible (Depreciación lenta)',
-        arkEdge: 'Gasto Operativo (100% Deducible ISR + IVA)',
-        highlight: true,
-      },
-      {
-        concept: 'Hosting y Servidores',
-        traditional: '$1,500 - $5,000 MXN/año + aumentos en renovación',
-        arkEdge: 'Incluido en tu renta (Cloudflare Edge Network)',
-        highlight: false,
-      },
-      {
-        concept: 'Mantenimiento y Parches',
-        traditional: 'A cargo del cliente (o cobro por hora de dev)',
-        arkEdge: 'Monitoreo 24/7 y parches continuos incluidos',
-        highlight: false,
-      },
-      {
-        concept: 'Certificados SSL y Ciberseguridad',
-        traditional: 'Costo extra anual o plugins frágiles',
-        arkEdge: 'Protección WAF y SSL Enterprise automático',
-        highlight: false,
-      },
-      {
-        concept: 'Rendimiento (Velocidad de Carga)',
-        traditional: '3.5s - 6.0s (Pierde el 40% de visitas)',
-        arkEdge: '< 0.4s en la red Edge de Cloudflare',
-        highlight: true,
-      },
-      {
-        concept: 'Riesgo de Obsolescencia',
-        traditional: 'Alto (El sitio queda obsoleto en 2 años)',
-        arkEdge: 'Cero (Arquitectura siempre actualizada)',
-        highlight: false,
-      },
-    ],
-    summaryNote:
-      'Resultado: En lugar de congelar $60k+ en un sitio que se devalúa, pagas una cuota mensual accesible y totalmente deducible que mantiene tu web operando como el primer día.',
-  },
 
   pricing: {
     label: 'MODELO DE INFRAESTRUCTURA',
@@ -988,25 +714,6 @@ cta: {
       },
       microcopy: 'Alcance claro · Condiciones por escrito · Sin compromisos antes de revisar',
     },
-  },
-
-  finalCta: {
-    headline: '¿Tu web sigue igual desde 2012?',
-    subheadline:
-      'Es hora de rentar futuro, no comprar obsolescencia. Deja de pagar por un museo digital. Renta una web que trabaja, deduce, y nunca da vergüenza presentar.',
-    primary: {
-      label: 'Agendar demo 15 min ↗',
-      href: 'https://cal.com/pablo-cortes-wuzivu/15min',
-      external: true,
-      variant: 'primary',
-    },
-    secondary: {
-      label: 'Ver contrato tipo leasing',
-      href: '/leasing-contrato', // PENDIENTE: Página real o PDF
-      external: false,
-      variant: 'ghost',
-    },
-    microcopy: 'Respuesta < 2h • Contrato en 1 página • Sin letra chica',
   },
 
   footer: {

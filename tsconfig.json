@@ -1,6 +1,16 @@
 {
-  "extends": "astro/tsconfigs/strict",
   "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "strict": true,
+    "jsx": "preserve",
+    "strictNullChecks": true,
+    "allowJs": true,
+    "declaration": false,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
     "paths": {
       "*": ["./*"],
       "@/*": ["./src/*"],
@@ -9,12 +19,7 @@
       "@data/*": ["./src/data/*"],
       "@utils/*": ["./src/utils/*"]
     },
-    "jsx": "preserve",
-    "strictNullChecks": true,
-    "allowJs": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "types": ["astro/client"]
   },
   "include": [".astro/types.d.ts", "src/**/*", "src/global.d.ts", "astro.config.mjs"],
   "exclude": ["node_modules", "dist"]

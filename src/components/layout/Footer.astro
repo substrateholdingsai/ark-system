@@ -57,7 +57,7 @@ const businessLines = config.lines.map((line) => ({
         <p class="text-xs font-bold uppercase tracking-widest text-white">Navegación</p>
         <ul class="space-y-2 text-xs">
           {config.nav
-            .filter((link) => ['/#que-es', '/#como', '/#pricing', '/portfolio'].includes(link.href))
+            .filter((link) => ['/#que-es', '/#pricing', '/portfolio'].includes(link.href))
             .map((link) => (
               <li>
                 <a href={link.href} class="transition-colors hover:text-white">
@@ -65,9 +65,7 @@ const businessLines = config.lines.map((line) => ({
                     ? 'Modelos de arrendamiento'
                     : link.href === '/portfolio'
                       ? 'Portafolio'
-                      : link.href === '/#como'
-                        ? 'Cómo funciona'
-                        : 'Qué es'}
+                      : 'Qué es'}
                 </a>
               </li>
             ))}
