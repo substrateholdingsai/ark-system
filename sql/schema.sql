@@ -20,6 +20,27 @@ CREATE TABLE IF NOT EXISTS knowledge_base (
 CREATE INDEX IF NOT EXISTS idx_knowledge_base_line_context ON knowledge_base(line, context);
 
 -- ============================================================================
+-- CHAT LOGS - Telemetría de conversaciones para auditoría y mejora
+-- ============================================================================
+
+CREATE TABLE IF NOT EXISTS chat_logs (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    session_id TEXT NOT NULL,
+    line TEXT NOT NULL,              -- 'legal' | 'commerce' | 'lab'
+    context TEXT NOT NULL,           -- 'fiscal' | 'pld' | etc.
+    message TEXT NOT NULL,
+    response TEXT NOT NULL,
+    model TEXT NOT NULL,
+    source TEXT NOT NULL,            -- 'kb' | 'llm' | 'fallback'
+    pld_alert INTEGER DEFAULT 0,
+    latency_ms INTEGER,
+    created_at TEXT DEFAULT (datetime('now'))
+);
+
+CREATE INDEX IF NOT EXISTS idx_chat_logs_session ON chat_logs(session_id);
+CREATE INDEX IF NOT EXISTS idx_chat_logs_created ON chat_logs(created_at DESC);
+
+-- ============================================================================
 -- SEED DATA: LINEA LEGAL
 -- Contextos: cumplimiento, fiscal, pld, cripto, expediente, soporte
 -- ============================================================================

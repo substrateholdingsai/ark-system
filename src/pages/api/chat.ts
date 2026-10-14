@@ -41,10 +41,40 @@ const LINE_CONFIGS: Record<ServiceLine, LineConfig> = {
 const PRIMARY_MODEL = '@cf/meta/llama-3.3-70b-instruct-fp8-fast';
 const FALLBACK_MODEL = '@cf/meta/llama-3.1-8b-instruct-fast';
 
-/**
- * Extracts client IP from request headers for rate limiting.
- */
-function getClientIp(request: Request): string {
+function getSessionId(request: Request): string {
+  const cookieHeader = request.headers.get('cookie') || '';
+  const match = cookieHeader.match(/noah_session=([^;]+)/);
+  if (match) return match[1];
+  return crypto.randomUUID();
+}
+
+function setSessionIdCookie(response: Response, sessionId: string): void {
+  response.headers.append('Set-Cookie', `noah_session=${sessionId}; Path=/; HttpOnly; SameSite=Lax; Max-Age=31536000`);
+}
+
+async function logChat(
+  db: any,
+  sessionId: string,
+  line: string,
+  context: string,
+  message: string,
+  response: string,
+  model: string,
+  source: string,
+  pldAlert: boolean,
+  latencyMs: number
+): Promise<void> {
+  if (!db || typeof db.prepare !== 'function') return;
+  try {
+    const stmt = db.prepare(
+      'INSERT INTO chat_logs (session_id, line, context, message, response, model, source, pld_alert, latency_ms) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
+    );
+    await stmt.bind(sessionId, line, context, message, response, model, source, pldAlert ? 1 : 0, latencyMs).run();
+  } catch (error) {
+    console.warn('[api/chat] Error al registrar chat log:', error);
+  }
+}
+  function getClientIp(request: Request): string {
   const cfIp = request.headers.get('cf-connecting-ip');
   if (cfIp) return cfIp.trim();
 
@@ -201,15 +231,17 @@ ${kbContext}`;
 }
 
 /**
- * Calls Cloudflare Workers AI with primary model and automatic fallback.
+ * Calls Cloudflare Workers AI with primary model and automatic fallback (streaming).
  */
-async function generateAiResponse(
+async function generateAiStream(
   ai: any,
   systemPrompt: string,
-  userMessage: string
-): Promise<{ responseText: string; modelName: string }> {
+  userMessage: string,
+  history: Array<{ role: string; content: string }> = []
+): Promise<{ stream: ReadableStream; modelName: string }> {
   const messages = [
     { role: 'system', content: systemPrompt },
+    ...history.slice(-5),                       // últimos 5 turnos
     { role: 'user', content: userMessage },
   ];
 
@@ -217,14 +249,14 @@ async function generateAiResponse(
     messages,
     max_tokens: 800,
     temperature: 0.3,
+    stream: true,
   };
 
   // Attempt Primary Model
   try {
-    const aiResult = await ai.run(PRIMARY_MODEL, payload);
-    const text = typeof aiResult?.response === 'string' ? aiResult.response : String(aiResult?.response || '');
-    if (text) {
-      return { responseText: text, modelName: 'llama-3.3-70b' };
+    const aiStream = await ai.run(PRIMARY_MODEL, payload);
+    if (aiStream instanceof ReadableStream) {
+      return { stream: aiStream, modelName: 'llama-3.3-70b' };
     }
   } catch (primaryError) {
     console.warn('[api/chat] Falló modelo primario (@cf/meta/llama-3.3-70b-instruct-fp8-fast). Intentando fallback...', primaryError);
@@ -232,10 +264,9 @@ async function generateAiResponse(
 
   // Attempt Fallback Model
   try {
-    const fallbackResult = await ai.run(FALLBACK_MODEL, payload);
-    const text = typeof fallbackResult?.response === 'string' ? fallbackResult.response : String(fallbackResult?.response || '');
-    if (text) {
-      return { responseText: text, modelName: 'llama-3.1-8b' };
+    const fallbackStream = await ai.run(FALLBACK_MODEL, payload);
+    if (fallbackStream instanceof ReadableStream) {
+      return { stream: fallbackStream, modelName: 'llama-3.1-8b' };
     }
   } catch (fallbackError) {
     console.error('[api/chat] Falló modelo de fallback (@cf/meta/llama-3.1-8b-instruct-fast):', fallbackError);
@@ -245,10 +276,105 @@ async function generateAiResponse(
 }
 
 /**
+ * Creates an SSE stream from Workers AI stream with metadata prepended.
+ * Also captures full response for logging + persists history to KV via waitUntil.
+ */
+function createSseStream(
+  aiStream: ReadableStream,
+  metadata: object,
+  waitUntil: (promise: Promise<void>) => void
+): ReadableStream {
+  const encoder = new TextEncoder();
+  // Include source in meta event for frontend
+  const metaLine = `data: ${JSON.stringify({ type: 'meta', ...metadata })}\n\n`;
+
+  let fullResponse = '';
+  // Use source from metadata (pre-determined: 'kb' | 'llm')
+  const source = (metadata as any).source || 'llm';
+
+  return new ReadableStream({
+    async start(controller) {
+      controller.enqueue(encoder.encode(metaLine));
+      const reader = aiStream.getReader();
+      try {
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          const text = new TextDecoder().decode(value);
+          // Extract response content for logging
+          const lines = text.split('\n');
+          for (const line of lines) {
+            if (line.startsWith('data: ')) {
+              const data = line.slice(6).trim();
+              if (data === '[DONE]') continue;
+              try {
+                const parsed = JSON.parse(data);
+                if (parsed.response) {
+                  fullResponse += parsed.response;
+                }
+              } catch {
+                // ignore parse errors
+              }
+            }
+          }
+          controller.enqueue(encoder.encode(text));
+        }
+      } finally {
+        controller.enqueue(encoder.encode('data: [DONE]\n\n'));
+        controller.close();
+        // Log chat + persist history via waitUntil (non-blocking)
+        if (fullResponse) {
+          // 1. Log to D1
+          waitUntil(logChat(
+            metadata.db,
+            metadata.sessionId,
+            metadata.line,
+            metadata.context,
+            metadata.message,
+            fullResponse,
+            metadata.model,
+            source,
+            metadata.pldAlert,
+            Date.now() - metadata.startTime
+          ));
+
+          // 2. Persist history to KV (sliding window of 5 messages)
+          waitUntil((async () => {
+            const kv = metadata.kv as any;
+            if (!kv || typeof kv.put !== 'function') return;
+            const historyKey = `chat:${metadata.sessionId}`;
+            let history: Array<{ role: string; content: string }> = [];
+            try {
+              const cached = await kv.get(historyKey, 'json');
+              if (Array.isArray(cached)) history = cached;
+            } catch {
+              // ignore
+            }
+            const newHistory = [
+              ...history,
+              { role: 'user', content: metadata.message },
+              { role: 'assistant', content: fullResponse },
+            ].slice(-5); // ventana deslizante de 5 mensajes
+            try {
+              await kv.put(historyKey, JSON.stringify(newHistory), { expirationTtl: 3600 });
+            } catch (e) {
+              console.warn('[api/chat] KV history persist failed:', e);
+            }
+          })());
+        }
+      }
+    },
+  });
+}
+
+/**
  * Endpoint POST /api/chat
  * Noah AI Assistant - Cloudflare Workers AI + D1 + KV powered chat endpoint.
  */
 export const POST: APIRoute = async ({ request, locals }) => {
+  const startTime = Date.now();
+  const sessionId = getSessionId(request);
+
   try {
     // 1. Verify Workers AI availability early
     if (!locals?.ai) {
@@ -326,10 +452,20 @@ export const POST: APIRoute = async ({ request, locals }) => {
     // 6. Build System Prompt
     const systemPrompt = buildSystemPrompt(line, context, lang, kbText);
 
-    // 7. Workers AI Execution
-    let aiOutput: { responseText: string; modelName: string };
+    // 7. Load conversation history from KV (last 5 turns)
+    const historyKey = `chat:${sessionId}`;
+    let history: Array<{ role: string; content: string }> = [];
     try {
-      aiOutput = await generateAiResponse(locals.ai, systemPrompt, rawMessage);
+      const cached = await locals.session.get(historyKey, 'json');
+      if (Array.isArray(cached)) history = cached;
+    } catch {
+      // ignore KV errors
+    }
+
+    // 8. Workers AI Execution (Streaming) with history
+    let aiStreamResult: { stream: ReadableStream; modelName: string };
+    try {
+      aiStreamResult = await generateAiStream(locals.ai, systemPrompt, rawMessage, history);
     } catch (aiError) {
       console.error('[api/chat] Error al invocar Workers AI:', aiError);
       return new Response(
@@ -338,22 +474,40 @@ export const POST: APIRoute = async ({ request, locals }) => {
       );
     }
 
-    // 8. Build and Return Response
-    const responsePayload = {
-      response: aiOutput.responseText,
-      legal_reference: primaryLegalReference,
-      metadata: {
-        model: aiOutput.modelName,
-        context,
-        line,
-        pld_alert: isPldAlert,
-      },
+    // 9. Build metadata for logging + client meta event
+    const hasKbContext = primaryLegalReference && primaryLegalReference.length > 0;
+    const logMetadata = {
+      db: locals.db,
+      kv: locals.session,
+      sessionId,
+      line,
+      context,
+      message: rawMessage,
+      model: aiStreamResult.modelName,
+      pldAlert: isPldAlert,
+      startTime,
+      legal_reference: primaryLegalReference, // for client meta event + source detection
+      source: hasKbContext ? 'kb' : 'llm',   // initial source for meta event
     };
 
-    return new Response(JSON.stringify(responsePayload), {
+    // Use waitUntil from Astro's locals.runtime (Cloudflare Workers context)
+    const waitUntil = (locals as any).runtime?.ctx?.waitUntil
+      ? (locals as any).runtime.ctx.waitUntil.bind((locals as any).runtime.ctx)
+      : (promise: Promise<void>) => { promise.catch(console.error); };
+
+    const sseStream = createSseStream(aiStreamResult.stream, logMetadata, waitUntil);
+
+    const response = new Response(sseStream, {
       status: 200,
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'text/event-stream',
+        'Cache-Control': 'no-cache',
+        'Connection': 'keep-alive',
+      },
     });
+
+    setSessionIdCookie(response, sessionId);
+    return response;
   } catch (error) {
     console.error('[api/chat] Error interno no controlado:', error);
     return new Response(

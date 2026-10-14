@@ -38,56 +38,56 @@ Ark Systems construye y opera sitios web de alto rendimiento sobre Cloudflare Ed
 
 ## 🏛 Las tres líneas
 
-### ⚖️ Ark Legal — *Nuestra bandera*
+### ⚖️ Ark Legal — _Nuestra bandera_
 
 Cumplimiento documental y análisis jurídico para despachos contables y legales.
 
-| Producto | Qué hace | Estado |
-|:---|:---|:---|
-| **Arkangel** | Simulación de compliance como código para cobranza | Demo interactiva |
-| **Mapa Crypto** | Explorador de activos virtuales, 12 temas con búsqueda y filtros | Demo interactiva |
-| **SBC 2026** | Calculadora de Salario Base de Cotización (LFT 2023 + LSS Art. 27) | Demo interactiva |
-| **ISN 2026** | Calculadora de Impuesto Sobre Nómina por entidad federativa | Demo interactiva |
+| Producto        | Qué hace                                                           | Estado           |
+| :-------------- | :----------------------------------------------------------------- | :--------------- |
+| **Arkangel**    | Simulación de compliance como código para cobranza                 | Demo interactiva |
+| **Mapa Crypto** | Explorador de activos virtuales, 12 temas con búsqueda y filtros   | Demo interactiva |
+| **SBC 2026**    | Calculadora de Salario Base de Cotización (LFT 2023 + LSS Art. 27) | Demo interactiva |
+| **ISN 2026**    | Calculadora de Impuesto Sobre Nómina por entidad federativa        | Demo interactiva |
 
 **Modelo:** arrendamiento desde $3,890/mes · 100% deducible ISR + IVA.
 
 ---
 
-### 🛒 Ark Commerce — *Nuestro flujo*
+### 🛒 Ark Commerce — _Nuestro flujo_
 
 Sitios de alto rendimiento para negocios, en distintas verticales.
 
-| Producto | Vertical | Estado |
-|:---|:---|:---|
+| Producto                      | Vertical          | Estado           |
+| :---------------------------- | :---------------- | :--------------- |
 | **Temozonia Carnes Ahumadas** | E-commerce carnes | Demo interactiva |
-| **Tomato for Bitcoin** | Campo a mesa ₿ | Demo interactiva |
-| **La Bianca Tropical** | Hotel boutique | Sitio externo |
-| **Padel Outlet** | Outlet deportivo | Plantilla |
-| **Velvet Room** | Cocktail bar | Demo interactiva |
-| **Medical Express** | Agenda médica | Demo interactiva |
+| **Tomato for Bitcoin**        | Campo a mesa ₿    | Demo interactiva |
+| **La Bianca Tropical**        | Hotel boutique    | Sitio externo    |
+| **Padel Outlet**              | Outlet deportivo  | Plantilla        |
+| **Velvet Room**               | Cocktail bar      | Demo interactiva |
+| **Medical Express**           | Agenda médica     | Demo interactiva |
 
 **Modelo:** arrendamiento desde $3,890/mes. Mismo motor, distinta vertical.
 
 ---
 
-### 🔬 Ark Lab — *Nuestro I+D*
+### 🔬 Ark Lab — _Nuestro I+D_
 
 Datos, Bitcoin y agentes inteligentes. Open source / experimental.
 
-| Producto | Qué explora | Estado |
-|:---|:---|:---|
-| **Acepta Bitcoin** | Directorio de comercios que aceptan Bitcoin | Caso de estudio |
-| **Talos** | Colector de datos para minería Bitcoin | Demo interactiva |
+| Producto           | Qué explora                                 | Estado           |
+| :----------------- | :------------------------------------------ | :--------------- |
+| **Acepta Bitcoin** | Directorio de comercios que aceptan Bitcoin | Caso de estudio  |
+| **Talos**          | Colector de datos para minería Bitcoin      | Demo interactiva |
 
 ---
 
 ## 💰 Modelo comercial
 
-| Plan | Precio | Setup | Fiscal |
-|:---|:---|:---|:---|
-| **Arrendamiento Core** | $3,890/mes | $0 | 100% deducible ISR + IVA |
-| **Arrendamiento Pro + IA** | $6,890/mes | $0 | 100% deducible ISR + IVA |
-| **Licencia / Compra única** | $55,000 | — | Activo intangible amortizable |
+| Plan                        | Precio     | Setup | Fiscal                        |
+| :-------------------------- | :--------- | :---- | :---------------------------- |
+| **Arrendamiento Core**      | $3,890/mes | $0    | 100% deducible ISR + IVA      |
+| **Arrendamiento Pro + IA**  | $6,890/mes | $0    | 100% deducible ISR + IVA      |
+| **Licencia / Compra única** | $55,000    | —     | Activo intangible amortizable |
 
 **Métodos de pago:** SPEI (CFDI 4.0) · Stripe (tarjetas) · BTC/Lightning (BTCPay/Blink) · USDT/USDC.
 
@@ -97,32 +97,32 @@ Datos, Bitcoin y agentes inteligentes. Open source / experimental.
 
 ### Cimiento: Cloudflare Edge
 
-| Tecnología | Propósito |
-|:---|:---|
+| Tecnología             | Propósito                             |
+| :--------------------- | :------------------------------------ |
 | **Cloudflare Workers** | Ejecución serverless en 300+ ciudades |
-| **Cloudflare Pages** | Hosting estático, $0/mes |
-| **Cloudflare D1** | Base de datos SQL en el edge |
-| **Cloudflare Vector** | Búsqueda vectorial para IA |
-| **Cloudflare WAF** | Seguridad, anti-DDoS, SSL enterprise |
+| **Cloudflare Pages**   | Hosting estático, $0/mes              |
+| **Cloudflare D1**      | Base de datos SQL en el edge          |
+| **Cloudflare Vector**  | Búsqueda vectorial para IA            |
+| **Cloudflare WAF**     | Seguridad, anti-DDoS, SSL enterprise  |
 
 ### Core
 
-| Tecnología | Propósito |
-|:---|:---|
-| **Astro 5** | Static-first, zero-JS por defecto |
-| **TypeScript 5.6** | Type safety |
-| **Tailwind CSS 3.4** | Design system |
-| **Python** | Automatización, procesamiento de datos, microservicios IA |
+| Tecnología           | Propósito                                                 |
+| :------------------- | :-------------------------------------------------------- |
+| **Astro 5**          | Static-first, zero-JS por defecto                         |
+| **TypeScript 5.6**   | Type safety                                               |
+| **Tailwind CSS 3.4** | Design system                                             |
+| **Python**           | Automatización, procesamiento de datos, microservicios IA |
 
 ### Integraciones
 
-| Servicio | Uso |
-|:---|:---|
-| **Stripe** | Pagos con tarjeta |
-| **Mercado Pago** | SPEI, OXXO, MSI |
-| **BTCPay / Blink** | Bitcoin Lightning |
-| **Cal.com** | Agendamiento sin backend |
-| **Formspree** | Formularios sin backend |
+| Servicio           | Uso                      |
+| :----------------- | :----------------------- |
+| **Stripe**         | Pagos con tarjeta        |
+| **Mercado Pago**   | SPEI, OXXO, MSI          |
+| **BTCPay / Blink** | Bitcoin Lightning        |
+| **Cal.com**        | Agendamiento sin backend |
+| **Formspree**      | Formularios sin backend  |
 
 ---
 

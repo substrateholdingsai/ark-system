@@ -16,6 +16,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": [".astro/types.d.ts", "src/**/*", "astro.config.mjs"],
+  "include": [".astro/types.d.ts", "src/**/*", "src/global.d.ts", "astro.config.mjs"],
   "exclude": ["node_modules", "dist"]
 }

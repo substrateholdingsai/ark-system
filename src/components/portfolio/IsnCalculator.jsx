@@ -109,9 +109,9 @@ export default function IsnCalculator() {
 
       <div className="w-full" style={{ paddingTop: 'var(--safe-area-inset-top)' }} />
 
-      <header className="sticky top-0 z-40 backdrop-blur-xl bg-white/80 border-b border-[#0A2540]/[0.06]">
-        <div className="mx-auto max-w-[1240px] px-4 sm:px-6 lg:px-8 h-[68px] flex items-center justify-between">
-          <div className="flex items-center gap-3">
+      <header className="sticky top-0 z-40 border-b border-[#0A2540]/[0.06] bg-white/80 backdrop-blur-xl">
+        <div className="mx-auto flex h-16 max-w-[1240px] items-center justify-between gap-2 px-3 sm:h-[68px] sm:gap-3 sm:px-6 lg:px-8">
+          <div className="flex min-w-0 items-center gap-2 sm:gap-3">
             <div className="relative w-9 h-9 rounded-[10px] bg-[#0A2540] flex items-center justify-center shadow-[0_4px_12px_rgba(10,37,64,0.2)]">
               <div className="w-[18px] h-[18px] relative [transform:rotateX(12deg)_rotateY(-18deg)] [transform-style:preserve-3d]">
                 <div className="absolute inset-0 bg-[#C9A86A] border border-white/20" style={{ transform: 'translateZ(9px)' }} />
@@ -121,7 +121,7 @@ export default function IsnCalculator() {
             </div>
             <div className="leading-[0.95]">
               <div className="font-bold tracking-[0.14em] text-[12px] text-[#0A2540]">ARK SYSTEMS</div>
-              <div className="text-[10px] tracking-[0.18em] text-[#6B7A90] font-medium -mt-[1px]">HERRAMIENTAS MODERNAS</div>
+              <div className="-mt-[1px] hidden text-[10px] font-medium tracking-[0.18em] text-[#6B7A90] sm:block">HERRAMIENTAS MODERNAS</div>
             </div>
             <div className="hidden md:flex ml-6 h-7 w-px bg-[#0A2540]/10" />
             <div className="hidden md:flex items-center gap-2">
@@ -129,20 +129,20 @@ export default function IsnCalculator() {
               <span className="text-[11px] font-semibold tracking-widest text-[#0A2540]">ISN 2026</span>
             </div>
           </div>
-          <div className="flex items-center gap-2 sm:gap-3">
-            <div className="inline-flex items-center gap-2 rounded-full bg-[#E8F5E9] border border-[#2E7D32]/15 px-3 py-1.5">
+          <div className="flex shrink-0 items-center gap-2 sm:gap-3">
+            <div className="inline-flex items-center gap-2 rounded-full border border-[#2E7D32]/15 bg-[#E8F5E9] px-2 py-1.5 sm:px-3">
               <span className="w-2 h-2 rounded-full bg-[#2E7D32] animate-pulse" />
-              <span className="text-[11px] font-bold tracking-widest text-[#1B5E20]">ACTUALIZADO 2026</span>
+              <span className="hidden text-[11px] font-bold tracking-widest text-[#1B5E20] sm:inline">ACTUALIZADO 2026</span>
             </div>
             <button onClick={() => setShowRef(!showRef)} className="hidden sm:inline-flex text-[11px] font-medium tracking-wide text-[#6B7A90] hover:text-[#0A2540] underline underline-offset-4 decoration-[#C9A86A]">Ver referencia</button>
           </div>
         </div>
       </header>
 
-      <div className="mx-auto max-w-[1240px] px-4 sm:px-6 lg:px-8 pt-8 pb-4">
+      <div className="mx-auto max-w-[1240px] px-4 pb-4 pt-6 sm:px-6 sm:pt-8 lg:px-8">
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4">
           <div>
-            <h1 className="serif text-[32px] sm:text-[44px] leading-[0.95] tracking-[-0.02em] text-[#0A2540]">
+            <h1 className="serif break-words text-[30px] leading-[0.98] tracking-[-0.03em] text-[#0A2540] sm:text-[44px] sm:leading-[0.95] sm:tracking-[-0.02em]">
               Calculadora ISN 2026
               <br />
               <span className="italic font-light text-[#0A2540]/70">— 32 estados</span>
@@ -151,7 +151,7 @@ export default function IsnCalculator() {
               Tasas oficiales por entidad, cálculo inmediato y desglose de percepciones gravadas / exentas. Lista para contadores, nómina y RH. Exporta a Excel en un clic.
             </p>
           </div>
-          <div className="flex items-center gap-2 text-[12px]">
+          <div className="flex flex-wrap items-center gap-2 text-[12px]">
             <span className="inline-flex items-center gap-1.5 rounded-full bg-white border border-[#0A2540]/10 px-3 py-1.5 shadow-sm">
               <span className="w-1.5 h-1.5 rounded-full bg-[#C9A86A]" />
               Fuente: Códigos Fiscales Estatales 2026
@@ -162,7 +162,7 @@ export default function IsnCalculator() {
       </div>
 
       <main className="mx-auto max-w-[1240px] px-4 sm:px-6 lg:px-8 pb-16 grid grid-cols-1 lg:grid-cols-[400px_minmax(0,1fr)] gap-6 lg:gap-8 items-start">
-        <div className="space-y-5 lg:sticky lg:top-[88px] min-w-0">
+        <div className="min-w-0 space-y-5 lg:sticky lg:top-[88px]">
           <div className="rounded-[20px] bg-white border border-[#C9A86A]/30 shadow-[0_8px_32px_rgba(10,37,64,0.06)] overflow-hidden">
             <div className="h-1 w-full bg-gradient-to-r from-[#0A2540] via-[#0A2540] to-[#C9A86A]" />
             <div className="p-5 sm:p-6">
@@ -210,26 +210,26 @@ export default function IsnCalculator() {
                   <span className="text-[10px] font-bold tracking-widest bg-[#0A2540] text-white rounded-full px-2.5 py-1">MXN</span>
                 </div>
               </div>
-              <div className="mt-2 flex items-center justify-between">
+              <div className="mt-2 flex flex-wrap items-center justify-between gap-x-2 gap-y-1">
                 <span className="text-[11px] text-[#6B7A90]">Suma de percepciones gravadas</span>
                 <span className={`text-[11px] font-semibold ${Math.abs(totalGravado - base) > 0.01 ? 'text-amber-600' : 'text-[#6B7A90]'}`}>
                   Tabla: {fmt(totalGravado)} {Math.abs(totalGravado - base) > 0.01 ? '• Diferencia' : '• Coincide'}
                 </span>
               </div>
               <div className="mt-5 rounded-[14px] border border-[#0A2540]/10 overflow-hidden">
-                <div className="grid grid-cols-[1fr_88px_88px] bg-[#0A2540] text-white text-[10px] tracking-widest font-bold px-3 py-2">
+                <div className="grid grid-cols-[minmax(0,1fr)_minmax(56px,76px)_minmax(56px,76px)] bg-[#0A2540] px-2 py-2 text-[9px] font-bold tracking-wide text-white sm:grid-cols-[1fr_88px_88px] sm:px-3 sm:text-[10px] sm:tracking-widest">
                   <span>CONCEPTO</span>
                   <span className="text-right">GRAVADO</span>
                   <span className="text-right">EXENTO</span>
                 </div>
                 {percepciones.map(p => (
-                  <div key={p.id} className="grid grid-cols-[1fr_88px_88px] items-center px-3 py-2 border-t border-[#0A2540]/[0.06] bg-white even:bg-[#F6F7F9]/70">
+                  <div key={p.id} className="grid grid-cols-[minmax(0,1fr)_minmax(56px,76px)_minmax(56px,76px)] items-center border-t border-[#0A2540]/[0.06] bg-white px-2 py-2 even:bg-[#F6F7F9]/70 sm:grid-cols-[1fr_88px_88px] sm:px-3">
                     <span className="text-[12px] font-medium truncate pr-2">{p.concepto}</span>
-                    <input value={p.gravado === 0 ? '' : String(p.gravado)} onChange={e => updatePerc(p.id, 'gravado', e.target.value)} placeholder="0" className="text-right text-[12px] font-semibold bg-transparent border border-transparent hover:border-[#C9A86A]/40 focus:border-[#C9A86A] rounded-md px-1 py-0.5 outline-none" />
-                    <input value={p.exento === 0 ? '' : String(p.exento)} onChange={e => updatePerc(p.id, 'exento', e.target.value)} placeholder="0" className="text-right text-[12px] text-[#6B7A90] bg-transparent border border-transparent hover:border-[#0A2540]/20 focus:border-[#0A2540]/30 rounded-md px-1 py-0.5 outline-none" />
+                    <input value={p.gravado === 0 ? '' : String(p.gravado)} onChange={e => updatePerc(p.id, 'gravado', e.target.value)} placeholder="0" className="min-w-0 rounded-md border border-transparent bg-transparent px-0.5 py-2 text-right text-[11px] font-semibold outline-none hover:border-[#C9A86A]/40 focus:border-[#C9A86A] sm:px-1 sm:text-[12px]" />
+                    <input value={p.exento === 0 ? '' : String(p.exento)} onChange={e => updatePerc(p.id, 'exento', e.target.value)} placeholder="0" className="min-w-0 rounded-md border border-transparent bg-transparent px-0.5 py-2 text-right text-[11px] text-[#6B7A90] outline-none hover:border-[#0A2540]/20 focus:border-[#0A2540]/30 sm:px-1 sm:text-[12px]" />
                   </div>
                 ))}
-                <div className="grid grid-cols-[1fr_88px_88px] bg-[#FFFBF0] border-t border-[#C9A86A]/30 px-3 py-2 font-bold text-[12px]">
+                <div className="grid grid-cols-[minmax(0,1fr)_minmax(56px,76px)_minmax(56px,76px)] border-t border-[#C9A86A]/30 bg-[#FFFBF0] px-2 py-2 text-[10px] font-bold sm:grid-cols-[1fr_88px_88px] sm:px-3 sm:text-[12px]">
                   <span>TOTAL</span>
                   <span className="text-right">{fmt(totalGravado)}</span>
                   <span className="text-right text-[#6B7A90]">{fmt(totalExento)}</span>
@@ -241,20 +241,20 @@ export default function IsnCalculator() {
           <div className="rounded-[20px] bg-[#0A2540] border border-[#0A2540] shadow-[0_12px_40px_rgba(10,37,64,0.25)] overflow-hidden text-white relative">
             <div className="absolute top-0 right-0 w-40 h-40 bg-[#C9A86A]/20 rounded-full blur-[32px] -translate-y-10 translate-x-10" />
             <div className="p-6 relative">
-              <div className="flex items-center justify-between">
+              <div className="flex flex-wrap items-center justify-between gap-2">
                 <h2 className="text-[11px] tracking-[0.2em] font-bold opacity-70">RESUMEN ISN 2026</h2>
                 <span className="text-[10px] px-2 py-1 rounded-full bg-white/10 border border-white/10 tracking-widest">{estadoSel.corto} · {estadoSel.tasa}%</span>
               </div>
               <div className="mt-5 space-y-3 text-[13px]">
-                <div className="flex justify-between"><span className="opacity-60">Estado</span><span className="font-semibold">{estadoSel.nombre}</span></div>
-                <div className="flex justify-between"><span className="opacity-60">Tasa aplicable</span><span className="font-semibold">{estadoSel.tasa}%</span></div>
-                <div className="flex justify-between"><span className="opacity-60">Base gravable</span><span className="font-semibold">{fmt(base)}</span></div>
+                <div className="flex justify-between gap-3"><span className="shrink-0 opacity-60">Estado</span><span className="min-w-0 text-right font-semibold">{estadoSel.nombre}</span></div>
+                <div className="flex justify-between gap-3"><span className="shrink-0 opacity-60">Tasa aplicable</span><span className="font-semibold">{estadoSel.tasa}%</span></div>
+                <div className="flex justify-between gap-3"><span className="shrink-0 opacity-60">Base gravable</span><span className="font-semibold">{fmt(base)}</span></div>
                 <div className="h-px bg-white/10 my-3" />
                 <div className="flex items-end justify-between">
                   <div>
                     <div className="text-[11px] tracking-widest opacity-60">TOTAL A PAGAR</div>
-                    <div className="serif text-[34px] leading-none mt-1">{fmt(isn)}</div>
-                    <div className="text-[11px] opacity-60 mt-1">Fórmula: Base × Tasa ({base.toLocaleString('es-MX')} × {estadoSel.tasa}%)</div>
+                    <div className="serif mt-1 break-words text-[30px] leading-none sm:text-[34px]">{fmt(isn)}</div>
+                    <div className="mt-1 break-words text-[11px] opacity-60">Fórmula: Base × Tasa ({base.toLocaleString('es-MX')} × {estadoSel.tasa}%)</div>
                   </div>
                   <div className="w-10 h-10 rounded-full bg-[#C9A86A] flex items-center justify-center text-[#0A2540] font-bold">↗</div>
                 </div>
@@ -390,7 +390,7 @@ export default function IsnCalculator() {
                 ARK SYSTEMS · HERRAMIENTAS MODERNAS
                 <span className="ml-auto text-[11px] font-medium text-[#0A2540]">Panel de utilidades · 2026</span>
               </div>
-              <div className="p-4 grid grid-cols-3 gap-3 text-[11px]">
+              <div className="grid grid-cols-1 gap-3 p-4 text-[11px] sm:grid-cols-3">
                 <div className="rounded-[12px] bg-[#F6F7F9] border border-[#0A2540]/10 p-3">
                   <div className="font-bold">ISN</div>
                   <div className="text-[#6B7A90] mt-1">Cálculo 32 estados</div>
@@ -412,7 +412,7 @@ export default function IsnCalculator() {
 
           <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between pt-2">
             <div className="text-[11px] text-[#6B7A90]">© 2026 ARK SYSTEMS · Fintech profesional para contadores · Hecho en México</div>
-            <div className="flex gap-2">
+            <div className="flex flex-wrap gap-2">
               <span className="text-[10px] px-2.5 py-1 rounded-full border border-[#0A2540]/10 bg-white">Base gravable = Percepciones gravadas</span>
               <span className="text-[10px] px-2.5 py-1 rounded-full border border-[#C9A86A]/30 bg-[#FFFBF0]">ISN = Base × Tasa</span>
             </div>
@@ -420,13 +420,13 @@ export default function IsnCalculator() {
         </div>
       </main>
 
-      <div className="lg:hidden fixed bottom-0 inset-x-0 z-30 p-3 bg-gradient-to-t from-white via-white to-white/0 pointer-events-none">
-        <div className="pointer-events-auto rounded-[16px] bg-[#0A2540] text-white p-4 shadow-[0_12px_32px_rgba(10,37,64,0.3)] flex items-center justify-between">
-          <div>
+      <div className="pointer-events-none fixed inset-x-0 bottom-0 z-30 bg-gradient-to-t from-white via-white to-white/0 p-3 lg:hidden" style={{ paddingBottom: 'calc(0.75rem + env(safe-area-inset-bottom, 0px))' }}>
+        <div className="pointer-events-auto flex items-center justify-between gap-3 rounded-[16px] bg-[#0A2540] p-3 text-white shadow-[0_12px_32px_rgba(10,37,64,0.3)] sm:p-4">
+          <div className="min-w-0">
             <div className="text-[10px] tracking-widest opacity-60">ISN A PAGAR</div>
-            <div className="serif text-[20px] leading-none mt-1">{fmt(isn)} • {estadoSel.corto} {estadoSel.tasa}%</div>
+            <div className="serif mt-1 break-words text-[18px] leading-tight sm:text-[20px]">{fmt(isn)} • {estadoSel.corto} {estadoSel.tasa}%</div>
           </div>
-          <button onClick={downloadCSV} className="w-11 h-11 rounded-full bg-white text-[#0A2540] flex items-center justify-center font-bold">⤓</button>
+          <button onClick={downloadCSV} aria-label="Descargar CSV" className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white font-bold text-[#0A2540]">⤓</button>
         </div>
       </div>
       <div className="h-[88px] lg:hidden" />

@@ -145,6 +145,12 @@
     transform: translateY(-1px);
   }
 
+  .use-case-card .use-case-badge {
+    color: hsl(var(--text-muted));
+    background: hsl(var(--surface-hover) / 0.8);
+    border-color: hsl(var(--border-strong));
+  }
+
   .ark-btn,
   .ark-btn-primary {
     @apply relative inline-flex h-12 items-center justify-center gap-2 rounded-full px-6 text-sm font-semibold transition-all duration-150;

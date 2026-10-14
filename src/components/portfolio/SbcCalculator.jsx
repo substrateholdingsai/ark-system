@@ -60,25 +60,25 @@ export default function SbcCalculator() {
   const scrollToResult = () => resultRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
   return (
-    <div className="w-full bg-[#f7f8fa] text-[#0a2540] rounded-[24px] overflow-hidden border border-[#e2e8f2] shadow-[0_12px_32px_rgba(10,37,64,0.07),0_2px_8px_rgba(10,37,64,0.05)] font-sans selection:bg-[#c9a86a]/20">
+    <div className="w-full min-w-0 overflow-hidden rounded-2xl border border-[#e2e8f2] bg-[#f7f8fa] font-sans text-[#0a2540] shadow-[0_12px_32px_rgba(10,37,64,0.07),0_2px_8px_rgba(10,37,64,0.05)] selection:bg-[#c9a86a]/20 sm:rounded-[24px]">
       <style>{`@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');`}</style>
 
       <div className="bg-[#0a2540] text-white text-[10px] font-black tracking-[0.2em] text-center py-2">
         DEMO INTERACTIVA • UMA 2026 $113.14 • CÁLCULO LOCAL • SIN BACKEND • ARK COMMERCE
       </div>
 
-      <div className="p-6 sm:p-8 lg:p-10">
+      <div className="p-4 sm:p-8 lg:p-10">
         <div className="max-w-[1180px] mx-auto">
           <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-10">
             <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#f7eee0] border border-[#eadcc2] mb-4">
+              <div className="mb-4 inline-flex max-w-full items-center gap-2 rounded-full border border-[#eadcc2] bg-[#f7eee0] px-3 py-1">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#b8965a]" />
                 <span className="text-[11px] font-[700] tracking-[0.08em] text-[#8a7a5e]">CALCULADORA OFICIAL SBC 2026</span>
               </div>
-              <h1 className="text-[28px] sm:text-[44px] font-[800] tracking-[-0.03em] leading-[0.98] text-[#0a2540]">
+              <h1 className="break-words text-[26px] font-[800] leading-[1.05] tracking-[-0.04em] text-[#0a2540] sm:text-[44px] sm:leading-[0.98] sm:tracking-[-0.03em]">
                 Calculadora SBC 2026
                 <br />
-                <span className="block text-[#5a6d85] font-[500] text-[22px] sm:text-[26px] mt-2 tracking-[-0.02em]">
+                <span className="mt-2 block break-words text-[20px] font-[500] tracking-[-0.02em] text-[#5a6d85] sm:text-[26px]">
                   ARK COMMERCE · Precisión contable
                 </span>
               </h1>
@@ -207,20 +207,25 @@ export default function SbcCalculator() {
 
             <div className="space-y-6" ref={resultRef}>
               <div className="rounded-[20px] bg-white border border-[#e2e8f2] shadow-[var(--shadow)] overflow-hidden">
-                <div className="px-6 sm:px-7 pt-7 pb-5">
-                  <div className="flex items-start justify-between gap-4">
-                    <div>
-                      <div className="text-[11px] font-[700] tracking-[0.1em] text-[#8a9bb0] uppercase">Salario Base de Cotización 2026</div>
-                      <div className="mt-2 flex items-baseline gap-3 flex-wrap">
-                        <div className="text-[40px] sm:text-[46px] font-[900] tracking-[-0.04em] leading-none text-[#0a2540]">
-                          {sbcFinal === 0 ? '$0.00' : formatCurrency(sbcFinal)}
+                <div className="px-4 pb-5 pt-6 sm:px-7 sm:pt-7">
+                  <div className="flex min-w-0 flex-col gap-3">
+                    <div className="flex min-w-0 items-start justify-between gap-3">
+                      <div className="min-w-0">
+                        <div className="text-[11px] font-[700] tracking-[0.1em] text-[#8a9bb0] uppercase">Salario Base de Cotización 2026</div>
+                        <div className="mt-2 flex flex-wrap items-baseline gap-3">
+                          <div className="text-[34px] font-[900] leading-none tracking-[-0.05em] text-[#0a2540] sm:text-[46px] sm:tracking-[-0.04em]">
+                            {sbcFinal === 0 ? '$0.00' : formatCurrency(sbcFinal)}
+                          </div>
+                          {topeAplicado && sbcRaw !== sbcFinal && (
+                            <div className="text-[13px] font-[600] text-[#8a9bb0] line-through">{formatCurrency(sbcRaw)}</div>
+                          )}
                         </div>
-                        {topeAplicado && sbcRaw !== sbcFinal && (
-                          <div className="text-[13px] font-[600] text-[#8a9bb0] line-through">{formatCurrency(sbcRaw)}</div>
-                        )}
+                      </div>
+                      <div className="mt-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-[12px] border border-[#eadcc2] bg-[#f7eee0]">
+                        <span className="text-[16px] font-[900] text-[#b8965a]">$</span>
                       </div>
                     </div>
-                    <div className="mt-2 flex items-center gap-2">
+                    <div className="flex flex-wrap items-center gap-2">
                       <div className={`px-2.5 py-1 rounded-full text-[11px] font-[700] tracking-[0.02em] border ${
                         topeAplicado
                           ? tipoTope === 'max'
@@ -233,11 +238,8 @@ export default function SbcCalculator() {
                       <span className="text-[11px] text-[#8a9bb0]">Factor {formatNumber(factor)}</span>
                     </div>
                   </div>
-                  <div className="w-10 h-10 rounded-[12px] bg-[#f7eee0] border border-[#eadcc2] flex items-center justify-center">
-                    <span className="text-[#b8965a] font-[900] text-[16px]">$</span>
-                  </div>
                 </div>
-                <div className="mt-8">
+                <div className="mt-6 sm:mt-8">
                   <div className="flex justify-between text-[10px] font-[700] tracking-[0.08em] text-[#8a9bb0] mb-2">
                     <span>MÍN {formatCurrency(MIN_SBC)}</span>
                     <span>25 UMA {formatCurrency(TOPE_SBC)}</span>
@@ -252,7 +254,7 @@ export default function SbcCalculator() {
                     <span className="font-[600] text-[#0a2540]">{sbcFinal > 0 ? `${formatCurrency(TOPE_SBC - sbcFinal)} restantes al tope` : 'Ingresa salario'}</span>
                   </div>
                 </div>
-                <div className="mt-7 grid grid-cols-3 gap-2 sm:gap-3">
+                <div className="mt-7 grid grid-cols-[repeat(auto-fit,minmax(96px,1fr))] gap-2 sm:gap-3">
                   <div className="rounded-[14px] bg-[#f8fafc] border border-[#e2e8f2] p-3">
                     <div className="text-[10px] font-[700] tracking-[0.08em] text-[#8a9bb0]">BASE</div>
                     <div className="mt-1 text-[16px] font-[800] text-[#0a2540]">1.0000</div>
@@ -291,7 +293,7 @@ export default function SbcCalculator() {
                 </div>
               </div>
 
-              <div className="px-6 sm:px-7 py-4 bg-[#f9fbfd] border-t border-[#e2e8f2] flex items-center justify-between">
+              <div className="flex flex-wrap items-center justify-between gap-3 border-t border-[#e2e8f2] bg-[#f9fbfd] px-4 py-4 sm:px-7">
                 <div className="text-[11px] text-[#8a9bb0]">Cálculo conforme LSS Art. 27</div>
                 <button
                   onClick={copySummary}

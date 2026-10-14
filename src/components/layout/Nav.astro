@@ -273,11 +273,15 @@ const mainLinks = links.filter((link) => !lineHrefs.has(link.href) && link.href 
     const menu = nav.querySelector<HTMLElement>('[data-nav-menu]');
     if (!toggle || !menu) return;
 
+    document.body.append(menu);
+
     const iconOpen = toggle.querySelector('[data-icon="open"]');
     const iconClose = toggle.querySelector('[data-icon="close"]');
     const links = menu.querySelectorAll<HTMLAnchorElement>('[data-nav-link]');
-    const firstLink = links[0];
-    const lastLink = links[links.length - 1];
+    const getFocusableElements = () =>
+      menu.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), summary, [tabindex]:not([tabindex="-1"])'
+      );
 
     const setOpen = (open: boolean) => {
       menu.classList.toggle('hidden', !open);
@@ -297,7 +301,7 @@ const mainLinks = links.filter((link) => !lineHrefs.has(link.href) && link.href 
     toggle.addEventListener('click', () => {
       const open = toggle.getAttribute('aria-expanded') === 'true';
       setOpen(!open);
-      if (!open) requestAnimationFrame(() => firstLink?.focus());
+      if (!open) requestAnimationFrame(() => getFocusableElements()[0]?.focus());
     });
 
     document.addEventListener('keydown', (event) => {
@@ -307,16 +311,23 @@ const mainLinks = links.filter((link) => !lineHrefs.has(link.href) && link.href 
     menu.addEventListener('keydown', (event) => {
       if (event.key !== 'Tab' || toggle.getAttribute('aria-expanded') !== 'true') return;
 
-      if (event.shiftKey && document.activeElement === firstLink) {
+      const focusableElements = getFocusableElements();
+      const firstElement = focusableElements[0];
+      const lastElement = focusableElements[focusableElements.length - 1];
+
+      if (event.shiftKey && document.activeElement === firstElement) {
         event.preventDefault();
-        lastLink?.focus();
-      } else if (!event.shiftKey && document.activeElement === lastLink) {
+        lastElement?.focus();
+      } else if (!event.shiftKey && document.activeElement === lastElement) {
         event.preventDefault();
-        firstLink?.focus();
+        firstElement?.focus();
       }
     });
 
     links.forEach((link) => link.addEventListener('click', close));
+    window.matchMedia('(min-width: 1024px)').addEventListener('change', (event) => {
+      if (event.matches) setOpen(false);
+    });
 
     nav.querySelectorAll<HTMLElement>('[data-nav-dropdown]').forEach((dropdown) => {
       const trigger = dropdown.querySelector<HTMLAnchorElement>('[data-nav-trigger]');

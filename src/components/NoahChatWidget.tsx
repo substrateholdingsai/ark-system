@@ -32,6 +32,7 @@ interface Message {
   isStreaming?: boolean;
   hash?: string;
   timestamp?: string;
+  metadata?: Record<string, unknown>;
 }
 
 const ICON_MAP = {
@@ -80,6 +81,30 @@ async function hashResponse(response: string): Promise<string | undefined> {
   return Array.from(new Uint8Array(digest), (byte) => byte.toString(16).padStart(2, '0')).join('');
 }
 
+function SourceBadge({ source, legalRef }: { source: string; legalRef?: string | null }) {
+  const config = {
+    kb: { icon: FileCheck, label: 'Base de conocimiento', color: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30' },
+    llm: { icon: Coins, label: 'Generado por IA', color: 'bg-blue-500/20 text-blue-400 border-blue-500/30' },
+    fallback: { icon: AlertTriangle, label: 'Requiere revisión', color: 'bg-amber-500/20 text-amber-400 border-amber-500/30' },
+  }[source] ?? { icon: Info, label: source, color: 'bg-zinc-500/20 text-zinc-400 border-zinc-500/30' };
+
+  const Icon = config.icon;
+
+  return (
+    <div className="flex items-center gap-2 mb-2">
+      <span className={`inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full border ${config.color}`}>
+        <Icon className="h-2.5 w-2.5" />
+        {config.label}
+      </span>
+      {legalRef && (
+        <span className="text-[10px] font-mono text-zinc-500">
+          {legalRef}
+        </span>
+      )}
+    </div>
+  );
+}
+
 function ChatBubble({
   message,
   showDisclaimer,
@@ -111,6 +136,12 @@ function ChatBubble({
 
         {!isUser && !message.isStreaming && (
           <div className="mt-2 flex flex-col gap-1">
+            {message.metadata && (
+              <SourceBadge
+                source={message.metadata.source as string}
+                legalRef={message.metadata.legal_reference as string | null}
+              />
+            )}
             {message.hash && message.timestamp && (
               <div className="ark-seal">
                 <span className="ark-seal__label">
@@ -293,21 +324,27 @@ function Composer({
   isLoading,
   onSubmit,
   lang,
+  inputRef,
 }: {
   input: string;
   setInput: (value: string) => void;
   isLoading: boolean;
   onSubmit: (event: React.SyntheticEvent) => void;
   lang: 'es' | 'en';
+  inputRef: React.RefObject<HTMLInputElement | null>;
 }) {
+  const placeholder = lang === 'es' ? 'Pregúntame lo que necesites…' : 'Ask me anything…';
+  const hint = '⌘K';
+
   return (
     <form onSubmit={onSubmit} className="shrink-0 border-t border-ark-border bg-ark-surface/50 p-4">
       <div className="flex gap-2">
         <input
+          ref={inputRef}
           type="text"
           value={input}
           onChange={(event) => setInput(event.target.value)}
-          placeholder={lang === 'es' ? 'Pregúntame lo que necesites...' : 'Ask me anything...'}
+          placeholder={`${placeholder}  ${hint}`}
           disabled={isLoading}
           className="flex-1 rounded-xl border border-border bg-base px-4 py-2.5 text-sm text-white outline-none transition-all placeholder:text-zinc-500 focus:border-ark-accent focus:ring-1 focus:ring-ark-accent"
         />
@@ -344,10 +381,37 @@ export default function NoahChatWidget({
   const [isLoading, setIsLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const sessionId = useMemo(() => {
+    const stored = localStorage.getItem('noah_session');
+    if (stored) return stored;
+    const fresh = crypto.randomUUID();
+    localStorage.setItem('noah_session', fresh);
+    return fresh;
+  }, []);
 
   useEffect(() => {
     setIsMounted(true);
   }, []);
+
+  // Keyboard shortcuts
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      // Cmd/Ctrl + K → focus input (or open if closed)
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        if (!isOpen) setIsOpen(true);
+        setTimeout(() => inputRef.current?.focus(), 50);
+      }
+      // Esc → close (if open and no input text)
+      if (e.key === 'Escape' && isOpen && !input.trim()) {
+        setIsOpen(false);
+      }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [isOpen, input]);
 
   useEffect(() => {
     if (isMounted && messages.length > 0) {
@@ -365,53 +429,113 @@ export default function NoahChatWidget({
       setMessages((previous) => [
         ...previous,
         { id: userMsgId, role: 'user', content: text },
-        { id: assistantMsgId, role: 'assistant', content: '', isStreaming: true },
+        { id: assistantMsgId, role: 'assistant', content: '', isStreaming: true, metadata: null },
       ]);
       setInput('');
+
+      let fullContent = '';
 
       try {
         const response = await fetch('/api/chat', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message: text, context, line: assistant.line, lang }),
+          body: JSON.stringify({ message: text, context, line: assistant.line, lang, session_id: sessionId }),
         });
-        const data = await response.json();
-        if (!response.ok) throw new Error(data.error || 'Error en el servidor');
-        if (typeof data.response !== 'string') {
-          throw new Error('La respuesta del servidor tiene un formato inválido');
+
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => ({}));
+          throw new Error(errorData.error || 'Error en el servidor');
         }
 
+        if (!response.body) throw new Error('No response stream');
+
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+        let buffer = '';
+
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+
+          buffer += decoder.decode(value, { stream: true });
+
+          const lines = buffer.split('\n\n');
+          buffer = lines.pop() || '';
+
+          for (const line of lines) {
+            if (!line.startsWith('data: ')) continue;
+            const payload = line.slice(6).trim();
+            if (payload === '[DONE]') continue;
+
+            try {
+              const parsed = JSON.parse(payload);
+
+              // Primer evento: metadata (source badge)
+              if (parsed.type === 'meta') {
+                setMessages((m) => {
+                  const copy = [...m];
+                  const last = copy[copy.length - 1];
+                  if (last.id === assistantMsgId) {
+                    last.metadata = parsed.metadata;
+                  }
+                  return copy;
+                });
+                continue;
+              }
+
+              // Eventos siguientes: tokens
+              const token = parsed.response ?? '';
+              if (token) {
+                fullContent += token;
+                setMessages((m) => {
+                  const copy = [...m];
+                  const last = copy[copy.length - 1];
+                  if (last.id === assistantMsgId) {
+                    last.content = fullContent;
+                  }
+                  return copy;
+                });
+              }
+            } catch {
+              // Chunk parcial, ignorar
+            }
+          }
+        }
+
+        // Finalizar: calcular hash y timestamp
         let hash: string | undefined;
-        try {
-          hash = await hashResponse(data.response);
-        } catch (error) {
-          console.error('[NoahChatWidget] No se pudo calcular la huella local:', error);
+        if (fullContent) {
+          try {
+            hash = await hashResponse(fullContent);
+          } catch (error) {
+            console.error('[NoahChatWidget] No se pudo calcular la huella local:', error);
+          }
         }
         const timestamp = new Date().toISOString();
 
-        setMessages((previous) =>
-          previous.map((message) =>
-            message.id === assistantMsgId
-              ? { ...message, content: data.response, isStreaming: false, hash, timestamp }
-              : message,
-          ),
-        );
-      } catch (error) {
-        console.error('[NoahChatWidget] Error al enviar mensaje:', error);
-        setMessages((previous) =>
-          previous.map((message) =>
-            message.id === assistantMsgId
-              ? {
-                  ...message,
-                  content:
-                    lang === 'es'
-                      ? `⚠️ ${assistant.name} no está disponible en este momento. Intenta de nuevo.`
-                      : `⚠️ ${assistant.name} is unavailable right now. Please try again.`,
-                  isStreaming: false,
-                }
-              : message,
-          ),
-        );
+        setMessages((m) => {
+          const copy = [...m];
+          const last = copy[copy.length - 1];
+          if (last.id === assistantMsgId) {
+            last.isStreaming = false;
+            last.hash = hash;
+            last.timestamp = timestamp;
+          }
+          return copy;
+        });
+      } catch (err) {
+        console.error('[NoahChatWidget] Error al enviar mensaje:', err);
+        setMessages((m) => {
+          const copy = [...m];
+          const last = copy[copy.length - 1];
+          if (last.id === assistantMsgId) {
+            last.content = lang === 'es'
+              ? `⚠️ ${assistant.name} no está disponible en este momento. Intenta de nuevo.`
+              : `⚠️ ${assistant.name} is unavailable right now. Please try again.`;
+            last.isStreaming = false;
+          }
+          return copy;
+        });
       } finally {
         setIsLoading(false);
       }
@@ -456,6 +580,7 @@ export default function NoahChatWidget({
         isLoading={isLoading}
         onSubmit={handleSubmit}
         lang={lang}
+        inputRef={inputRef}
       />
       {showDisclaimer && (
         <div className="flex shrink-0 items-start gap-1.5 border-t border-border bg-surface/30 px-4 py-2 text-[10px] leading-tight text-zinc-500">
