@@ -1,4 +1,4 @@
-import type { APIRoute } from 'astro';
+﻿import type { APIRoute } from 'astro';
 
 export const prerender = false;
 
@@ -14,8 +14,31 @@ interface ChatRequestBody {
 }
 
 interface KnowledgeBaseRow {
+  id?: number;
+  line?: string;
+  context?: string;
+  topic?: string;
   answer: string;
   legal_reference?: string | null;
+}
+
+interface KbContext {
+  kbText: string;
+  primaryLegalReference: string;
+  rows?: KnowledgeBaseRow[];
+}
+
+interface VectorMatch {
+  id: string | number;
+  score?: number | null;
+  metadata?: {
+    id?: number | string | null;
+    line?: string | null;
+    context?: string | null;
+    topic?: string | null;
+    answer?: string | null;
+    legal_reference?: string | null;
+  } | null;
 }
 
 interface LineConfig {
@@ -23,9 +46,19 @@ interface LineConfig {
   role: string;
 }
 
+interface Citation {
+  id?: number | string;
+  topic?: string | null;
+  legal_reference?: string | null;
+  snippet?: string | null;
+  score?: number | null;
+}
+
 interface ChatLogMetadata {
   db: unknown;
   kv: unknown;
+  vectorize?: unknown;
+  ai?: unknown;
   sessionId: string;
   line: ServiceLine;
   context: string;
@@ -35,6 +68,9 @@ interface ChatLogMetadata {
   startTime: number;
   legal_reference?: string | null;
   source: string;
+  citations?: Citation[] | null;
+  kbHit?: boolean;
+  fallbackUsed?: boolean;
 }
 
 const LINE_CONFIGS: Record<ServiceLine, LineConfig> = {
@@ -54,7 +90,10 @@ const LINE_CONFIGS: Record<ServiceLine, LineConfig> = {
 
 const PRIMARY_MODEL = '@cf/meta/llama-3.3-70b-instruct-fp8-fast';
 const FALLBACK_MODEL = '@cf/meta/llama-3.1-8b-instruct-fast';
-
+const EMBEDDING_MODEL = '@cf/baai/bge-base-en-v1.5';
+const VECTOR_INDEX_NAME = 'ark-kb-index';
+const VECTOR_TOP_K = 3;
+const VECTOR_RAG_ENABLED = true;
 function getSessionId(request: Request): string {
   const cookieHeader = request.headers.get('cookie') || '';
   const match = cookieHeader.match(/noah_session=([^;]+)/);
@@ -176,19 +215,19 @@ async function fetchKnowledgeBaseContext(
   db: any,
   line: ServiceLine,
   context: string
-): Promise<{ kbText: string; primaryLegalReference: string }> {
+): Promise<KbContext> {
   if (!db || typeof db.prepare !== 'function') {
-    return { kbText: 'No hay información adicional disponible en la base de conocimientos.', primaryLegalReference: '' };
+    return { kbText: 'No hay información adicional disponible en la base de conocimientos.', primaryLegalReference: '', rows: [] };
   }
 
   try {
     const stmt = db.prepare(
-      'SELECT answer, legal_reference FROM knowledge_base WHERE line = ? AND context = ? ORDER BY id DESC LIMIT 5'
+      'SELECT id, line, context, topic, answer, legal_reference FROM knowledge_base WHERE line = ? AND context = ? ORDER BY id DESC LIMIT 5'
     );
     const { results } = await stmt.bind(line, context).all();
 
     if (!results || results.length === 0) {
-      return { kbText: 'No hay información adicional disponible en la base de conocimientos.', primaryLegalReference: '' };
+      return { kbText: 'No hay información adicional disponible en la base de conocimientos.', primaryLegalReference: '', rows: [] };
     }
 
     const rows = results as KnowledgeBaseRow[];
@@ -208,10 +247,11 @@ async function fetchKnowledgeBaseContext(
     return {
       kbText: textPieces.join('\n'),
       primaryLegalReference: legalRef,
+      rows,
     };
   } catch (error) {
     console.warn('[api/chat] Error al consultar base de conocimientos D1:', error);
-    return { kbText: 'No hay información adicional disponible en la base de conocimientos.', primaryLegalReference: '' };
+    return { kbText: 'No hay información adicional disponible en la base de conocimientos.', primaryLegalReference: '', rows: [] };
   }
 }
 
@@ -242,6 +282,100 @@ COMPORTAMIENTO:
 
 BASE DE CONOCIMIENTOS (referencia):
 ${kbContext}`;
+}
+
+/**
+ * Generate embedding for query using Workers AI
+ */
+async function generateEmbedding(ai: any, query: string): Promise<number[] | null> {
+  if (!ai || typeof ai.run !== 'function') {
+    return null;
+  }
+  try {
+    const response = await ai.run(EMBEDDING_MODEL, { text: query });
+    if (response && Array.isArray(response.data) && response.data[0]?.embedding) {
+      return response.data[0].embedding;
+    }
+  } catch (error) {
+    console.warn('[api/chat] Error generating embedding:', error);
+  }
+  return null;
+}
+
+/**
+ * Vectorize RAG search
+ */
+async function searchVectorKnowledge(
+  vectorize: any,
+  ai: any,
+  query: string,
+  line: ServiceLine
+): Promise<{ matches: VectorMatch[]; citations: Citation[] }> {
+  if (!vectorize || typeof vectorize.search !== 'function' || !ai) {
+    return { matches: [], citations: [] };
+  }
+
+  const embedding = await generateEmbedding(ai, query);
+  if (!embedding) {
+    return { matches: [], citations: [] };
+  }
+
+  try {
+    const searchResult = await vectorize.search(embedding, {
+      topK: VECTOR_TOP_K,
+      filter: { line: { $eq: line } },
+      indexName: VECTOR_INDEX_NAME,
+    });
+
+    const matches = (searchResult?.matches || []) as VectorMatch[];
+    const citations: Citation[] = matches
+      .filter((m) => m.metadata?.answer)
+      .map((m) => ({
+        id: m.metadata?.id ?? m.id,
+        topic: m.metadata?.topic ?? null,
+        legal_reference: m.metadata?.legal_reference ?? null,
+        snippet: (m.metadata?.answer || '').slice(0, 240),
+        score: m.score ?? null,
+      }));
+
+    return { matches, citations };
+  } catch (error) {
+    console.warn('[api/chat] Vectorize search error:', error);
+    return { matches: [], citations: [] };
+  }
+}
+
+/**
+ * Build KB context from vector matches
+ */
+function buildVectorKbContext(matches: VectorMatch[]): { kbText: string; primaryLegalReference: string } {
+  if (!matches.length) {
+    return { kbText: 'No hay información adicional disponible en la base de conocimientos.', primaryLegalReference: '' };
+  }
+
+  const textPieces: string[] = [];
+  let legalRef = '';
+
+  for (let i = 0; i < matches.length; i++) {
+    const m = matches[i];
+    const answer = m.metadata?.answer;
+    if (!answer) continue;
+    const ref = m.metadata?.legal_reference;
+    const refPart = ref ? ` (Referencia: ${ref})` : '';
+    textPieces.push(`- ${answer}${refPart}`);
+    if (!legalRef && ref) {
+      legalRef = ref;
+    }
+  }
+
+  if (!textPieces.length) {
+    return { kbText: 'No hay información adicional disponible en la base de conocimientos.', primaryLegalReference: '' };
+  }
+
+return {
+    kbText: textPieces.join('\n'),
+    primaryLegalReference: legalRef,
+  };
 }
 
 /**
@@ -288,7 +422,6 @@ async function generateAiStream(
 
   throw new Error('No se pudo generar respuesta con ninguno de los modelos de Workers AI.');
 }
-
 /**
  * Creates an SSE stream from Workers AI stream with metadata prepended.
  * Also captures full response for logging + persists history to KV via waitUntil.
@@ -307,6 +440,7 @@ function createSseStream(
     source: metadata.source,
     legal_reference: metadata.legal_reference ?? null,
     model: metadata.model,
+    citations: metadata.citations ?? null,
   })}\n\n`;
 
   let fullResponse = '';
@@ -335,8 +469,8 @@ function createSseStream(
                 }
               } catch {
                 // ignore parse errors
-              }
-            }
+  }
+}
           }
           controller.enqueue(encoder.encode(text));
         }
@@ -467,8 +601,46 @@ export const POST: APIRoute = async ({ request, locals }) => {
       });
     }
 
-    // 5. Knowledge Base Lookup (D1)
-    const { kbText, primaryLegalReference } = await fetchKnowledgeBaseContext(locals.db, line, context);
+// 5. Knowledge Base Lookup (D1 + Vectorize RAG)
+    let kbText = 'No hay información adicional disponible en la base de conocimientos.';
+    let primaryLegalReference = '';
+    let citations: Citation[] = [];
+    let sourceType: 'kb' | 'vector' | 'llm' = 'llm';
+    let kbHit = false;
+
+    // Try Vectorize RAG first if enabled
+    const vectorizeBinding = (locals as any).vectorize;
+    if (VECTOR_RAG_ENABLED && vectorizeBinding) {
+      const vectorResult = await searchVectorKnowledge(vectorizeBinding, locals.ai, rawMessage, line);
+      if (vectorResult.matches.length > 0) {
+        const vectorKb = buildVectorKbContext(vectorResult.matches);
+        kbText = vectorKb.kbText;
+        primaryLegalReference = vectorKb.primaryLegalReference;
+        citations = vectorResult.citations;
+        sourceType = 'vector';
+        kbHit = true;
+      }
+    }
+
+    // Fallback to D1 exact match if no vector results
+if (!kbHit) {
+      const d1Kb = await fetchKnowledgeBaseContext(locals.db, line, context);
+      kbText = d1Kb.kbText;
+      primaryLegalReference = d1Kb.primaryLegalReference;
+      citations = (d1Kb.rows ?? [])
+        .filter((r) => r.answer)
+        .map((r, idx) => ({
+          id: r.id ?? idx,
+          topic: r.topic ?? null,
+          legal_reference: r.legal_reference ?? null,
+          snippet: r.answer.slice(0, 240),
+          score: null,
+        }));
+      kbHit = (d1Kb.rows ?? []).length > 0;
+      if (kbHit) {
+        sourceType = 'kb';
+      }
+    }
 
     // 6. Build System Prompt
     const systemPrompt = buildSystemPrompt(line, context, lang, kbText);
@@ -495,11 +667,12 @@ export const POST: APIRoute = async ({ request, locals }) => {
       );
     }
 
-    // 9. Build metadata for logging + client meta event
-    const hasKbContext = primaryLegalReference && primaryLegalReference.length > 0;
+// 9. Build metadata for logging + client meta event
     const logMetadata = {
       db: locals.db,
       kv: locals.session,
+      vectorize: vectorizeBinding,
+      ai: locals.ai,
       sessionId,
       line,
       context,
@@ -507,8 +680,11 @@ export const POST: APIRoute = async ({ request, locals }) => {
       model: aiStreamResult.modelName,
       pldAlert: isPldAlert,
       startTime,
-      legal_reference: primaryLegalReference, // for client meta event + source detection
-      source: hasKbContext ? 'kb' : 'llm',   // initial source for meta event
+      legal_reference: primaryLegalReference,
+      source: sourceType,
+      citations,
+      kbHit,
+      fallbackUsed: false,
     };
 
     // Use waitUntil from Astro's locals.runtime (Cloudflare Workers context)

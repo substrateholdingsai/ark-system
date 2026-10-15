@@ -98,6 +98,11 @@ function SourceBadge({ source, legalRef }: { source: string; legalRef?: string |
       label: 'Requiere revisión',
       color: 'bg-amber-500/15 text-amber-300 border-amber-500/25',
     },
+    vector: {
+      icon: FileCheck,
+      label: 'Base de conocimiento (Vector)',
+      color: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/25',
+    },
   }[source] ?? {
     icon: Info,
     label: source,
@@ -117,6 +122,37 @@ function SourceBadge({ source, legalRef }: { source: string; legalRef?: string |
       {legalRef && (
         <span className="font-mono text-[10px] text-zinc-500">{legalRef}</span>
       )}
+    </div>
+  );
+}
+
+function AboutHeader({ line, lang }: { line: AssistantConfig['line']; lang: 'es' | 'en' }) {
+  const lineLabel = {
+    legal: 'Legal (ARK LEGAL)',
+    commerce: 'Commerce (ARK COMMERCE)',
+    lab: 'Lab (ARK LAB)',
+  }[line];
+
+  const copy = {
+    es: {
+      title: '¿Qué es Noah?',
+      body: `Noah es el asistente de IA de ARK SYSTEMS — ${lineLabel}. Responde con base en nuestra base de conocimientos para cada línea. Usa IA en el borde (Cloudflare Workers AI) con grounding en D1 + historial en KV.`,
+      limits:
+        'No sustituye asesoría legal vinculante. Verifica con tu abogado/contador cuando aplique. Puede incluir alertas PLD cuando se detectan señales relevantes.',
+    },
+    en: {
+      title: 'What is Noah?',
+      body: `Noah is ARK SYSTEMS’ AI assistant — ${lineLabel}. It answers using our knowledge base per line. Runs on Cloudflare Workers AI at the edge with D1 grounding, Vectorize semantic search, and KV session history.`,
+      limits:
+        'Not a substitute for binding legal advice. Verify with your lawyer/accountant when needed. PLD alerts may appear when relevant signals are detected.',
+    },
+  }[lang];
+
+  return (
+    <div className="shrink-0 border-b border-white/6 bg-black/15 px-4 py-2.5 text-[11px] leading-relaxed text-zinc-400">
+      <p className="font-medium text-zinc-200">{copy.title}</p>
+      <p className="mt-0.5">{copy.body}</p>
+      <p className="mt-1 text-[10px] text-zinc-500">{copy.limits}</p>
     </div>
   );
 }
@@ -156,10 +192,24 @@ function ChatBubble({
         {!isUser && !message.isStreaming && (
           <div className="mt-2.5 flex flex-col gap-1.5 px-0.5">
             {message.metadata && (
-              <SourceBadge
-                source={message.metadata.source as string}
-                legalRef={message.metadata.legal_reference as string | null}
-              />
+              <>
+                <SourceBadge
+                  source={message.metadata.source as string}
+                  legalRef={message.metadata.legal_reference as string | null}
+                />
+                {Array.isArray(message.metadata.citations) && message.metadata.citations.length > 0 && (
+                  <div className="flex flex-wrap gap-1.5">
+                    {message.metadata.citations.slice(0, 2).map((c: any, idx: number) => (
+                      <span
+                        key={idx}
+                        className="rounded-full border border-white/10 bg-white/[0.03] px-2 py-0.5 text-[9px] text-zinc-400"
+                      >
+                        {(c.topic || 'Ref') + (c.legal_reference ? ` · ${c.legal_reference}` : '')}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </>
             )}
             {message.hash && message.timestamp && (
               <div className="ark-seal flex flex-col gap-0.5">
@@ -518,6 +568,7 @@ export default function NoahChatWidget({
                       source: parsed.source,
                       legal_reference: parsed.legal_reference,
                       model: parsed.model,
+                      citations: parsed.citations,
                     };
                   }
                   return copy;
@@ -605,6 +656,7 @@ export default function NoahChatWidget({
         ActiveIcon={ActiveIcon}
         onClose={mode === 'floating' ? () => setIsOpen(false) : undefined}
       />
+      {messages.length === 0 && <AboutHeader line={assistant.line} lang={lang} />}
       <ContextBar contexts={resolvedContexts} context={context} onSwitch={handleContextSwitch} />
       <MessagesArea
         messages={messages}

@@ -1,6 +1,6 @@
 ﻿# Ark System — Project Map
 
-> Current status snapshot for the repo as of 2026-10-13.
+> Current status snapshot for the repo as of 2026-10-14.
 > This document reflects the current implementation in the codebase today, with the active deployment model set to Astro + Cloudflare Workers (hybrid SSR + static assets). It is not the original aspirational roadmap.
 
 ## 1. Executive Summary
@@ -9,22 +9,21 @@ Ark System is an edge-native marketing and conversion site built with Astro, Tai
 
 Status at a glance:
 
-- Build status: latest `npm run check` passes; run a full `npm run build` before releasing the current local changes
+- Build status: latest `npm run check` passes; `npm run build` passes locally (2026-10-14)
 - Core platform: Astro 5 + Tailwind 3 + React 19 + Cloudflare Workers (hybrid SSR + static assets)
 - Content model: typed reusable contract and Ark Client 0 instance in `src/data/config.ts`
 - Route architecture: implemented for the home, pricing, contact, portfolio, brand preview, Acepta Bitcoin case-study, SBC 2026 and ISN 2026 calculators, leasing contract, and eleven interactive demo pages, plus 404
-- Deployment config: Cloudflare adapter with server output, Worker config in `wrangler.jsonc`, with `SESSION` KV binding, `AI` binding, and `DB` D1 binding for the adapter runtime
+- Deployment config: Cloudflare adapter with server output, Worker config in `wrangler.jsonc`, with `SESSION` KV binding, `AI` binding, `DB` D1 binding, and `VECTORIZE` index binding
 - Portfolio: 14 cards — eleven interactive demos (Temozonia, Tomato for Bitcoin, Arkangel, Velvet Room, Medical Express, Talos, Mapa Crypto, SBC 2026 Calculadora, ISN 2026 Calculadora, Ikigai Wellness, and Calculadora Vintage), two external sites (Acepta Bitcoin and La Bianca Tropical), and the Padel Outlet concept, which has no interactive demo yet
 - Placeholder content: still present, including some contact/booking destinations, form endpoint, and sample pricing content
-- Latest local updates: Ikigai Wellness now hydrates correctly after importing React in its component; the homepage preview features a second Ark Legal card for the Calculadora Vintage; the compact cube mark, full logo lockup, favicon, and structured-data logo assets have been updated locally
-- Git/deployment status: `main` is synchronized with `origin/main` at `7983b43`. Local working-tree changes include the new Calculadora Vintage demo, the homepage portfolio preview card, and the logo refresh; these local changes have not been deployed
+- Latest local updates: NoahChatWidget includes educative header (`AboutHeader`) explaining what Noah is, its architecture, and limitations; `/api/chat` upgraded to hybrid Vectorize RAG + D1 fallback with citations; Vectorize binding added to wrangler
+- Git/deployment status: `main` is synchronized with `origin/main` at `7983b43`. Local working-tree changes include the new Calculadora Vintage demo, the homepage portfolio preview card, the logo refresh, the educative header, and Vectorize RAG upgrades; these local changes have not been deployed
 - Onboarding documentation: available in `docs/client-onboarding.md`
-- Latest portfolio update: project cards describe implemented demo behavior and mark sample data, mock integrations, external destinations, and the unimplemented Padel Outlet concept. The Ikigai hydration fix is committed and deployed; the Calculadora Vintage card and logo refresh are still local changes.
 - CI: workflow is defined in `.github/workflows/ci.yml`; Lighthouse budget exists in `lighthouserc.json`; remote CI status is not recorded here
-- **Vector asset generator**: `scripts/generate-assets.py` creates theme assets, the cube mark, and the favicon source; `npm run favicon` generates browser and structured-data raster variants. The full Ark Systems lockup is maintained separately in `public/assets/vector/ark-systems-lockup.svg`.
-- **New integrations**: AI binding for Cloudflare Workers AI, D1 database binding for fiscal/legal data, NoahChatWidget for conversational UI
-- **Intelligent chat endpoint**: `/api/chat` uses Cloudflare Clef for structured classification (PLD alert, topic category) + D1 lookup for pre-approved answers with legal references
-- **Knowledge base**: `schema.sql` defines `knowledge_base` table (topic, question, answer, legal_reference); seeded with PLD and fiscal samples; executed on local D1
+- Vector asset generator: `scripts/generate-assets.py` creates theme assets, the cube mark, and the favicon source; `npm run favicon` generates browser and structured-data raster variants. The full Ark Systems lockup is maintained separately in `public/assets/vector/ark-systems-lockup.svg`.
+- **New integrations**: AI binding for Cloudflare Workers AI, D1 database binding for fiscal/legal data, Vectorize binding for semantic search, NoahChatWidget for conversational UI
+- **Intelligent chat endpoint**: `/api/chat` uses hybrid RAG — Vectorize semantic search (Workers AI embeddings @cf/baai/bge-base-en-v1.5, topK=3, filtered by line) with D1 exact-match fallback — returning citations (topic, legal_reference, snippet, score) in SSE meta events
+- **Knowledge base**: `schema.sql` defines `knowledge_base` table (topic, question, answer, legal_reference); seeded with PLD, fiscal, and line-specific samples; executed on local D1
 
 ## 2. What the Project Is
 
@@ -50,7 +49,7 @@ Browser
 Current implementation details:
 
 - Astro config uses `output: 'server'` and the Cloudflare adapter in `astro.config.mjs`
-- `wrangler.jsonc` configures the Cloudflare Worker, static asset binding, session KV binding, AI binding, and D1 database binding
+- `wrangler.jsonc` configures the Cloudflare Worker, static asset binding, session KV binding, AI binding, D1 database binding, and Vectorize index binding
 - React is integrated through `@astrojs/react`; the interactive portfolio demos mount as hydrated React islands
 - CI performs `npm run build` and runs Lighthouse checks against `./dist`
 - The project has a generated `dist/` directory from the latest local build attempt
@@ -271,7 +270,7 @@ The `config.ts` has been significantly expanded:
 - Tailwind design tokens and global styles (CSS variable based)
 - Reusable UI primitives (Button, Card, Badge, Input)
 - Config-driven landing page sections
-- Cloudflare Workers deployment configuration (Astro server output + static asset binding + AI + D1)
+- Cloudflare Workers deployment configuration (Astro server output + static asset binding + AI + D1 + Vectorize)
 - React integration via `@astrojs/react`, used by the eleven portfolio demos
 - Temozonia checkout prototype with cart quantity management, WhatsApp order link, CLABE copy action, and Lightning payment details
 - Tomato for Bitcoin marketplace prototype at `/portfolio/tomato`, with six sample products, cart, payment-method selection, WhatsApp order link, and CLABE copy action
@@ -290,8 +289,8 @@ The `config.ts` has been significantly expanded:
 - **Ark cube logo refresh**: the header/footer inline mark and matching favicon/raster assets are present locally; full lockup is at `public/assets/vector/ark-systems-lockup.svg`. These uncommitted assets are not part of the current production deployment
 - **Homepage portfolio preview** includes the featured cards plus a second Ark Legal card for Calculadora Vintage; this local change is not deployed
 - **Brand preview page** at `/brand`, internal design system showcase
-- **AI chat endpoint** at `/api/chat`, using Cloudflare Workers AI binding
-- **NoahChatWidget** component for conversational UI, with line-specific contexts and response fingerprints; home page widget now uses `client:load` for immediate hydration
+- **AI chat endpoint** at `/api/chat`, hybrid Vectorize RAG + D1 fallback with streaming SSE and citations
+- **NoahChatWidget** component for conversational UI, with line-specific contexts, educative header (`AboutHeader`), response fingerprints (local SHA-256 hash + timestamp), citation badges, and `client:load` for immediate hydration on homepage
 - CI workflow and Lighthouse budget configuration
 - **Vector asset generation script** (`scripts/generate-assets.py`) supports Legal, Commerce, and Lab themes plus legacy site paths
 - Generated brand assets include the cube icon, favicon, full lockup, glows, grids, and portfolio placeholders
@@ -311,7 +310,7 @@ The `config.ts` has been significantly expanded:
 - `public/sitemap.xml` is manually maintained instead of generated by Astro
 - `src/layouts/BaseLayout.astro` still pulls Google Fonts directly and is not fully optimized for performance
 - `/api/contact` endpoint not yet implemented
-- `/api/chat` endpoint exists but needs production AI model configuration
+- `/api/chat` endpoint exists; Vectorize index (`ark-kb-index`) needs to be created and populated with embeddings from `knowledge_base` for full RAG capability
 
 ### 8.3 Not yet production-ready
 
@@ -329,76 +328,94 @@ The `config.ts` has been significantly expanded:
 - The theming engine is partially implemented; the client onboarding workflow is documented in `docs/client-onboarding.md`
 - No end-to-end integration or feature tests beyond CI/static checks
 
-## 8.4 Intelligent Chat Architecture (2026-10-10)
+## 8.4 Intelligent Chat Architecture (2026-10-14)
 
-The `/api/chat` endpoint implements a **structured AI + deterministic knowledge base** pattern to avoid hallucinations and provide verifiable legal/fiscal answers.
+The `/api/chat` endpoint implements a **hybrid RAG (Retrieval-Augmented Generation)** pattern using Cloudflare Workers AI, Vectorize, and D1 to provide grounded answers with citations and avoid hallucinations.
 
 ### Architecture
 
 ```
-User Message → Clef (Classification) → D1 Lookup → Structured Response
+User Message → Embedding (Workers AI) → Vectorize Search (topK=3, filtered by line) → D1 Fallback (exact context match) → LLM Generation (streaming) → SSE with citations
 ```
 
 ### Components
 
-1. **Cloudflare Clef** (`@cf/cloudflare/clef`) — Structured decision engine that classifies the incoming question:
-   - `is_pld_alert` (noul): Probability that the question involves cash operations >$100k MXN or money laundering
-   - `topic_category` (choice): Categorizes as `pld` | `isr` | `iva` | `general`
+1. **Embedding Model** (`@cf/baai/bge-base-en-v1.5` via Workers AI) — Generates 768-dim embeddings for the user query.
 
-2. **D1 Knowledge Base** (`knowledge_base` table) — Pre-approved answers with legal references:
-   - `topic` — Matches Clef's category
-   - `question` — Reference question
+2. **Vectorize Index** (`ark-kb-index`) — Semantic search over knowledge base chunks with metadata filtering by `line` (legal/commerce/lab). Returns top 3 matches with scores.
+
+3. **D1 Knowledge Base** (`knowledge_base` table) — Fallback for exact context matches when Vectorize returns no results. Pre-approved answers with legal references:
+   - `id` — Primary key
+   - `line` — Service line (legal/commerce/lab)
+   - `context` — Topic context (e.g., fiscal, pld, cumplimiento)
+   - `topic` — Human-readable topic
    - `answer` — Approved response text
    - `legal_reference` — Citation (e.g., "Artículo 13, fracción II, LFPIORPI")
 
-3. **Response Payload** — Returns structured JSON:
+4. **LLM Generation** (Workers AI, Llama 3.3 70B primary / Llama 3.1 8B fallback) — Streams response grounded in retrieved context. System prompt enforces: concise professional tone, cite KB as primary, never invent legal articles/figures, PLD alert mention for cash >$100k MXN, include AI disclaimer.
+
+5. **SSE Response** — Streaming with metadata preamble:
    ```json
    {
-     "response": "Answer from D1 or fallback",
-     "legal_reference": "Citation from D1",
-     "metadata": {
-       "clef_decision": "pld|isr|iva|general",
-       "pld_alert": true|false,
-       "confidence": 0.95
-     }
+     "type": "meta",
+     "source": "vector|kb|llm",
+     "legal_reference": "primary citation or null",
+     "model": "llama-3.3-70b|llama-3.1-8b",
+     "citations": [
+       { "id": 1, "topic": "PLD Umbral", "legal_reference": "Art. 13 LFPIORPI", "snippet": "...", "score": 0.89 }
+     ]
    }
    ```
 
+6. **Observability** — Chat logs persisted to D1 (`chat_logs`) with: session_id, line, context, message, response, model, source, pld_alert, latency_ms, citations, kb_hit, fallback_used.
+
 ### Data Flow
 
-1. Request receives `{ message, context }`
-2. Clef classifies intent → returns category + PLD probability
-3. D1 queried: `SELECT answer, legal_reference FROM knowledge_base WHERE topic = ?`
-4. If match found → return approved answer + citation
-5. If no match → return fallback message suggesting strategic review
-6. (Optional) If `pld_alert` → trigger internal webhook for compliance team
+1. Request receives `{ message, context, line, lang, session_id }`
+2. Rate limit check (15 req/min/IP via KV)
+3. PLD keyword/amount detection on message
+4. Generate embedding for message via Workers AI
+5. Query Vectorize with embedding + line filter → get top 3 matches
+6. If Vectorize hits: build KB context from matches, set `source="vector"`
+7. Else: query D1 by `(line, context)` exact match → get up to 5 rows
+8. If D1 hits: build KB context from rows, set `source="kb"`
+9. Else: no KB context, set `source="llm"`
+10. Build system prompt with KB context
+11. Load last 5 turns from KV session history
+12. Stream LLM response (primary → fallback on error)
+13. Persist full response + history to KV; log to D1 via `waitUntil`
+14. Client receives SSE stream; widget displays citations badges under assistant messages
 
 ### Files
 
-- `src/pages/api/chat.ts` — Endpoint implementation
+- `src/pages/api/chat.ts` — Endpoint implementation (hybrid Vectorize RAG + D1 fallback)
+- `src/components/NoahChatWidget.tsx` — React widget with `AboutHeader` (educative header), context tabs, streaming, citations, local hash/timestamp
 - `schema.sql` — D1 schema (run via `npx wrangler d1 execute ark-fiscal-db --local --file=schema.sql`)
-- `wrangler.jsonc` — Defines `ai` and `d1_databases` bindings
-
-### Current Knowledge Base (Seeded)
-
-| Topic    | Sample Question                                            | Legal Reference                    |
-| -------- | ---------------------------------------------------------- | ---------------------------------- |
-| `pld`    | ¿Umbral para reportar operaciones en efectivo?             | Artículo 13, fracción II, LFPIORPI |
-| `fiscal` | ¿Cómo declarar ganancias por enajenación de criptoactivos? | Artículo 14, fracción XIV, LISR    |
+- `wrangler.jsonc` — Defines `ai`, `d1_databases`, `kv_namespaces`, and `vectorize` bindings
 
 ### Why This Pattern
 
-- **Zero hallucination**: Answers come from pre-approved D1 records, not LLM generation
-- **Auditability**: Every response cites a legal article
-- **Speed**: Clef + D1 lookup is faster than full LLM inference
-- **Compliance**: PLD alerts can trigger automated notifications
-- **Extensibility**: New topics added via D1 inserts (CSV, admin panel, or SQL)
+- **Grounded answers**: Responses cite KB sources (Vectorize or D1) via `citations[]` in meta event
+- **Auditability**: Every response includes source type (`vector|kb|llm`) and legal references
+- **Speed**: Vectorize semantic search is fast; D1 fallback for exact context; Workers AI at edge
+- **Compliance**: PLD alerts detected on input; logged with `pld_alert=true`
+- **Extensibility**: New KB content via D1 inserts; Vectorize upserts via embedding script (TODO)
+- **Zero vendor lock-in**: Pure Cloudflare stack (Workers AI + Vectorize + D1 + KV)
+
+### Educative Header
+
+The `NoahChatWidget` now renders an `AboutHeader` component when the conversation is empty (shows in hero mode on homepage). It explains:
+- What Noah is (ARK SYSTEMS' AI assistant per line: Legal/Commerce/Lab)
+- Architecture: Workers AI at edge + D1 grounding + Vectorize semantic search + KV history
+- Limitations: Not binding legal advice; verify with professional; PLD alerts may appear
+
+This improves user trust and sets correct expectations for the AI's capabilities and boundaries.
 
 ## 9. Build / Quality Status
 
-### Current verification result (2026-10-11)
+### Current verification result (2026-10-14)
 
-`npm run check` passed after adding the Calculadora Vintage card to the homepage preview (56 Astro files, 0 errors, 0 warnings, 0 hints). A full local production build passed after adding the Vintage demo and before the subsequent homepage preview change. The deployment fix for Ikigai was also built independently from a clean worktree at the committed revision. Re-run `npm run build` to validate the complete current working tree before deploying the uncommitted demo and logo updates. Astro emits a non-blocking warning that Cloudflare does not support Sharp at runtime. These checks do not verify third-party form delivery or remote CI.
+`npm run check` passed (57 Astro files, 0 errors, 0 warnings, 0 hints). `npm run build` passes locally. The latest build includes the NoahChatWidget educative header, hybrid Vectorize RAG + D1 fallback in `/api/chat`, and Vectorize binding in `wrangler.jsonc`. Astro emits a non-blocking warning that Cloudflare does not support Sharp at runtime. These checks do not verify third-party form delivery or remote CI.
 
 ### Existing quality scaffolding
 
@@ -411,10 +428,11 @@ User Message → Clef (Classification) → D1 Lookup → Structured Response
 
 1. Client-facing placeholders remain and must be replaced before launch.
 2. Portfolio and payment-demo details are not yet client-approved for production use.
-3. Cloudflare Worker deployment configuration and account bindings (KV, AI, D1) must remain valid for deployment.
+3. Cloudflare Worker deployment configuration and account bindings (KV, AI, D1, Vectorize) must remain valid for deployment.
 4. The design system is partially tokenized; hardcoded text/border colors and the logo/header integration may require client-specific changes.
 5. `/api/contact` endpoint needs implementation for form submissions.
 6. Sitemap is manually maintained; should be generated by Astro.
+7. Vectorize index `ark-kb-index` needs to be created (`wrangler vectorize create ark-kb-index --dimensions 768 --metric cosine`) and populated with embeddings from `knowledge_base` for the chat RAG to use semantic search.
 
 ## 11. Recommended Next Priorities
 
@@ -424,13 +442,14 @@ User Message → Clef (Classification) → D1 Lookup → Structured Response
 4. Implement `/api/contact` endpoint for form handling.
 5. Confirm the Cloudflare Worker project, domain, sitemap, robots, and deployment configuration for the target site.
 6. Review whether to generate the currently hand-maintained sitemap.
-7. Extend design tokens where needed and add integration/end-to-end coverage if the template's scope requires it.
+7. **Create and populate Vectorize index**: `wrangler vectorize create ark-kb-index --dimensions 768 --metric cosine` then write a script to embed `knowledge_base` rows and upsert to Vectorize with metadata (`id`, `line`, `context`, `topic`, `answer`, `legal_reference`).
+8. Extend design tokens where needed and add integration/end-to-end coverage if the template's scope requires it.
 
 ## 12. Bottom Line
 
-The repo is a structured, config-driven marketing site with reusable routes, components, documented client-onboarding steps, and a portfolio of eleven interactive React demos, two external sites, and one concept card. Local Astro checking passes. A full production build passed for the newly added demos before the latest homepage preview adjustment; run `npm run build` before releasing the complete current working tree. It is not yet production-ready for a particular client: placeholders, demo payment/contact values, external integrations, and deployment details still need to be supplied and verified.
+The repo is a structured, config-driven marketing site with reusable routes, components, documented client-onboarding steps, and a portfolio of eleven interactive React demos, two external sites, and one concept card. Local Astro checking passes. A full production build passes locally. It is not yet production-ready for a particular client: placeholders, demo payment/contact values, external integrations, Vectorize index population, and deployment details still need to be supplied and verified.
 
-**Current status (2026-10-12)**: `main` and `origin/main` are synchronized at `7983b43`. The Ikigai React hydration fix is committed, deployed, and verified live: the page mounts the app and adding a ceremony updates the cart and total. The current local working tree also contains uncommitted changes: cSpell dictionary fixes (Spanish terminology), Arrendamiento Core and Arrendamiento Pro payment integrations with Clip checkout (orange CTA buttons + shared /gracias thank-you page), the Ark cube logo refresh, the Calculadora Vintage demo, and its Ark Legal homepage preview card; these changes have not been deployed. Astro checking passed after the homepage preview edit. The informational leasing page is not a signed contract or legal advice. Existing demo, pricing, and client-specific content still require confirmation before production use.
+**Current status (2026-10-14)**: `main` and `origin/main` are synchronized at `7983b43`. The Ikigai React hydration fix is committed, deployed, and verified live: the page mounts the app and adding a ceremony updates the cart and total. The current local working tree contains uncommitted changes: Calculadora Vintage demo and Ark Legal homepage preview card, Ark cube logo refresh and generated favicon/logo variants, NoahChatWidget educative header (`AboutHeader`), `/api/chat` hybrid Vectorize RAG + D1 fallback with citations, Vectorize binding in `wrangler.jsonc`; these changes have not been deployed. Astro checking passed. The informational leasing page is not a signed contract or legal advice. Existing demo, pricing, and client-specific content still require confirmation before production use.
 
 ---
 
@@ -477,6 +496,12 @@ The repo is a structured, config-driven marketing site with reusable routes, com
       "preview_id": "b93b8db2fc3e4cfeabc0e494db14ee2e",
     },
   ],
+  "vectorize": [
+    {
+      "binding": "VECTORIZE",
+      "index_name": "ark-kb-index"
+    }
+  ],
   "observability": { "enabled": true },
 }
 ```
@@ -486,6 +511,7 @@ The repo is a structured, config-driven marketing site with reusable routes, com
 - `kv_namespaces.SESSION` satisfies the adapter's session KV requirement.
 - `ai.binding` enables Cloudflare Workers AI for the `/api/chat` endpoint.
 - `d1_databases.DB` provides a D1 database binding for fiscal/legal data storage.
+- `vectorize` binding provides a Vectorize index (`ark-kb-index`) for semantic search in the chat RAG pipeline.
 - `observability` enables Cloudflare telemetry.
 
 ### 13.3 Build Verification
@@ -531,3 +557,4 @@ npm run deploy   # runs: wrangler deploy
 | `Uploading a Pages _worker.js directory as an asset`               | Add `dist/.assetsignore` containing `_worker.js`                                                                                                               |
 | `Invalid _redirects configuration: Only relative URLs are allowed` | Rewrite `public/_redirects` to use relative paths only; host canonicalisation moves to Dashboard Rules                                                         |
 | `KV namespace 'SESSION' is not valid`                              | Create namespace via API (`POST /accounts/<id>/storage/kv/namespaces` with `{"name":"SESSION","title":"SESSION"}`) and store its real `id` in `wrangler.jsonc` |
+| `Vectorize index not found`                                        | Create index: `wrangler vectorize create ark-kb-index --dimensions 768 --metric cosine` then populate via embedding script                                    |

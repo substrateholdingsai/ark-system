@@ -25,5 +25,11 @@
       "preview_id": "b93b8db2fc3e4cfeabc0e494db14ee2e"
     }
   ],
+  "vectorize": [
+    {
+      "binding": "VECTORIZE",
+      "index_name": "ark-kb-index"
+    }
+  ],
   "observability": { "enabled": true }
 }

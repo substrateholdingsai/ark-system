@@ -318,7 +318,7 @@ export const config: SiteConfig = {
     {
       line: 'commerce',
       name: 'Temozonia Carnes Ahumadas',
-      url: '/portfolio/temozonia',
+      url: 'https://temozonia.substrateholdingsai.workers.dev/',
       image:
         'https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?auto=format&fit=crop&w=1200&q=80',
       description:
