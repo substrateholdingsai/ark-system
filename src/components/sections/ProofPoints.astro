@@ -1,0 +1,21 @@
+---
+import Container from '../layout/Container.astro';
+import Section from '../layout/Section.astro';
+import { platform } from '@/data/config';
+---
+
+<Section variant="default" padding="md">
+  <Container>
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      {platform.proofPoints.map((p) => (
+        <a
+          href={p.href}
+          class="group block rounded-[20px] border border-white/[0.06] bg-[#0A0A0B] p-6 transition-all hover:border-ark-accent/30"
+        >
+          <div class="text-3xl font-black tracking-tight text-white sm:text-4xl">{p.value}</div>
+          <div class="mt-2 text-[12px] leading-5 text-zinc-400">{p.label}</div>
+        </a>
+      ))}
+    </div>
+  </Container>
+</Section>

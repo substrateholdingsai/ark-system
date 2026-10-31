@@ -1,15 +1,30 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Hero from '../components/sections/Hero.astro';
-import ValueProps from '../components/sections/ValueProps.astro';
-import PricingTable from '../components/sections/PricingTable.astro';
+import PlatformHero from '../components/sections/PlatformHero.astro';
+import FunnelDiagram from '../components/sections/FunnelDiagram.astro';
+import ProductMatrix from '../components/sections/ProductMatrix.astro';
+import SubstrateStrip from '../components/sections/SubstrateStrip.astro';
+import DistributionProof from '../components/sections/DistributionProof.astro';
+import PricingTransparent from '../components/sections/PricingTransparent.astro';
+import ProofPoints from '../components/sections/ProofPoints.astro';
+import HonestDisclosure from '../components/sections/HonestDisclosure.astro';
+import CraftAndDemos from '../components/sections/CraftAndDemos.astro';
 import NoahChatWidget from '../components/NoahChatWidget';
 import { config } from '@/data/config';
 ---
 
-<BaseLayout>
-  <Hero />
+<BaseLayout
+  title="ARK — Plataforma agéntica para servicios profesionales en México"
+  description="El back-office agéntico de los servicios profesionales mexicanos. Siete productos edge-native sobre un solo sustrato Cloudflare."
+>
+  <PlatformHero />
+  <FunnelDiagram />
+  <ProductMatrix />
+  <SubstrateStrip />
+  <DistributionProof />
+  <PricingTransparent />
+  <ProofPoints />
+  <HonestDisclosure />
+  <CraftAndDemos />
   <NoahChatWidget client:load mode="hero" assistant={config.assistant} />
-  <ValueProps />
-  <PricingTable />
 </BaseLayout>

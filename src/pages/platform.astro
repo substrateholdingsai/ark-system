@@ -1,0 +1,23 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Container from '../components/layout/Container.astro';
+import Section from '../components/layout/Section.astro';
+import SubstrateStrip from '../components/sections/SubstrateStrip.astro';
+import FunnelDiagram from '../components/sections/FunnelDiagram.astro';
+---
+
+<BaseLayout title="Plataforma" description="Sustrato y embudo federado de la plataforma ARK.">
+  <FunnelDiagram />
+  <SubstrateStrip />
+  <Section variant="surface" padding="lg">
+    <Container>
+      <div class="max-w-[720px]">
+        <h2 class="text-3xl font-black tracking-tight text-white">Distribución y geografías</h2>
+        <p class="mt-4 text-base leading-7 text-zinc-400">
+          México es el core (Ledger, Angel, Commerce, Sales, Sentinela, Legaltech). Estados Unidos
+          es el beachhead (Hermes US Intel). CANACO SERVYTUR es el canal institucional.
+        </p>
+      </div>
+    </Container>
+  </Section>
+</BaseLayout>

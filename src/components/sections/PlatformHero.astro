@@ -1,0 +1,106 @@
+---
+import Button from '../ui/Button.astro';
+import Container from '../layout/Container.astro';
+import { platform, distribution } from '@/data/config';
+
+const testsPoint = platform.proofPoints[0];
+const domainsPoint = platform.proofPoints[1];
+---
+
+<section
+  id="platform-hero"
+  class="relative isolate overflow-hidden border-b border-white/[0.06] bg-void py-20 sm:py-28 lg:py-32"
+>
+  <div class="pointer-events-none absolute inset-0 -z-10 overflow-hidden" aria-hidden="true">
+    <img
+      src="/assets/vector/glow-accent.svg"
+      alt=""
+      class="absolute left-1/2 top-[-12rem] w-[min(900px,120vw)] -translate-x-1/2 opacity-35"
+    />
+    <img
+      src="/assets/vector/grid-accent.svg"
+      alt=""
+      class="absolute inset-0 h-full w-full object-cover opacity-[0.08]"
+    />
+  </div>
+
+  <Container>
+    <div class="grid min-w-0 grid-cols-1 items-center gap-12 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:gap-10">
+      <div class="text-left">
+        <div class="inline-flex max-w-full flex-wrap items-center gap-x-2 gap-y-1 rounded-full border border-white/10 bg-white/[0.03] px-3 py-1 text-[11px] font-bold tracking-widest text-zinc-300 backdrop-blur">
+          <span class="h-2 w-2 animate-pulse rounded-full bg-emerald-400"></span>
+          Plataforma agéntica para servicios profesionales en México
+        </div>
+
+        <h1 class="mt-6 max-w-full break-words text-[36px] font-black leading-[0.98] tracking-[-0.035em] text-white sm:text-[52px] lg:text-[60px]">
+          El back-office agéntico de los servicios profesionales mexicanos.
+        </h1>
+
+        <p class="mt-5 max-w-full text-base leading-7 text-zinc-400 sm:max-w-[60ch] sm:text-lg">
+          Siete productos edge-native — Ledger, Angel, Commerce, Sales, Sentinela, Hermes y
+          Legaltech — sobre un solo sustrato Cloudflare, con auth compartida, auditoría SHA-256 y un
+          embudo federado donde Sales alimenta a Ledger, Angel y Commerce. Un cliente en cualquier
+          línea es candidato para las otras.
+        </p>
+
+        <div class="mt-8 flex flex-wrap items-center gap-3">
+          <Button variant="primary" href="#product-matrix" class="px-6 text-sm font-bold">
+            Ver la plataforma
+          </Button>
+          <Button
+            variant="ghost"
+            href="/contact"
+            class="border-white/10 bg-white/[0.06] px-5 text-white hover:bg-white/[0.1]"
+          >
+            Hablar con ventas
+          </Button>
+        </div>
+
+        <div class="mt-10 grid w-full max-w-[460px] grid-cols-3 gap-3 border-t border-white/[0.06] pt-6 sm:gap-6">
+          <div>
+            <dd class="break-words text-2xl font-black tracking-tight text-white sm:text-[28px]">
+              {testsPoint.value}
+            </dd>
+            <dt class="mt-1 break-words text-[9px] font-bold uppercase tracking-[0.08em] text-zinc-500 sm:text-[10px]">
+              tests automatizados
+            </dt>
+          </div>
+          <div>
+            <dd class="break-words text-2xl font-black tracking-tight text-white sm:text-[28px]">
+              {domainsPoint.value}
+            </dd>
+            <dt class="mt-1 break-words text-[9px] font-bold uppercase tracking-[0.08em] text-zinc-500 sm:text-[10px]">
+              dominios en producción
+            </dt>
+          </div>
+          <div>
+            <dd class="break-words text-2xl font-black tracking-tight text-white sm:text-[28px]">
+              1
+            </dd>
+            <dt class="mt-1 break-words text-[9px] font-bold uppercase tracking-[0.08em] text-zinc-500 sm:text-[10px]">
+              canal institucional (CANACO)
+            </dt>
+          </div>
+        </div>
+      </div>
+
+      <div class="relative mx-auto w-full min-w-0 max-w-xl lg:mx-0 lg:max-w-none">
+        <div class="rounded-[20px] border border-white/[0.08] bg-[#0A0A0B] p-6 shadow-[0_20px_60px_rgba(0,0,0,0.5)]">
+          <div class="text-[11px] font-black tracking-widest text-zinc-500">
+            DISTRIBUCIÓN INSTITUCIONAL
+          </div>
+          <div class="mt-3 text-lg font-bold text-white">{distribution.canaco.name}</div>
+          <p class="mt-2 text-sm text-zinc-400">{distribution.canaco.blurb}</p>
+          <a
+            href={distribution.canaco.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="mt-4 inline-flex text-sm font-bold text-ark-accent hover:underline"
+          >
+            Ver el portal de socios →
+          </a>
+        </div>
+      </div>
+    </div>
+  </Container>
+</section>

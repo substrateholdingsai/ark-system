@@ -1,7 +1,7 @@
 ---
 import Container from './Container.astro';
 import ArkMark from '../brand/ArkMark.astro';
-import { config } from '@/data/config';
+import { config, products } from '@/data/config';
 
 const currentYear = new Date().getFullYear();
 const copyright = config.footer.copyright.replace(/© \d{4}/, `© ${currentYear}`);
@@ -9,10 +9,6 @@ const whatsappNumber = config.contact.whatsapp?.replace(/\D/g, '');
 const whatsappMessage = encodeURIComponent(
   'Hola Pavel, me interesa una demo de 3 minutos de Ark Legal para mi despacho.',
 );
-const businessLines = config.lines.map((line) => ({
-  ...line,
-  href: `/portfolio#line-${line.id}`,
-}));
 ---
 
 <footer
@@ -41,12 +37,12 @@ const businessLines = config.lines.map((line) => ({
       </div>
 
       <div class="space-y-3 lg:col-span-2">
-        <p class="text-xs font-bold uppercase tracking-widest text-white">Líneas</p>
+        <p class="text-xs font-bold uppercase tracking-widest text-white">Productos</p>
         <ul class="space-y-2 text-xs">
-          {businessLines.map((line) => (
+          {products.map((p) => (
             <li>
-              <a href={line.href} class="transition-colors hover:text-white">
-                {line.name}
+              <a href={p.ctaProduct} class="transition-colors hover:text-white">
+                {p.name}
               </a>
             </li>
           ))}
@@ -54,21 +50,28 @@ const businessLines = config.lines.map((line) => ({
       </div>
 
       <div class="space-y-3 lg:col-span-3">
-        <p class="text-xs font-bold uppercase tracking-widest text-white">Navegación</p>
+        <p class="text-xs font-bold uppercase tracking-widest text-white">Plataforma</p>
         <ul class="space-y-2 text-xs">
-          {config.nav
-            .filter((link) => ['/#que-es', '/#pricing', '/portfolio'].includes(link.href))
-            .map((link) => (
-              <li>
-                <a href={link.href} class="transition-colors hover:text-white">
-                  {link.href === '/#pricing'
-                    ? 'Modelos de arrendamiento'
-                    : link.href === '/portfolio'
-                      ? 'Portafolio'
-                      : 'Qué es'}
-                </a>
-              </li>
-            ))}
+          <li>
+            <a href="/platform" class="transition-colors hover:text-white">
+              Funnel & sustrato
+            </a>
+          </li>
+          <li>
+            <a href="/proof" class="transition-colors hover:text-white">
+              Proof
+            </a>
+          </li>
+          <li>
+            <a href="/pricing" class="transition-colors hover:text-white">
+              Precios
+            </a>
+          </li>
+          <li>
+            <a href="/portfolio" class="transition-colors hover:text-white">
+              Craft & demos
+            </a>
+          </li>
           <li>
             <a href="/contact" class="transition-colors hover:text-white">
               Contacto

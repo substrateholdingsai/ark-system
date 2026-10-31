@@ -102,7 +102,10 @@ function getSessionId(request: Request): string {
 }
 
 function setSessionIdCookie(response: Response, sessionId: string): void {
-  response.headers.append('Set-Cookie', `noah_session=${sessionId}; Path=/; HttpOnly; SameSite=Lax; Max-Age=31536000`);
+  response.headers.append(
+    'Set-Cookie',
+    `noah_session=${sessionId}; Path=/; HttpOnly; SameSite=Lax; Max-Age=31536000`,
+  );
 }
 
 async function logChat(
@@ -115,19 +118,21 @@ async function logChat(
   model: string,
   source: string,
   pldAlert: boolean,
-  latencyMs: number
+  latencyMs: number,
 ): Promise<void> {
   if (!db || typeof db.prepare !== 'function') return;
   try {
     const stmt = db.prepare(
-      'INSERT INTO chat_logs (session_id, line, context, message, response, model, source, pld_alert, latency_ms) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
+      'INSERT INTO chat_logs (session_id, line, context, message, response, model, source, pld_alert, latency_ms) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
     );
-    await stmt.bind(sessionId, line, context, message, response, model, source, pldAlert ? 1 : 0, latencyMs).run();
+    await stmt
+      .bind(sessionId, line, context, message, response, model, source, pldAlert ? 1 : 0, latencyMs)
+      .run();
   } catch (error) {
     console.warn('[api/chat] Error al registrar chat log:', error);
   }
 }
-  function getClientIp(request: Request): string {
+function getClientIp(request: Request): string {
   const cfIp = request.headers.get('cf-connecting-ip');
   if (cfIp) return cfIp.trim();
 
@@ -177,7 +182,8 @@ function detectPldAlert(message: string): boolean {
   const lower = message.toLowerCase();
 
   // Keyword patterns: lavado, efectivo, UIF, reporte, operaciones en efectivo, operaciones vulnerables
-  const keywordRegex = /\b(lavado|efectivo|uif|reporte|operaci[oó]n(?:es)?\s+en\s+efectivo|operaci[oó]n(?:es)?\s+vulnerable(?:s)?)\b/i;
+  const keywordRegex =
+    /\b(lavado|efectivo|uif|reporte|operaci[oó]n(?:es)?\s+en\s+efectivo|operaci[oó]n(?:es)?\s+vulnerable(?:s)?)\b/i;
   if (keywordRegex.test(lower)) {
     return true;
   }
@@ -188,7 +194,9 @@ function detectPldAlert(message: string): boolean {
   }
 
   // Detect numeric amounts: 100000, 100,000, $100000, 100k, 100 mil
-  const amountMatches = lower.match(/(?:\$|\bmxn\s*)?(\d{1,3}(?:,\d{3})+|\d+)(?:\s*(?:k|mil|pesos|mxn))?/gi);
+  const amountMatches = lower.match(
+    /(?:\$|\bmxn\s*)?(\d{1,3}(?:,\d{3})+|\d+)(?:\s*(?:k|mil|pesos|mxn))?/gi,
+  );
   if (amountMatches) {
     for (const match of amountMatches) {
       const clean = match.replace(/[$,\s]|mxn|pesos/gi, '');
@@ -214,20 +222,28 @@ function detectPldAlert(message: string): boolean {
 async function fetchKnowledgeBaseContext(
   db: any,
   line: ServiceLine,
-  context: string
+  context: string,
 ): Promise<KbContext> {
   if (!db || typeof db.prepare !== 'function') {
-    return { kbText: 'No hay información adicional disponible en la base de conocimientos.', primaryLegalReference: '', rows: [] };
+    return {
+      kbText: 'No hay información adicional disponible en la base de conocimientos.',
+      primaryLegalReference: '',
+      rows: [],
+    };
   }
 
   try {
     const stmt = db.prepare(
-      'SELECT id, line, context, topic, answer, legal_reference FROM knowledge_base WHERE line = ? AND context = ? ORDER BY id DESC LIMIT 5'
+      'SELECT id, line, context, topic, answer, legal_reference FROM knowledge_base WHERE line = ? AND context = ? ORDER BY id DESC LIMIT 5',
     );
     const { results } = await stmt.bind(line, context).all();
 
     if (!results || results.length === 0) {
-      return { kbText: 'No hay información adicional disponible en la base de conocimientos.', primaryLegalReference: '', rows: [] };
+      return {
+        kbText: 'No hay información adicional disponible en la base de conocimientos.',
+        primaryLegalReference: '',
+        rows: [],
+      };
     }
 
     const rows = results as KnowledgeBaseRow[];
@@ -251,7 +267,11 @@ async function fetchKnowledgeBaseContext(
     };
   } catch (error) {
     console.warn('[api/chat] Error al consultar base de conocimientos D1:', error);
-    return { kbText: 'No hay información adicional disponible en la base de conocimientos.', primaryLegalReference: '', rows: [] };
+    return {
+      kbText: 'No hay información adicional disponible en la base de conocimientos.',
+      primaryLegalReference: '',
+      rows: [],
+    };
   }
 }
 
@@ -262,7 +282,7 @@ function buildSystemPrompt(
   line: ServiceLine,
   context: string,
   lang: Language,
-  kbContext: string
+  kbContext: string,
 ): string {
   const lineConfig = LINE_CONFIGS[line];
   const langLabel = lang === 'en' ? 'Inglés' : 'Español';
@@ -293,8 +313,13 @@ async function generateEmbedding(ai: any, query: string): Promise<number[] | nul
   }
   try {
     const response = await ai.run(EMBEDDING_MODEL, { text: query });
-    if (response && Array.isArray(response.data) && response.data[0]?.embedding) {
-      return response.data[0].embedding;
+    if (response && Array.isArray(response.data)) {
+      if (Array.isArray(response.data[0])) {
+        return response.data[0] as number[];
+      }
+      if (response.data[0]?.embedding) {
+        return response.data[0].embedding;
+      }
     }
   } catch (error) {
     console.warn('[api/chat] Error generating embedding:', error);
@@ -309,7 +334,7 @@ async function searchVectorKnowledge(
   vectorize: any,
   ai: any,
   query: string,
-  line: ServiceLine
+  line: ServiceLine,
 ): Promise<{ matches: VectorMatch[]; citations: Citation[] }> {
   if (!vectorize || typeof vectorize.search !== 'function' || !ai) {
     return { matches: [], citations: [] };
@@ -348,9 +373,15 @@ async function searchVectorKnowledge(
 /**
  * Build KB context from vector matches
  */
-function buildVectorKbContext(matches: VectorMatch[]): { kbText: string; primaryLegalReference: string } {
+function buildVectorKbContext(matches: VectorMatch[]): {
+  kbText: string;
+  primaryLegalReference: string;
+} {
   if (!matches.length) {
-    return { kbText: 'No hay información adicional disponible en la base de conocimientos.', primaryLegalReference: '' };
+    return {
+      kbText: 'No hay información adicional disponible en la base de conocimientos.',
+      primaryLegalReference: '',
+    };
   }
 
   const textPieces: string[] = [];
@@ -369,10 +400,13 @@ function buildVectorKbContext(matches: VectorMatch[]): { kbText: string; primary
   }
 
   if (!textPieces.length) {
-    return { kbText: 'No hay información adicional disponible en la base de conocimientos.', primaryLegalReference: '' };
+    return {
+      kbText: 'No hay información adicional disponible en la base de conocimientos.',
+      primaryLegalReference: '',
+    };
   }
 
-return {
+  return {
     kbText: textPieces.join('\n'),
     primaryLegalReference: legalRef,
   };
@@ -385,11 +419,11 @@ async function generateAiStream(
   ai: any,
   systemPrompt: string,
   userMessage: string,
-  history: Array<{ role: string; content: string }> = []
+  history: Array<{ role: string; content: string }> = [],
 ): Promise<{ stream: ReadableStream; modelName: string }> {
   const messages = [
     { role: 'system', content: systemPrompt },
-    ...history.slice(-5),                       // últimos 5 turnos
+    ...history.slice(-5), // últimos 5 turnos
     { role: 'user', content: userMessage },
   ];
 
@@ -407,7 +441,10 @@ async function generateAiStream(
       return { stream: aiStream, modelName: 'llama-3.3-70b' };
     }
   } catch (primaryError) {
-    console.warn('[api/chat] Falló modelo primario (@cf/meta/llama-3.3-70b-instruct-fp8-fast). Intentando fallback...', primaryError);
+    console.warn(
+      '[api/chat] Falló modelo primario (@cf/meta/llama-3.3-70b-instruct-fp8-fast). Intentando fallback...',
+      primaryError,
+    );
   }
 
   // Attempt Fallback Model
@@ -417,7 +454,10 @@ async function generateAiStream(
       return { stream: fallbackStream, modelName: 'llama-3.1-8b' };
     }
   } catch (fallbackError) {
-    console.error('[api/chat] Falló modelo de fallback (@cf/meta/llama-3.1-8b-instruct-fast):', fallbackError);
+    console.error(
+      '[api/chat] Falló modelo de fallback (@cf/meta/llama-3.1-8b-instruct-fast):',
+      fallbackError,
+    );
   }
 
   throw new Error('No se pudo generar respuesta con ninguno de los modelos de Workers AI.');
@@ -429,7 +469,7 @@ async function generateAiStream(
 function createSseStream(
   aiStream: ReadableStream,
   metadata: ChatLogMetadata,
-  waitUntil: (promise: Promise<void>) => void
+  waitUntil: (promise: Promise<void>) => void,
 ): ReadableStream {
   const encoder = new TextEncoder();
   // Only the fields the chat UI reads go to the client. `metadata` also carries
@@ -469,8 +509,8 @@ function createSseStream(
                 }
               } catch {
                 // ignore parse errors
-  }
-}
+              }
+            }
           }
           controller.enqueue(encoder.encode(text));
         }
@@ -480,42 +520,46 @@ function createSseStream(
         // Log chat + persist history via waitUntil (non-blocking)
         if (fullResponse) {
           // 1. Log to D1
-          waitUntil(logChat(
-            metadata.db,
-            metadata.sessionId,
-            metadata.line,
-            metadata.context,
-            metadata.message,
-            fullResponse,
-            metadata.model,
-            source,
-            metadata.pldAlert,
-            Date.now() - metadata.startTime
-          ));
+          waitUntil(
+            logChat(
+              metadata.db,
+              metadata.sessionId,
+              metadata.line,
+              metadata.context,
+              metadata.message,
+              fullResponse,
+              metadata.model,
+              source,
+              metadata.pldAlert,
+              Date.now() - metadata.startTime,
+            ),
+          );
 
           // 2. Persist history to KV (sliding window of 5 messages)
-          waitUntil((async () => {
-            const kv = metadata.kv as any;
-            if (!kv || typeof kv.put !== 'function') return;
-            const historyKey = `chat:${metadata.sessionId}`;
-            let history: Array<{ role: string; content: string }> = [];
-            try {
-              const cached = await kv.get(historyKey, 'json');
-              if (Array.isArray(cached)) history = cached;
-            } catch {
-              // ignore
-            }
-            const newHistory = [
-              ...history,
-              { role: 'user', content: metadata.message },
-              { role: 'assistant', content: fullResponse },
-            ].slice(-5); // ventana deslizante de 5 mensajes
-            try {
-              await kv.put(historyKey, JSON.stringify(newHistory), { expirationTtl: 3600 });
-            } catch (e) {
-              console.warn('[api/chat] KV history persist failed:', e);
-            }
-          })());
+          waitUntil(
+            (async () => {
+              const kv = metadata.kv as any;
+              if (!kv || typeof kv.put !== 'function') return;
+              const historyKey = `chat:${metadata.sessionId}`;
+              let history: Array<{ role: string; content: string }> = [];
+              try {
+                const cached = await kv.get(historyKey, 'json');
+                if (Array.isArray(cached)) history = cached;
+              } catch {
+                // ignore
+              }
+              const newHistory = [
+                ...history,
+                { role: 'user', content: metadata.message },
+                { role: 'assistant', content: fullResponse },
+              ].slice(-5); // ventana deslizante de 5 mensajes
+              try {
+                await kv.put(historyKey, JSON.stringify(newHistory), { expirationTtl: 3600 });
+              } catch (e) {
+                console.warn('[api/chat] KV history persist failed:', e);
+              }
+            })(),
+          );
         }
       }
     },
@@ -535,8 +579,10 @@ export const POST: APIRoute = async ({ request, locals }) => {
     if (!locals?.ai) {
       console.error('[api/chat] Binding locals.ai no configurado');
       return new Response(
-        JSON.stringify({ error: 'El servicio de IA no está disponible. Intenta de nuevo más tarde.' }),
-        { status: 503, headers: { 'Content-Type': 'application/json' } }
+        JSON.stringify({
+          error: 'El servicio de IA no está disponible. Intenta de nuevo más tarde.',
+        }),
+        { status: 503, headers: { 'Content-Type': 'application/json' } },
       );
     }
 
@@ -547,7 +593,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
     } catch {
       return new Response(
         JSON.stringify({ error: 'El cuerpo de la solicitud no es un JSON válido.' }),
-        { status: 400, headers: { 'Content-Type': 'application/json' } }
+        { status: 400, headers: { 'Content-Type': 'application/json' } },
       );
     }
 
@@ -555,40 +601,41 @@ export const POST: APIRoute = async ({ request, locals }) => {
     if (!rawMessage || rawMessage.length === 0) {
       return new Response(
         JSON.stringify({ error: 'El campo "message" es obligatorio y no puede estar vacío.' }),
-        { status: 400, headers: { 'Content-Type': 'application/json' } }
+        { status: 400, headers: { 'Content-Type': 'application/json' } },
       );
     }
 
     if (rawMessage.length > 2000) {
       return new Response(
         JSON.stringify({ error: 'El mensaje excede el límite máximo de 2000 caracteres.' }),
-        { status: 400, headers: { 'Content-Type': 'application/json' } }
+        { status: 400, headers: { 'Content-Type': 'application/json' } },
       );
     }
 
     const context = typeof body.context === 'string' ? body.context.trim() : '';
 
-    const line: ServiceLine = (body.line === 'legal' || body.line === 'commerce' || body.line === 'lab')
-      ? body.line
-      : 'legal';
+    const line: ServiceLine =
+      body.line === 'legal' || body.line === 'commerce' || body.line === 'lab'
+        ? body.line
+        : 'legal';
 
-    const lang: Language = (body.lang === 'es' || body.lang === 'en')
-      ? body.lang
-      : 'es';
+    const lang: Language = body.lang === 'es' || body.lang === 'en' ? body.lang : 'es';
 
     // 3. Rate Limiting via KV
     const clientIp = getClientIp(request);
     const isAllowed = await checkRateLimit(locals.session, clientIp);
     if (!isAllowed) {
       return new Response(
-        JSON.stringify({ error: 'Demasiadas solicitudes. Por favor, intenta de nuevo en un minuto.' }),
+        JSON.stringify({
+          error: 'Demasiadas solicitudes. Por favor, intenta de nuevo en un minuto.',
+        }),
         {
           status: 429,
           headers: {
             'Content-Type': 'application/json',
             'Retry-After': '60',
           },
-        }
+        },
       );
     }
 
@@ -601,7 +648,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
       });
     }
 
-// 5. Knowledge Base Lookup (D1 + Vectorize RAG)
+    // 5. Knowledge Base Lookup (D1 + Vectorize RAG)
     let kbText = 'No hay información adicional disponible en la base de conocimientos.';
     let primaryLegalReference = '';
     let citations: Citation[] = [];
@@ -611,7 +658,12 @@ export const POST: APIRoute = async ({ request, locals }) => {
     // Try Vectorize RAG first if enabled
     const vectorizeBinding = (locals as any).vectorize;
     if (VECTOR_RAG_ENABLED && vectorizeBinding) {
-      const vectorResult = await searchVectorKnowledge(vectorizeBinding, locals.ai, rawMessage, line);
+      const vectorResult = await searchVectorKnowledge(
+        vectorizeBinding,
+        locals.ai,
+        rawMessage,
+        line,
+      );
       if (vectorResult.matches.length > 0) {
         const vectorKb = buildVectorKbContext(vectorResult.matches);
         kbText = vectorKb.kbText;
@@ -623,7 +675,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
     }
 
     // Fallback to D1 exact match if no vector results
-if (!kbHit) {
+    if (!kbHit) {
       const d1Kb = await fetchKnowledgeBaseContext(locals.db, line, context);
       kbText = d1Kb.kbText;
       primaryLegalReference = d1Kb.primaryLegalReference;
@@ -662,12 +714,14 @@ if (!kbHit) {
     } catch (aiError) {
       console.error('[api/chat] Error al invocar Workers AI:', aiError);
       return new Response(
-        JSON.stringify({ error: 'El servicio de IA no está disponible. Intenta de nuevo más tarde.' }),
-        { status: 503, headers: { 'Content-Type': 'application/json' } }
+        JSON.stringify({
+          error: 'El servicio de IA no está disponible. Intenta de nuevo más tarde.',
+        }),
+        { status: 503, headers: { 'Content-Type': 'application/json' } },
       );
     }
 
-// 9. Build metadata for logging + client meta event
+    // 9. Build metadata for logging + client meta event
     const logMetadata = {
       db: locals.db,
       kv: locals.session,
@@ -690,7 +744,9 @@ if (!kbHit) {
     // Use waitUntil from Astro's locals.runtime (Cloudflare Workers context)
     const waitUntil = (locals as any).runtime?.ctx?.waitUntil
       ? (locals as any).runtime.ctx.waitUntil.bind((locals as any).runtime.ctx)
-      : (promise: Promise<void>) => { promise.catch(console.error); };
+      : (promise: Promise<void>) => {
+          promise.catch(console.error);
+        };
 
     const sseStream = createSseStream(aiStreamResult.stream, logMetadata, waitUntil);
 
@@ -699,7 +755,7 @@ if (!kbHit) {
       headers: {
         'Content-Type': 'text/event-stream',
         'Cache-Control': 'no-cache',
-        'Connection': 'keep-alive',
+        Connection: 'keep-alive',
       },
     });
 
@@ -709,7 +765,7 @@ if (!kbHit) {
     console.error('[api/chat] Error interno no controlado:', error);
     return new Response(
       JSON.stringify({ error: 'Error interno del servidor. Por favor, intenta más tarde.' }),
-      { status: 500, headers: { 'Content-Type': 'application/json' } }
+      { status: 500, headers: { 'Content-Type': 'application/json' } },
     );
   }
 };
