@@ -4,16 +4,16 @@ import { platform } from '@/data/config';
 const splineCodeUrl = 'https://prod.spline.design/tJUiJEHw4Frg2ajz/scene.splinecode';
 
 const coreLayers = [
-  { num: '01', name: 'Ark Ledger', desc: 'CFDI 4.0 & Fiscal', tag: 'arkledger.site' },
-  { num: '02', name: 'Ark Angel', desc: 'Recepcionista Voz IA', tag: 'arkangel.site' },
-  { num: '03', name: 'Ark Commerce', desc: 'Storefront + Chat IA', tag: 'arkcommerce.site' },
-  { num: '04', name: 'Ark Sales', desc: '4 Agentes Autónomos', tag: 'arksales.site' },
+  { num: '01', name: 'Ark Ledger', desc: 'CFDI 4.0 & Fiscal', url: 'https://ledger.arksystems.site/', tag: 'ledger.arksystems.site' },
+  { num: '02', name: 'Ark Angel', desc: 'Recepcionista Voz IA', url: 'https://arkangel.arksystems.site/', tag: 'arkangel.arksystems.site' },
+  { num: '03', name: 'Ark Commerce', desc: 'Storefront + Chat IA', url: 'https://tiendas.arksystems.site/', tag: 'tiendas.arksystems.site' },
+  { num: '04', name: 'Ark Sales', desc: '4 Agentes Autónomos', url: 'https://sales.arksystems.site/', tag: 'sales.arksystems.site' },
 ];
 
 const satelliteLayers = [
-  { name: 'Sentinela', sub: 'Compliance AI' },
-  { name: 'Ark Hermes', sub: 'PropTech USA' },
-  { name: 'Legaltech', sub: 'Firma NOM-151' },
+  { name: 'Sentinela', sub: 'Compliance AI', url: 'https://sentinela.substrateholdingsai.workers.dev/', tag: 'sentinela.workers.dev' },
+  { name: 'Ark Hermes', sub: 'Radar Patrimonial', url: 'https://hermes-us-proptech.substrateholdingsai.workers.dev/', tag: 'hermes.workers.dev' },
+  { name: 'Ark Legaltech', sub: 'Firma NOM-151', url: '/products/legaltech', tag: 'Suite Legal' },
 ];
 ---
 
@@ -142,10 +142,10 @@ const satelliteLayers = [
           <div id="hero-panel-diagram" class="hidden space-y-2.5 pt-1">
             {coreLayers.map((layer) => (
               <a
-                href={`https://${layer.tag}`}
+                href={layer.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="group flex items-center justify-between rounded-xl border border-[#E5EEFF] bg-gradient-to-r from-[#F8FBFF] to-white px-3.5 py-2.5 transition-all hover:border-blue-400"
+                class="group flex items-center justify-between rounded-xl border border-[#E5EEFF] bg-gradient-to-r from-[#F8FBFF] to-white px-3.5 py-2.5 transition-all hover:border-blue-400 hover:shadow-sm"
               >
                 <div class="flex items-center gap-3">
                   <span class="mono rounded bg-blue-50 px-2 py-0.5 text-xs font-semibold text-blue-600">
@@ -158,7 +158,7 @@ const satelliteLayers = [
                     <div class="text-xs text-slate-500">{layer.desc}</div>
                   </div>
                 </div>
-                <span class="mono rounded-md border border-slate-200 bg-white px-2 py-0.5 text-[11px] text-slate-600">
+                <span class="mono rounded-md border border-slate-200 bg-white px-2 py-0.5 text-[11px] text-slate-600 group-hover:border-blue-300 group-hover:text-blue-600">
                   {layer.tag} ↗
                 </span>
               </a>
@@ -166,10 +166,16 @@ const satelliteLayers = [
 
             <div class="grid grid-cols-3 gap-2 pt-1">
               {satelliteLayers.map((sat) => (
-                <div class="rounded-xl border border-slate-200/80 bg-slate-50/90 p-2.5 text-center">
-                  <div class="text-xs font-semibold text-slate-800">{sat.name}</div>
+                <a
+                  href={sat.url}
+                  target={sat.url.startsWith('http') ? '_blank' : undefined}
+                  rel={sat.url.startsWith('http') ? 'noopener noreferrer' : undefined}
+                  class="group rounded-xl border border-slate-200/80 bg-slate-50/90 p-2.5 text-center transition-all hover:border-blue-300 hover:bg-white hover:shadow-sm"
+                >
+                  <div class="text-xs font-semibold text-slate-800 group-hover:text-blue-600">{sat.name}</div>
                   <div class="mono mt-0.5 text-[10px] text-blue-600">{sat.sub}</div>
-                </div>
+                  <div class="mono mt-1 text-[9px] text-slate-400 group-hover:text-slate-600">{sat.tag} ↗</div>
+                </a>
               ))}
             </div>
           </div>
