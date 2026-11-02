@@ -4,28 +4,78 @@ import Button from '../ui/Button.astro';
 import ArkMark from '../brand/ArkMark.astro';
 import { config } from '@/data/config';
 
+interface Props {
+  theme?: 'legal' | 'commerce' | 'lab' | 'eterea';
+}
+
+const { theme = config.theme.default } = Astro.props;
 const currentPath = Astro.url.pathname;
+const isEterea = theme === 'eterea';
 ---
 
-<header class="sticky top-0 z-50 w-full border-b border-white/[0.08] bg-base/80 backdrop-blur-lg">
-  <div class="mx-auto flex h-16 w-full max-w-ark-container items-center justify-between px-4 sm:px-6 lg:px-8">
-    <!-- Logo -->
-    <a
-      href="/"
-      class="flex items-center gap-2 text-xl font-display font-bold tracking-tight text-white transition-opacity hover:opacity-80"
-    >
-      <ArkMark class="h-8 w-auto" />
-      <span>{config.brand.displayName}</span>
-    </a>
+{
+  isEterea ? (
+    <header class="sticky top-0 z-50 w-full border-b border-[#E6EEFF]/80 bg-[#F8FBFF]/80 backdrop-blur-xl">
+      <div class="mx-auto flex h-[68px] w-full max-w-[1280px] items-center justify-between px-6 lg:px-8">
+        <a
+          href="/"
+          class="flex items-center gap-2.5 text-[15px] font-[600] tracking-[-0.02em] text-[#0A0A0A] transition-opacity hover:opacity-80"
+        >
+          <div class="flex h-8 w-8 items-center justify-center overflow-hidden rounded-[8px] border border-[#DCE8FF] bg-white shadow-sm">
+            <ArkMark class="h-5 w-auto" />
+          </div>
+          <span>ARKSYSTEMS.SITE</span>
+        </a>
 
-    <!-- Navigation (Desktop + Mobile) -->
-    <Nav links={config.nav} currentPath={currentPath} />
+        <nav class="hidden items-center gap-6 text-[13px] font-[500] text-[#5B667A] lg:flex" aria-label="Navegación principal">
+          <a href="/#product-matrix" class="transition-colors hover:text-[#0A0A0A]">Productos</a>
+          <a href="/#motor-operativo" class="transition-colors hover:text-[#0A0A0A]">Motor Operativo</a>
+          <a href="/#casos-de-exito" class="transition-colors hover:text-[#0A0A0A]">Casos de Éxito</a>
+          <a href="/#funnel" class="transition-colors hover:text-[#0A0A0A]">Embudo Federado</a>
+          <a href="/pricing" class="transition-colors hover:text-[#0A0A0A]">Precios</a>
+          <a href="/portfolio" class="transition-colors hover:text-[#0A0A0A]">Craft & Demos</a>
+        </nav>
 
-    <!-- CTA Button -->
-    <div class="hidden sm:block">
-      <Button variant="primary" href="/contact#booking">
-        Agendar asesoría
-      </Button>
-    </div>
-  </div>
-</header>
+        <div class="flex items-center gap-3">
+          <a
+            href="/checklist"
+            class="hidden sm:inline-flex h-9 items-center gap-1.5 rounded-full border border-blue-200 bg-blue-50/70 px-3.5 text-[11px] font-semibold text-blue-700 transition hover:bg-blue-100 hover:border-blue-300"
+          >
+            <span class="h-1.5 w-1.5 rounded-full bg-blue-600 animate-pulse"></span>
+            <span>Checklist 24 Controles</span>
+          </a>
+          <a
+            href="/contact#booking"
+            class="inline-flex h-9 items-center justify-center gap-2 rounded-full bg-[#0A0A0A] px-4 text-[12px] font-[600] text-white shadow-[0_1px_2px_rgba(0,0,0,0.04)] transition-all hover:bg-[#2563EB] hover:shadow-[0_4px_16px_rgba(37,99,235,0.25)]"
+          >
+            <span>Agendar asesoría</span>
+            <span aria-hidden="true">→</span>
+          </a>
+        </div>
+      </div>
+    </header>
+  ) : (
+    <header class="sticky top-0 z-50 w-full border-b border-white/[0.08] bg-base/80 backdrop-blur-lg">
+      <div class="mx-auto flex h-16 w-full max-w-ark-container items-center justify-between px-4 sm:px-6 lg:px-8">
+        <!-- Logo -->
+        <a
+          href="/"
+          class="flex items-center gap-2 text-xl font-display font-bold tracking-tight text-white transition-opacity hover:opacity-80"
+        >
+          <ArkMark class="h-8 w-auto" />
+          <span>{config.brand.displayName}</span>
+        </a>
+
+        <!-- Navigation (Desktop + Mobile) -->
+        <Nav links={config.nav} currentPath={currentPath} />
+
+        <!-- CTA Button -->
+        <div class="hidden sm:block">
+          <Button variant="primary" href="/contact#booking">
+            Agendar asesoría
+          </Button>
+        </div>
+      </div>
+    </header>
+  )
+}

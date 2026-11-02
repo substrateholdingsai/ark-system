@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Container from '../components/layout/Container.astro';
+import RegulatoryChecklistApp from '../components/RegulatoryChecklistApp';
+---
+
+<BaseLayout
+  title="Checklist Regulatorio México — 24 Controles SAT, IMSS y NOM-151 | Ark Systems"
+  description="Auditoría preventiva para empresas en México: Art. 30 CFF, CFDI 4.0, EFOS 69-B, cruce IMSS vs Nómina y conservación NOM-151. Pásale este checklist a tu contador."
+  theme="eterea"
+>
+  <main class="py-12 sm:py-16 bg-[#F8FBFF] min-h-screen">
+    <Container>
+      <RegulatoryChecklistApp client:load />
+    </Container>
+  </main>
+</BaseLayout>

@@ -243,9 +243,29 @@ export interface DistributionRail {
   blurb: string;
 }
 
+export interface CaseStudyItem {
+  id: string;
+  badge: string;
+  name: string;
+  role: string;
+  url?: string;
+  blurb: string;
+  metrics: Array<{ value: string; label: string }>;
+  stack: string[];
+}
+
 export interface DistributionConfig {
   canaco: { name: string; url: string; blurb: string };
+  caseStudies: CaseStudyItem[];
   rails: DistributionRail[];
+}
+
+export interface FunnelStep {
+  step: string;
+  stage: string;
+  metric: string;
+  title: string;
+  detail: string;
 }
 
 export interface CraftAndDemosConfig {
@@ -832,66 +852,61 @@ export const config: SiteConfig = {
 
 export const platform: PlatformConfig = {
   thesis:
-    'ARK is the agentic back-office for Mexican professional services. Seven edge-native products — Ledger (fiscal & nómina), Angel (collections), Commerce (multi-tenant storefronts), Sales (agentic acquisition), Sentinela (regulatory intelligence), Hermes (US proptech intelligence) and Legaltech (multi-tenant landing infrastructure) — run on one Cloudflare substrate with shared auth, shared SHA-256 audit doctrine, and a federated funnel where Sales feeds Ledger, Angel and Commerce under a versioned contract (LEAD_INGEST_V3). One paying customer in any product line becomes a candidate for the others. One institutional channel (CANACO SERVYTUR, ~1M affiliated businesses nationally) becomes a distribution surface for all seven. This is not a portfolio of side projects. It is a vertically integrated platform with a distribution moat.',
+    'Siete productos edge-native — Ledger, Angel, Commerce, Sales, Sentinela, Hermes y Legaltech — sobre un solo motor operativo Cloudflare, con autenticación compartida, auditoría inmutable SHA-256 y un embudo federado donde Sales alimenta a toda la suite bajo contrato versionado (LEAD_INGEST_V3). Un cliente en cualquier línea se expande de forma natural hacia las demás.',
   substrate: [
     {
       icon: 'cloudflare',
-      label: 'Cloudflare edge',
-      detail: 'Workers · D1 · KV · R2 · Queues · Durable Objects',
+      label: 'Cloudflare Workers',
+      detail: 'Hono 4.6 · Edge en 330+ ciudades',
+    },
+    {
+      icon: 'storage',
+      label: 'D1 · KV · R2 · Queues · DO',
+      detail: 'Almacenamiento distribuido, cero vendor lock-in',
     },
     {
       icon: 'workersai',
-      label: 'Workers AI',
-      detail: 'Llama 3.3 70B como modelo primario',
+      label: 'Workers AI · Llama 3.3 70B',
+      detail: 'Inferencia en el edge · Embeddings · Vectorize',
     },
     {
       icon: 'telnyx',
       label: 'Telnyx Voice AI',
-      detail: 'Voz agéntica para Angel y Sales',
-    },
-    {
-      icon: 'auth',
-      label: 'Auth nativa',
-      detail: 'PBKDF2-SHA256 + JWT HS256 + cookies HttpOnly',
+      detail: 'STT/TTS · WebRTC · Voz agéntica para Angel y Sales',
     },
     {
       icon: 'sha256',
-      label: 'SHA-256 auditable',
-      detail: 'Hash de cada artefacto + worm_audit_log',
-    },
-    {
-      icon: 'failclosed',
-      label: 'Fail-closed',
-      detail: 'Sin credenciales, sin operación silenciosa',
+      label: 'Doctrina SHA-256',
+      detail: 'Auditoría inmutable WORM · Art. 30 CFF',
     },
   ],
   proofPoints: [
-    { value: '~1,100', label: 'tests automatizados en siete repos', href: '/proof' },
-    { value: '6', label: 'dominios en producción', href: '/proof' },
+    { value: '1,100+', label: 'tests automatizados en 7 productos', href: '/proof' },
+    { value: '<35ms', label: 'latencia en el edge global', href: '/proof' },
     {
-      value: 'NOM-151 · ATEB PSC · CONDUSEF · LFPIORPI',
-      label: 'estándares nativos',
+      value: 'NOM-151 · CFDI 4.0 · CONDUSEF',
+      label: 'cumplimiento normativo nativo',
       href: '/proof',
     },
-    { value: 'SHA-256', label: 'auditable en cada artefacto', href: '/proof' },
+    { value: 'SHA-256', label: 'cada artefacto sellado y verificable', href: '/proof' },
   ],
   disclosures: [
     {
       title: 'ATEB PSC Modo A',
       status: 'En validación',
       detail:
-        'Las constancias NOM-151 se emiten hoy en Modo B (evidencia interna WORM). Modo A pendiente de credenciales de producción.',
+        'Las constancias NOM-151 se emiten hoy en Modo B (evidencia interna WORM admisible bajo Arts. 1298-A CCom y 210-A CFPC). Modo A oficial pendiente de validación de credenciales de producción.',
     },
     {
       title: 'Alegra MCP E2E',
       status: 'En curso',
-      detail: 'Cliente unit-tested; round-trip de journal contra sandbox Alegra en progreso.',
+      detail: 'Cliente JSON-RPC 2.0 con pruebas unitarias; round-trip completo contra sandbox Alegra en progreso.',
     },
     {
       title: 'Telnyx Voice AI p50/p95',
       status: 'En medición',
       detail:
-        '<800ms es objetivo de diseño bajo SLA Telnyx; telemetría formal (200+ llamadas con AMD) en curso.',
+        '<800ms conversacional es objetivo de diseño bajo SLA Telnyx; telemetría formal de producción (200+ llamadas con AMD) en curso.',
     },
   ],
 };
@@ -902,10 +917,10 @@ export const products: Product[] = [
     name: 'Ark Ledger',
     domain: 'ledger.arksystems.site',
     tagline:
-      'Suite fiscal y de nómina de 19 herramientas; white-label CANACO; CFDI 4.0 timbrado; papeles de trabajo SHA-256.',
-    tam: 'Despachos contables y cámaras empresariales en MX',
-    revenue: 'Pro $399–499 MXN/mes (Clip/Stripe) + Timbrado PAC + licensing CANACO',
-    maturity: '547 tests · live',
+      'Suite fiscal y de nómina de 19 herramientas. CFDI 4.0, e.firma, declaraciones y papeles de trabajo sellados con SHA-256.',
+    tam: 'Despachos contables, corporativos y cámaras empresariales',
+    revenue: 'Pro $399–499 MXN/mes + Timbrado PAC + White-Label institucional',
+    maturity: 'Fiscal core · 547 tests · live',
     size: 'primary',
     ctaProduct: '/products/ledger',
     ctaDomain: 'https://ledger.arksystems.site',
@@ -914,10 +929,10 @@ export const products: Product[] = [
     id: 'angel',
     name: 'Ark Angel',
     domain: 'arkangel.arksystems.site',
-    tagline: 'Cobranza agéntica: Telnyx Voice AI, NOM-151/ATEB PSC, forensics Hermes, campañas.',
-    tam: 'Despachos de cobranza, bancos y fintechs CNBV/CONDUSEF',
-    revenue: 'Uso (voz $0.25/min, msg $0.20) + Enterprise',
-    maturity: '422 tests · live',
+    tagline: 'Cobranza autónoma por voz y mensajería: Telnyx Voice AI + Llama 3.3 70B, constancias NOM-151 y campañas.',
+    tam: 'Despachos de cobranza, bancos, SOFOMes y fintechs',
+    revenue: 'Uso ($0.25 USD/min voz, $0.20 USD/msg) + Enterprise',
+    maturity: 'Voice AI · 422 tests · live',
     size: 'primary',
     ctaProduct: '/products/angel',
     ctaDomain: 'https://arkangel.arksystems.site',
@@ -926,10 +941,10 @@ export const products: Product[] = [
     id: 'commerce',
     name: 'Ark Commerce',
     domain: 'tiendas.arksystems.site',
-    tagline: 'Storefronts multi-tenant (Temozonia, Baakal, Ark Oficios) + Envia + queues + R2.',
-    tam: 'Comercio MX PYME',
-    revenue: 'SaaS por tenant + transacción',
-    maturity: 'build green · 3 tenants live',
+    tagline: 'Storefronts multi-tenant en el edge (Temozonia, Baakal, Ark Oficios) con logística Envia, KV + R2 y checkout federado.',
+    tam: 'Comercio B2C/B2B y marcas en crecimiento',
+    revenue: 'Desde $299 MXN/tenant/mes + transacción',
+    maturity: 'E-commerce Headless · 3 tenants live',
     size: 'primary',
     ctaProduct: '/products/commerce',
     ctaDomain: 'https://tiendas.arksystems.site',
@@ -939,10 +954,10 @@ export const products: Product[] = [
     name: 'Ark Sales',
     domain: 'sales.arksystems.site',
     tagline:
-      'Adquisición agéntica: 4 agentes LLM, Durable Objects, outbox, Telnyx Voice AI, Conekta SPEI, Super Admin CRM.',
-    tam: 'Interno + reventa Enterprise',
-    revenue: 'Motor interno + Enterprise $8,000–12,000 MXN/mes',
-    maturity: '67 tests · live',
+      'Orquestador de adquisición agéntica: 4 agentes LLM, Durable Objects, outbox, Telnyx Voice AI y Conekta SPEI. Lleva la batuta.',
+    tam: 'Operaciones comerciales B2B de alto volumen',
+    revenue: 'Enterprise $8,000–12,000 MXN/mes',
+    maturity: 'Lleva la batuta · 67 tests · live',
     size: 'primary',
     ctaProduct: '/products/sales',
     ctaDomain: 'https://sales.arksystems.site',
@@ -951,22 +966,22 @@ export const products: Product[] = [
     id: 'sentinela',
     name: 'Sentinela',
     domain: null,
-    tagline: 'Monitor RegTech: DOF/SAT/CONDUSEF/CNBV/BANXICO + webhooks HMAC.',
-    tam: 'RegTech B2B en MX',
-    revenue: 'Suscripción por tenant',
-    maturity: '28 tests · live',
+    tagline: 'Monitoreo normativo y de riesgo en tiempo real: DOF, SAT, CONDUSEF, CNBV y BANXICO con alertas firmadas HMAC.',
+    tam: 'Equipos de cumplimiento y RegTech B2B',
+    revenue: 'Suscripción por organización',
+    maturity: 'RegTech · 28 tests · live',
     size: 'compact',
     ctaProduct: '/products/sentinela',
     ctaDomain: null,
   },
   {
     id: 'hermes',
-    name: 'Hermes US Intel',
+    name: 'Ark Hermes · Radar Patrimonial',
     domain: null,
-    tagline: 'Inteligencia proptech US: SOS, SEC EDGAR, skip-trace TCPA, equity de propiedad.',
-    tam: 'Proptech en US',
-    revenue: 'Por reporte + suscripción',
-    maturity: '37 tests · live',
+    tagline: 'Inteligencia inmobiliaria y skip-trace en EE.UU.: cruza registros SOS, SEC EDGAR y condados con cumplimiento TCPA.',
+    tam: 'PropTech, fondos inmobiliarios y despachos cross-border (EE.UU.)',
+    revenue: 'Por expediente + suscripción Pro',
+    maturity: 'PropTech USA · 37 tests · live',
     size: 'compact',
     ctaProduct: '/products/hermes',
     ctaDomain: null,
@@ -975,10 +990,10 @@ export const products: Product[] = [
     id: 'legaltech',
     name: 'Ark Legaltech',
     domain: null,
-    tagline: 'Infraestructura multi-tenant de landings para abogados + widget Sentinela.',
-    tam: 'Legal en MX',
-    revenue: 'Bundled en Ledger',
-    maturity: '18 tests · partial',
+    tagline: 'Automatización de contratos, actas, poderes e infraestructura multi-tenant para firmas legales con widget Sentinela.',
+    tam: 'Firmas legales y departamentos jurídicos',
+    revenue: 'Integrado en Ark Ledger & Angel',
+    maturity: 'Legal Suite · 18 tests · integrado',
     size: 'compact',
     ctaProduct: '/products/legaltech',
     ctaDomain: null,
@@ -990,26 +1005,64 @@ export const productPricing: TransparentPrice[] = [
   {
     productId: 'ledger',
     price: '$399–499 MXN / mes',
-    includes: ['19 tools', 'Noah AI', 'SHA-256 papeles', 'CFDI timbrado'],
+    includes: ['19 herramientas fiscales', 'Noah AI', 'Papeles SHA-256', 'Timbrado CFDI 4.0'],
     cta: { label: 'Suscribirme (Clip)', href: 'https://clip.mx', external: true },
   },
   {
     productId: 'angel',
     price: '$0.25 USD / min voz · $0.20 USD / msg',
-    includes: ['Telnyx Voice AI', 'NOM-151', 'campaigns', 'Hermes forensics'],
+    includes: ['Telnyx Voice AI', 'Evidencia NOM-151', 'Campañas autónomas', 'Radar Hermes'],
     cta: { label: 'Ver uso', href: '/products/angel' },
   },
   {
     productId: 'commerce',
     price: 'desde $299 MXN / tenant / mes',
-    includes: ['Storefront', 'Envia', 'queues', 'R2', 'checkout WhatsApp'],
+    includes: ['Storefront Edge', 'Guías Envia', 'Queues + R2', 'Checkout unificado'],
     cta: { label: 'Crear tienda', href: '/products/commerce' },
   },
   {
     productId: 'sales',
     price: '$8,000–12,000 MXN / mes',
-    includes: ['4 agentes', 'DO', 'outbox', 'Conekta SPEI', 'Super Admin'],
+    includes: ['4 agentes LLM', 'Durable Objects', 'Outbox LEAD_INGEST_V3', 'Conekta SPEI'],
     cta: { label: 'Hablar con ventas', href: '/contact' },
+  },
+];
+
+export const funnelSteps: FunnelStep[] = [
+  {
+    step: '01',
+    stage: 'ADQUISICIÓN · $0 CAC',
+    metric: '$0',
+    title: 'Entrada sin fricción',
+    detail: 'Calculadoras fiscales en Ledger + demos vivas en Commerce. Captación orgánica en el edge.',
+  },
+  {
+    step: '02',
+    stage: 'ACTIVACIÓN · <3 MIN',
+    metric: '<3m',
+    title: 'Onboarding agéntico',
+    detail: 'Ark Sales califica y entrega el expediente vía LEAD_INGEST_V3; alta de e.firma guiada por voz.',
+  },
+  {
+    step: '03',
+    stage: 'OPERACIÓN DIARIA',
+    metric: '3x',
+    title: 'Adopción multi-producto',
+    detail: 'CFDI diario en Ledger, cobranza automática en Angel y alertas normativas de Sentinela.',
+  },
+  {
+    step: '04',
+    stage: 'EXPANSIÓN ARPU',
+    metric: '$1k+',
+    title: 'Escalamiento natural',
+    detail: 'De plan Pro ($399 MXN) a suite completa con Legaltech, Hermes y consumo de voz AI.',
+  },
+  {
+    step: '05',
+    stage: 'RETENCIÓN ESTRUCTURAL',
+    metric: '5 años',
+    title: 'Bóveda Art. 30 CFF',
+    detail: 'La ley exige conservar contabilidad y constancias SHA-256. Costo de cambio orgánico e inmutable.',
   },
 ];
 
@@ -1035,12 +1088,41 @@ export const distribution: DistributionConfig = {
     name: 'CANACO SERVYTUR Mérida',
     url: 'https://canacomerida.com.mx',
     blurb:
-      'Portal white-label live en Ark Ledger. ~1M de negocios afiliados a nivel nacional; Mérida es el piloto y el contrato es portable a cualquier cámara o colegio.',
+      'Nuestro despliegue institucional más complejo y desarrollado: portal white-label, padrón empresarial, buzón fiscal y timbrado sobre rieles Stripe Connect.',
   },
+  caseStudies: [
+    {
+      id: 'canaco',
+      badge: 'CASO DE ÉXITO INSTITUCIONAL · WHITE-LABEL',
+      name: 'CANACO SERVYTUR Mérida',
+      role: 'Arquitectura cameral multi-empresa y motor fiscal en marca blanca',
+      url: 'https://canacomerida.com.mx',
+      blurb:
+        'El despliegue más complejo y completo del ecosistema ARK: portal institucional en marca blanca, administración de padrón de afiliados, buzón tributario automatizado y cobro directo mediante cuenta conectada de Stripe Connect.',
+      metrics: [
+        { value: '19', label: 'herramientas fiscales integradas' },
+        { value: '100%', label: 'timbrado CFDI 4.0 y bóveda SHA-256' },
+      ],
+      stack: ['Ark Ledger White-Label', 'Stripe Connect', 'Buzón Fiscal', 'Padrón Admin'],
+    },
+    {
+      id: 'futura-capital',
+      badge: 'CASO DE ÉXITO CORPORATIVO · FINANZAS & CAPITAL',
+      name: 'Futura Capital',
+      role: 'Operación financiera, trazabilidad documental y control de flujos',
+      blurb:
+        'Implementación de alto rigor para estructuración financiera y control operativo. Combina conciliación fiscal, blindaje de contratos con trazabilidad criptográfica SHA-256 y automatización de seguimiento ejecutivo.',
+      metrics: [
+        { value: 'SHA-256', label: 'auditoría continua en cada expediente' },
+        { value: 'Zero-Trust', label: 'autenticación y sesiones blindadas en D1' },
+      ],
+      stack: ['Ark Ledger Core', 'Auditoría WORM', 'Ark Legaltech', 'Noah AI'],
+    },
+  ],
   rails: [
-    { name: 'Stripe Connect', blurb: 'CANACO cobra bajo su propia cuenta conectada' },
-    { name: 'Clip', blurb: 'ARK cobra sus suscripciones Pro' },
-    { name: 'Conekta SPEI', blurb: 'Ark Sales cobra Enterprise' },
+    { name: 'Stripe Connect', blurb: 'Liquidación directa multi-cuenta y portales institucionales' },
+    { name: 'Clip', blurb: 'Suscripciones Pro inmediatas con tarjeta en MXN' },
+    { name: 'Conekta SPEI', blurb: 'Conciliación interbancaria referenciada para planes Enterprise' },
   ],
 };
 

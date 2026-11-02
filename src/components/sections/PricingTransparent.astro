@@ -1,52 +1,63 @@
 ---
-import Container from '../layout/Container.astro';
-import Section from '../layout/Section.astro';
-import Button from '../ui/Button.astro';
 import { products, productPricing } from '@/data/config';
 
 const nameById = Object.fromEntries(products.map((p) => [p.id, p.name]));
 ---
 
-<Section id="pricing" variant="void" padding="lg">
-  <Container>
-    <div class="mb-10 max-w-[720px]">
-      <div class="text-[11px] font-black tracking-widest text-zinc-500">PRECIOS TRANSPARENTES</div>
-      <h2 class="mt-3 text-3xl font-black tracking-tight text-white sm:text-4xl">
-        Precios transparentes. Sin "contáctanos".
+<section id="pricing" class="border-b border-eterea-border bg-white py-20 sm:py-28">
+  <div class="mx-auto max-w-7xl px-6">
+    <div class="mb-14 max-w-3xl">
+      <div class="mono inline-block rounded-md bg-blue-50 px-2.5 py-1 text-xs font-semibold uppercase tracking-wider text-eterea-blue">
+        MODELO COMERCIAL TRANSPARENTE
+      </div>
+      <h2 class="instrument mt-3 text-4xl text-eterea-text sm:text-5xl lg:text-6xl">
+        Precios claros. <span class="italic text-eterea-blue">Sin sorpresas ni llamadas obligatorias.</span>
       </h2>
+      <p class="mt-4 text-base leading-relaxed text-eterea-muted sm:text-lg">
+        Creemos en la transparencia radical. Publicamos nuestros precios de autoservicio y los entregables exactos de cada nivel.
+      </p>
     </div>
 
     <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
       {productPricing.map((p) => (
-        <article class="flex flex-col rounded-[20px] border border-white/[0.06] bg-[#0A0A0B] p-6">
-          <h3 class="text-base font-black text-white">{nameById[p.productId]}</h3>
-          <div class="mt-3 text-2xl font-black tracking-tight text-ark-accent">{p.price}</div>
-          <ul class="mt-4 space-y-1 text-[12px] text-zinc-400">
-            {p.includes.map((i) => (
-              <li class="flex items-start gap-2">
-                <span class="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-ark-accent"></span>
-                <span>{i}</span>
-              </li>
-            ))}
-          </ul>
-          <div class="mt-6">
-            <Button
-              variant="primary"
+        <article class="flex flex-col justify-between rounded-3xl border border-[#E6EEFF] bg-[#FAFCFF] p-6 shadow-sm transition-all hover:border-blue-400 hover:shadow-eterea-card">
+          <div>
+            <span class="mono text-xs font-semibold text-eterea-blue">
+              {p.productId.toUpperCase()}
+            </span>
+            <h3 class="mt-1 text-lg font-bold text-slate-900">{nameById[p.productId]}</h3>
+            
+            <div class="mt-4 border-b border-slate-200/60 pb-4">
+              <span class="text-3xl font-extrabold tracking-tight text-slate-900">{p.price}</span>
+            </div>
+
+            <ul class="mt-5 space-y-2.5 text-xs text-slate-600">
+              {p.includes.map((i) => (
+                <li class="flex items-start gap-2">
+                  <span class="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-eterea-blue"></span>
+                  <span>{i}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div class="mt-8">
+            <a
               href={p.cta.href}
               target={p.cta.external ? '_blank' : undefined}
               rel={p.cta.external ? 'noopener noreferrer' : undefined}
-              class="h-10 w-full justify-center text-[13px] font-bold"
+              class="inline-flex w-full items-center justify-center rounded-xl bg-eterea-blue px-4 py-2.5 text-xs font-semibold text-white shadow-sm transition-all hover:bg-blue-700"
             >
-              {p.cta.label}
-            </Button>
+              {p.cta.label} {p.cta.external ? '↗' : '→'}
+            </a>
           </div>
         </article>
       ))}
     </div>
 
-    <p class="mt-8 text-sm text-zinc-400">
-      Sentinela y Hermes: suscripción por tenant / por reporte + suscripción. Sin "contact us for
-      pricing".
-    </p>
-  </Container>
-</Section>
+    <!-- Pricing note -->
+    <div class="mt-10 rounded-2xl bg-[#F5F8FF] p-5 text-center text-xs text-slate-600">
+      Módulos especializados como <strong>Sentinela</strong> (cumplimiento normativo) y <strong>Ark Hermes</strong> (inteligencia patrimonial en EE. UU.) operan bajo suscripción mensual por tenant o pago por reporte individual.
+    </div>
+  </div>
+</section>

@@ -3,6 +3,12 @@ import Container from './Container.astro';
 import ArkMark from '../brand/ArkMark.astro';
 import { config, products } from '@/data/config';
 
+interface Props {
+  theme?: 'legal' | 'commerce' | 'lab' | 'eterea';
+}
+
+const { theme = config.theme.default } = Astro.props;
+const isEterea = theme === 'eterea';
 const currentYear = new Date().getFullYear();
 const copyright = config.footer.copyright.replace(/© \d{4}/, `© ${currentYear}`);
 const whatsappNumber = config.contact.whatsapp?.replace(/\D/g, '');
@@ -11,10 +17,39 @@ const whatsappMessage = encodeURIComponent(
 );
 ---
 
-<footer
-  data-theme={config.theme.default}
-  class="border-t border-white/[0.06] bg-void py-12 text-zinc-400 sm:py-16"
->
+{
+  isEterea ? (
+    <footer class="border-t border-[#E6EEFF] bg-white text-[#0A0A0A]">
+      <div class="mx-auto flex max-w-[1280px] flex-col gap-6 px-6 py-10 lg:flex-row lg:items-center lg:justify-between lg:px-8">
+        <div class="flex flex-wrap items-center gap-3">
+          <div class="flex h-7 w-7 items-center justify-center overflow-hidden rounded-[7px] border border-[#E6EEFF] bg-[#F8FBFF]">
+            <ArkMark class="h-4 w-auto" />
+          </div>
+          <span class="text-[13px] font-[600] tracking-[-0.02em] text-[#0A0A0A]">
+            ARK SYSTEMS · {currentYear}
+          </span>
+          <span class="mono text-[11px] text-[#94A3B8]">
+            · arksystems.site · Hecho en México, servido desde el edge.
+          </span>
+        </div>
+
+        <div class="flex flex-wrap gap-5 text-[12px] text-[#6B7280]">
+          <a href="/products" class="transition-colors hover:text-[#0A0A0A]">Productos</a>
+          <a href="/platform" class="transition-colors hover:text-[#0A0A0A]">Arquitectura</a>
+          <a href="/pricing" class="transition-colors hover:text-[#0A0A0A]">Precios</a>
+          <a href="/proof" class="transition-colors hover:text-[#0A0A0A]">Auditoría & Tests</a>
+          <a href="/portfolio" class="transition-colors hover:text-[#0A0A0A]">Craft & Demos</a>
+          <a href={`mailto:${config.contact.email}`} class="mono transition-colors hover:text-[#2563EB]">
+            {config.contact.email}
+          </a>
+        </div>
+      </div>
+    </footer>
+  ) : (
+    <footer
+      data-theme={config.theme.default}
+      class="border-t border-white/[0.06] bg-void py-12 text-zinc-400 sm:py-16"
+    >
   <Container>
     <div class="grid gap-10 lg:grid-cols-12 lg:gap-8">
       <div class="space-y-4 lg:col-span-4">
@@ -163,3 +198,5 @@ const whatsappMessage = encodeURIComponent(
     </div>
   </Container>
 </footer>
+  )
+}

@@ -89,6 +89,25 @@
     --text-muted: 196 24% 72%;
   }
 
+  [data-theme='eterea'] {
+    --void: 214 100% 99%;
+    --base: 214 100% 99%;
+    --surface: 0 0% 100%;
+    --surface-hover: 222 100% 98%;
+    --border: 221 100% 95%;
+    --border-strong: 221 100% 92%;
+
+    --ark-accent: 221 83% 53%;
+    --ark-accent-hover: 224 76% 48%;
+    --ark-accent-to: 217 91% 60%;
+    --ark-accent-contrast: 0 0% 100%;
+
+    --text-primary: 0 0% 4%;
+    --text-muted: 219 15% 42%;
+
+    --font-display: 'Instrument Serif', Georgia, serif;
+  }
+
   * {
     @apply border-border;
   }
@@ -292,8 +311,19 @@
     font-family: var(--font-body);
   }
 
-  .font-mono {
+  .font-mono,
+  .mono {
     font-family: var(--font-mono);
+  }
+
+  .instrument {
+    font-family: 'Instrument Serif', Georgia, serif;
+  }
+
+  @media (max-width: 1024px) {
+    .instrument {
+      line-height: 0.98;
+    }
   }
 
   .text-gradient-ark {
@@ -355,6 +385,28 @@
   to {
     opacity: 1;
     transform: scale3d(1, 1, 1);
+  }
+}
+
+@keyframes floatA {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) translateZ(var(--tz, 0px));
+  }
+
+  50% {
+    transform: translate3d(0, -10px, 0) translateZ(var(--tz, 0px));
+  }
+}
+
+@keyframes shimmer {
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+
+  50% {
+    opacity: 1;
   }
 }
 

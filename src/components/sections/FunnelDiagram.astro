@@ -1,104 +1,69 @@
 ---
-import Container from '../layout/Container.astro';
-import { funnel } from '@/data/config';
-
-const nodeMap = Object.fromEntries(funnel.nodes.map((n) => [n.id, n]));
+import { funnelSteps, funnel } from '@/data/config';
 ---
 
-<section id="funnel" class="border-b border-white/[0.06] bg-void py-20 sm:py-28">
-  <Container>
-    <div class="mb-10 max-w-[720px]">
-      <div class="text-[11px] font-black tracking-widest text-zinc-500">EL EMBUDO FEDERADO</div>
-      <h2 class="mt-3 text-3xl font-black tracking-tight text-white sm:text-4xl">
-        Siete productos. Un sustrato. Un embudo.
+<section id="funnel" class="border-b border-eterea-border bg-[#F8FBFF] py-20 sm:py-28">
+  <div class="mx-auto max-w-7xl px-6">
+    <div class="mb-14 max-w-3xl">
+      <div class="mono inline-block rounded-md bg-blue-100/60 px-2.5 py-1 text-xs font-semibold uppercase tracking-wider text-eterea-blue">
+        ARQUITECTURA DE EXPANSIÓN COMERCIAL
+      </div>
+      <h2 class="instrument mt-3 text-4xl text-eterea-text sm:text-5xl lg:text-6xl">
+        Expansión continua. <span class="italic text-eterea-blue">De $0 a clientes institucionales.</span>
       </h2>
-      <p class="mt-4 text-base leading-7 text-zinc-400">
-        Cada lead que Sales califica se entrega con contrato versionado, reintentos por outbox e
-        idempotencia por <code class="text-ark-accent">lead_id</code>. El costo de adquirir un
-        cliente para Ledger, Angel o Commerce tiende a cero una vez que Sales lo ha tocado.
+      <p class="mt-4 text-base leading-relaxed text-eterea-muted sm:text-lg">
+        Nuestro motor federado reduce el costo de adquisición marginal a cero. Cada interacción genera datos y confianza que habilitan el siguiente producto de forma natural.
       </p>
     </div>
 
-    <div class="funnel-wrap opacity-0 transition-opacity duration-700" data-funnel>
-      <svg
-        viewBox="0 0 100 100"
-        class="w-full max-w-4xl mx-auto"
-        role="img"
-        aria-label="Embudo federado ARK"
-      >
-        {funnel.edges.map((e) => {
-          const a = nodeMap[e.from];
-          const b = nodeMap[e.to];
-          const mx = (a.x + b.x) / 2;
-          const my = (a.y + b.y) / 2;
-          return (
-            <g>
-              <line
-                x1={a.x}
-                y1={a.y}
-                x2={b.x}
-                y2={b.y}
-                stroke="rgba(255,255,255,0.25)"
-                stroke-width="0.6"
-                class="funnel-edge"
-              />
-              {e.label && (
-                <text
-                  x={mx}
-                  y={my - 1.5}
-                  text-anchor="middle"
-                  font-size="2.2"
-                  fill="#F38020"
-                  font-weight="700"
-                >
-                  {e.label}
-                </text>
-              )}
-            </g>
-          );
-        })}
-        {funnel.nodes.map((n) => (
-          <g class="funnel-node">
-            <circle
-              cx={n.x}
-              cy={n.y}
-              r="6"
-              fill="#0A0A0B"
-              stroke="rgba(243,128,32,0.6)"
-              stroke-width="0.6"
-            />
-            <text
-              x={n.x}
-              y={n.y + 0.8}
-              text-anchor="middle"
-              font-size="2.4"
-              fill="#fff"
-              font-weight="700"
-            >
-              {n.label}
-            </text>
-          </g>
-        ))}
-      </svg>
+    <!-- 5-Step Commercial Funnel Cards -->
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+      {funnelSteps.map((step) => (
+        <div class="flex flex-col justify-between rounded-2xl border border-[#DCE7FF] bg-white p-5 shadow-sm transition-all hover:border-blue-300 hover:shadow-md">
+          <div>
+            <div class="flex items-center justify-between">
+              <span class="mono rounded bg-blue-50 px-2 py-0.5 text-xs font-bold text-eterea-blue">
+                {step.step}
+              </span>
+              <span class="mono text-xs font-semibold text-slate-500">
+                {step.metric}
+              </span>
+            </div>
+            <h3 class="mt-4 text-base font-bold text-slate-900">{step.title}</h3>
+            <div class="mono mt-1 text-[11px] font-semibold text-blue-600">{step.stage}</div>
+            <p class="mt-2 text-xs leading-relaxed text-slate-600">{step.detail}</p>
+          </div>
+          <div class="mt-4 border-t border-slate-100 pt-3">
+            <span class="mono text-[10px] uppercase tracking-wider text-slate-400">FASE:</span>
+            <div class="text-xs font-medium text-slate-700">{step.stage}</div>
+          </div>
+        </div>
+      ))}
     </div>
-  </Container>
-</section>
 
-<script>
-  const wrap = document.querySelector('[data-funnel]');
-  if (wrap) {
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) {
-            e.target.classList.remove('opacity-0');
-            e.target.classList.add('opacity-100');
-            io.unobserve(e.target);
-          }
-        });
-      },
-      { threshold: 0.2 },
-    );
-    io.observe(wrap);
-  }
-</script>
+    <!-- Architectural Connectivity Note -->
+    <div class="mt-8 rounded-2xl border border-blue-100 bg-white p-6 shadow-sm">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div class="flex items-center gap-3">
+          <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-eterea-blue">
+            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+          </div>
+          <div>
+            <h4 class="text-sm font-bold text-slate-900">Entrega idempotente y contratos versionados</h4>
+            <p class="text-xs text-slate-600">
+              Cada lead calificado por <strong>Ark Sales</strong> ({funnel.nodes.find(n => n.id === 'sales')?.label}) se sincroniza con reintentos vía cola Outbox y clave única <code class="mono text-blue-600">lead_id</code> directamente hacia Ledger, Angel y Commerce.
+            </p>
+          </div>
+        </div>
+        <a
+          href="/funnel"
+          class="shrink-0 text-xs font-semibold text-eterea-blue hover:underline"
+        >
+          Ver flujo técnico del embudo →
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

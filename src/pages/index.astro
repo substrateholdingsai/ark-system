@@ -6,7 +6,6 @@ import ProductMatrix from '../components/sections/ProductMatrix.astro';
 import SubstrateStrip from '../components/sections/SubstrateStrip.astro';
 import DistributionProof from '../components/sections/DistributionProof.astro';
 import PricingTransparent from '../components/sections/PricingTransparent.astro';
-import ProofPoints from '../components/sections/ProofPoints.astro';
 import HonestDisclosure from '../components/sections/HonestDisclosure.astro';
 import CraftAndDemos from '../components/sections/CraftAndDemos.astro';
 import NoahChatWidget from '../components/NoahChatWidget';
@@ -14,16 +13,16 @@ import { config } from '@/data/config';
 ---
 
 <BaseLayout
-  title="ARK — Plataforma agéntica para servicios profesionales en México"
-  description="El back-office agéntico de los servicios profesionales mexicanos. Siete productos edge-native sobre un solo sustrato Cloudflare."
+  title="Ark Systems — El back-office agéntico de los servicios profesionales mexicanos"
+  description="Siete productos en la nube sobre un solo motor operativo. CFDI 4.0, recepcionista de voz IA, comercio conversacional, prospección autónoma e inteligencia regulatoria."
+  theme="eterea"
 >
   <PlatformHero />
-  <FunnelDiagram />
   <ProductMatrix />
   <SubstrateStrip />
   <DistributionProof />
+  <FunnelDiagram />
   <PricingTransparent />
-  <ProofPoints />
   <HonestDisclosure />
   <CraftAndDemos />
   <NoahChatWidget client:load mode="hero" assistant={config.assistant} />

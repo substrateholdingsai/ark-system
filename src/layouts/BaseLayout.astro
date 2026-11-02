@@ -11,6 +11,7 @@ interface Props {
   image?: string;
   type?: 'website' | 'article' | 'product';
   line?: 'legal' | 'commerce' | 'lab';
+  theme?: 'legal' | 'commerce' | 'lab' | 'eterea';
   keywords?: string[];
   noindex?: boolean;
 }
@@ -21,13 +22,14 @@ const {
   image,
   type,
   line,
+  theme = config.theme.default,
   keywords,
   noindex,
 } = Astro.props;
 ---
 
 <!doctype html>
-<html lang={config.locale} data-theme={config.theme.default}>
+<html lang={config.locale} data-theme={theme}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -35,7 +37,7 @@ const {
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
     />
     <!--
       favicon.svg es la fuente de verdad (la genera scripts/generate-assets.py) y
@@ -58,10 +60,10 @@ const {
     />
   </head>
   <body>
-    <Header />
+    <Header theme={theme} />
     <main>
       <slot />
     </main>
-    <Footer />
+    <Footer theme={theme} />
   </body>
 </html>
