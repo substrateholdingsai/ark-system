@@ -1,7 +1,7 @@
 ---
 import { platform } from '@/data/config';
 
-const splineUrl = 'https://my.spline.design/untitled-fKJICKEX47H5F37XSO72UqvD/';
+const splineCodeUrl = 'https://prod.spline.design/tJUiJEHw4Frg2ajz/scene.splinecode';
 
 const coreLayers = [
   { num: '01', name: 'Ark Ledger', desc: 'CFDI 4.0 & Fiscal', tag: 'arkledger.site' },
@@ -116,21 +116,14 @@ const satelliteLayers = [
             </div>
           </div>
 
-          <!-- Panel 1: Live Spline 3D Scene -->
+          <!-- Panel 1: Live Spline 3D Scene (Native Spline-Viewer Component) -->
           <div id="hero-panel-3d" class="relative overflow-hidden rounded-2xl border border-[#0F1D3A] bg-[#0C1528]">
             <div class="relative aspect-[4/3] w-full sm:aspect-[16/11]">
-              <iframe
-                src={splineUrl}
-                title="Arquitectura 3D Ark Systems — 7 productos sobre un solo motor operativo"
-                class="h-full w-full border-0"
-                loading="eager"
-                allow="autoplay; fullscreen; xr-spatial-tracking"
-              ></iframe>
-              <!-- Mask cover for Spline watermark in free embed -->
-              <div
-                class="pointer-events-none absolute bottom-3 right-3 h-10 w-36 rounded-xl bg-[#0C1528] opacity-95 transition-opacity"
-                aria-hidden="true"
-              ></div>
+              <spline-viewer
+                url={splineCodeUrl}
+                loading-anim-type="spinner-small-dark"
+                class="h-full w-full"
+              ></spline-viewer>
             </div>
 
             <!-- Floating overlay legend at bottom of 3D canvas -->
@@ -221,6 +214,33 @@ const satelliteLayers = [
 </section>
 
 <script>
+  // Load official Spline Viewer web component
+  if (!customElements.get('spline-viewer')) {
+    const script = document.createElement('script');
+    script.type = 'module';
+    script.src = 'https://cdn.spline.design/@splinetool/viewer@2.0.128/build/spline-viewer.js';
+    document.head.appendChild(script);
+  }
+
+  // Hide the Spline watermark inside the shadow DOM cleanly
+  const hideWatermark = () => {
+    const viewer = document.querySelector('spline-viewer');
+    if (viewer && viewer.shadowRoot) {
+      const style = document.createElement('style');
+      style.textContent = `
+        #logo, .logo, a[href*="spline.design"], .spline-watermark {
+          display: none !important;
+          opacity: 0 !important;
+          pointer-events: none !important;
+        }
+      `;
+      viewer.shadowRoot.appendChild(style);
+    } else {
+      setTimeout(hideWatermark, 100);
+    }
+  };
+  hideWatermark();
+
   const tabBtns = document.querySelectorAll<HTMLButtonElement>('[data-hero-tab]');
   const panel3d = document.getElementById('hero-panel-3d');
   const panelDiagram = document.getElementById('hero-panel-diagram');
